@@ -6,7 +6,7 @@ As built (phases 0–5, Oct 2026). Where this differs from the original plan, th
 
 | Concern | Choice | Notes |
 |---|---|---|
-| Framework | **Astro 5**, `output: 'static'`, `trailingSlash: 'always'` | Content-first, zero JS by default, View Transitions router (`<ClientRouter />`) for the persistent player. |
+| Framework | **Astro 7** (Vite 8, Node ≥ 22.12; upgraded from 5 on 13 Oct 2026), `output: 'static'`, `trailingSlash: 'always'`, `compressHTML: true` (keeps spaces between inline elements) | Content-first, zero JS by default, View Transitions router (`<ClientRouter />`) for the persistent player. |
 | Language | TypeScript (strict) | `npm run check` = `astro check`. |
 | Styling | Plain CSS + `design/tokens.css`; scoped `<style>` in `.astro`; global CSS in `src/styles/` | No framework. Fonts self-hosted as WOFF2 (`src/assets/fonts/`). |
 | Islands | **Preact**: `DockedPlayer`, `Waveform`, `GuidedSteps` | Play buttons, code-block Run/Copy, catalog switch, widgets are plain scripts with delegated listeners (less JS than one island each). |

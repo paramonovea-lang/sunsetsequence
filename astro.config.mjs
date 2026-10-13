@@ -8,6 +8,7 @@ export default defineConfig({
   site: 'https://sunsetsequence.com',
   output: 'static',
   trailingSlash: 'always',
+  compressHTML: true, // Astro 7 defaults to 'jsx', which drops spaces between inline elements
   integrations: [preact(), sitemap({ filter: (page) => !page.endsWith('/404/') })],
   vite: {
     plugins: [

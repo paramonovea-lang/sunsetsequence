@@ -1,7 +1,9 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const step16 = z.string().regex(/^[x.]{16}$/);
+const httpsUrl = z.string().regex(/^https:\/\/\S+$/); // links on track pages: https only
 
 const tracks = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/tracks' }),
@@ -33,9 +35,9 @@ const tracks = defineCollection({
     licenses: z.object({ audio: z.string(), code: z.string() }),
     links: z
       .object({
-        bandcamp: z.string().url().startsWith('https://').optional(),
-        spotify: z.string().url().startsWith('https://').optional(),
-        soundcloud: z.string().url().startsWith('https://').optional(),
+        bandcamp: httpsUrl.optional(),
+        spotify: httpsUrl.optional(),
+        soundcloud: httpsUrl.optional(),
       })
       .default({}),
     lessons: z.array(z.string()).default([]),
