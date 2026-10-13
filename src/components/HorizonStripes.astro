@@ -1,0 +1,19 @@
+---
+// The sea of the sunset: 5 ink stripes of growing thickness, used as dividers and above the footer.
+interface Props {
+  variant?: 'divider' | 'footer';
+  bg?: string;
+}
+const { variant = 'divider', bg = 'var(--ground)' } = Astro.props;
+const heights = variant === 'footer' ? [4, 7, 11, 16, 44] : [3, 5, 8, 12, 18];
+---
+<div class:list={['stripes', variant]} style={`background:${bg}`} aria-hidden="true">
+  {heights.map((h) => <div style={`height:${h}px`} />)}
+</div>
+
+<style>
+  .stripes { display: flex; flex-direction: column; justify-content: space-between; }
+  .stripes > div { background: var(--ink); }
+  .divider { height: 64px; }
+  .footer { height: 120px; }
+</style>

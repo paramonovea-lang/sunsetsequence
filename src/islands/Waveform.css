@@ -1,0 +1,8 @@
+/* Lives inside the track page's player panel grid: bars next to the play button, times below. */
+.sq-wave { display: contents; }
+.sq-wave__bars { min-width: 0; height: 56px; cursor: pointer; }
+.sq-wave__bars svg { display: block; width: 100%; height: 100%; }
+.sq-wave__bars rect.played { fill: var(--accent); }
+.sq-wave__bars rect.ahead { fill: var(--ink); }
+.sq-wave__bars rect.empty { fill: var(--line); }
+.sq-wave__times { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 8px; font-family: var(--font-mono); font-size: var(--fs-label); color: var(--muted); }

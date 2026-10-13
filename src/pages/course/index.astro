@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import Byline from '../../components/Byline.astro';
+import StepCards from '../../components/StepCards.astro';
+---
+<Base title="Free course" description="Sequence your first track: a free 11-part live-coding course that runs in the browser.">
+  <section class="container section head">
+    <p class="eyebrow">The course · free · 11 parts · runs in the browser</p>
+    <h1>Sequence your first track.</h1>
+    <p class="lede">One track, built one layer at a time, in a Strudel editor that runs right on this site. Nothing to install. By step 05 you have a finished track, and the rest of the course helps you make more.</p>
+    <Byline />
+    <p class="actions">
+      <a href="/course/01-start-here/" class="btn btn-primary">Start step 01 →</a>
+      <a href="/course/" class="btn btn-secondary" data-resume hidden>Continue where you left off →</a>
+    </p>
+  </section>
+  <section class="container steps">
+    <StepCards large />
+  </section>
+</Base>
+
+<style>
+  .head { display: flex; flex-direction: column; gap: 24px; }
+  .steps { padding-bottom: var(--section-y); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .actions [hidden] { display: none; }
+</style>

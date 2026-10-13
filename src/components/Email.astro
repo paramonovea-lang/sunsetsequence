@@ -1,0 +1,21 @@
+---
+// "Write to me": a mailto link whose address never appears on the page. It is assembled in the
+// browser from the two parts in SITE.contact, so the page source and the repository never hold it
+// in one piece (spam harvesters look for "name@domain"), and the link text doesn't show it either.
+import { SITE } from '../site';
+
+interface Props { class?: string; text?: string }
+const { class: cls, text = 'Write to me →' } = Astro.props;
+const { user, domain } = SITE.contact;
+---
+<a class:list={['sq-email', cls]} data-u={user} data-d={domain} href="/about/">{text}</a>
+
+<script>
+  function fill() {
+    document.querySelectorAll<HTMLAnchorElement>('a.sq-email[data-u]').forEach((a) => {
+      a.href = `mailto:${a.dataset.u}${String.fromCharCode(64)}${a.dataset.d}`;
+    });
+  }
+  document.addEventListener('astro:page-load', fill);
+  fill();
+</script>

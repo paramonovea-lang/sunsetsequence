@@ -1,0 +1,27 @@
+/* Code blocks (lib/codeblock-html.ts). Global because lesson HTML is rendered with set:html. */
+.codeblock { margin: 0; min-width: 0; border: var(--rule); background: var(--ink); }
+.cb-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; padding: 6px 6px 6px 16px; font-family: var(--font-mono); font-size: 12px; color: var(--muted-on-ink); }
+.cb-label { text-transform: uppercase; letter-spacing: 0.04em; }
+.cb-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.codeblock .cb-open { display: inline-flex; align-items: center; min-height: var(--tap); padding: 0 10px; color: var(--ground); font-size: 13px; }
+.codeblock .cb-open:hover { color: var(--sand); }
+.cb-copy { min-height: var(--tap); padding: 0 14px; border: 1px solid var(--line-on-ink); background: transparent; color: var(--ground); font: 500 13px var(--font-mono); cursor: pointer; }
+.cb-run { display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 16px; border: none; background: var(--accent); color: var(--ink); font: 600 13px var(--font-mono); cursor: pointer; }
+.cb-run .i-stop { display: none; }
+.cb-run[data-state='playing'] { background: var(--ground); }
+.cb-run[data-state='playing'] .i-play { display: none; }
+.cb-run[data-state='playing'] .i-stop { display: block; }
+.cb-run[data-state='loading'] { opacity: 0.75; cursor: progress; }
+.codeblock pre { margin: 0; padding: 4px 0 20px; background: var(--code-bg); color: var(--code-text); font-family: var(--font-mono); font-size: 15px; line-height: 1.75; overflow-x: auto; tab-size: 2; }
+.codeblock pre:focus-visible { outline-offset: -3px; }
+.codeblock .ln { display: block; min-height: 1.75em; padding: 0 18px; border-left: 3px solid transparent; white-space: pre; }
+.codeblock .ln.new { background: #1E3A2F; border-left-color: var(--accent); }
+.codeblock[data-playing] { border-color: var(--accent); }
+.codeblock .tk-c { color: var(--code-comment); }
+.codeblock .tk-s { color: var(--sun-yellow); }
+.codeblock .tk-k { color: #7FD3B0; }
+.cb-note, .cb-msg { margin: 0; padding: 10px 16px; font-family: var(--font-mono); font-size: 13px; line-height: 1.5; color: var(--ground); border-top: 1px solid var(--line-on-ink); }
+.codeblock .cb-note a { color: var(--ground); }
+.cb-msg[data-kind='error'] { background: #3A1A12; color: #FFD9CC; }
+.cb-msg[data-kind='warn'] { background: #3A3112; color: #FFEFC2; }
+@media (max-width: 480px) { .codeblock pre { font-size: 14px; } }

@@ -1,0 +1,91 @@
+/* The course content in the site's design (LessonDocs mockup). lesson-content.css is generated
+   from the original course.css; this file supplies its variables and the "Specimen" overrides. */
+.lesson-body {
+  --lx-strudel: var(--accent-text);
+  --lx-strudel-fill: var(--accent);
+  --lx-strudel-soft: rgba(240, 86, 42, 0.12);
+  --lx-tidal: var(--teal);
+  --lx-tidal-soft: rgba(14, 107, 91, 0.1);
+  --lx-code-bg: #DDE2D9;
+  --lx-code-com: var(--muted);
+  --lx-code-kw: var(--teal);
+  --s-1: 0.25rem; --s-2: 0.5rem; --s-3: 0.75rem; --s-4: 1rem; --s-5: 1.5rem; --s-6: 2rem; --s-7: 3rem; --s-8: 4.5rem;
+  --radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  min-width: 0;
+}
+
+/* sections and headings */
+.lesson-body section { padding-block: 0; scroll-margin-top: 24px; gap: 18px; }
+.lesson-body section > h2 { font-size: clamp(28px, 3.4vw, 34px); font-weight: 800; letter-spacing: -0.03em; gap: 14px; }
+.lesson-body section > h2 .num { font-size: 16px; color: var(--accent-text); }
+.lesson-body h3 { font-size: 21px; letter-spacing: -0.01em; }
+.lesson-body h3[id], .lesson-body [id] { scroll-margin-top: 24px; }
+.lesson-body p { max-width: 72ch; }
+.lesson-body a { color: var(--ink); }
+.lesson-body a:hover { color: var(--teal); }
+.lesson-body p code, .lesson-body li code, .lesson-body td code { font-size: 0.88em; }
+.lesson-body kbd { border: 1px solid var(--ink); border-bottom-width: 2px; }
+
+/* panels: 2px ink frame, square */
+.lesson-body :is(.tool, .grid-fig, .arpfig, .fxscale-fig, .table-wrap) { border: var(--rule); border-radius: 0; background: var(--paper); }
+.lesson-body .verdict { border: var(--rule); border-left-width: 6px; border-left-color: var(--accent); background: var(--paper); }
+.lesson-body .tool.strudel h3 { color: var(--accent-text); }
+
+/* tables: ink header row, hairlines */
+.lesson-body th { background: var(--ink); color: var(--ground); font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.04em; }
+.lesson-body th.s { color: #FFB59C; }
+.lesson-body th.t { color: #8FE0CC; }
+.lesson-body td { border-bottom: var(--hairline); }
+.lesson-body .scroll-table thead th { background: var(--ink); }
+
+/* "Listen for" and "Try changing" */
+.lesson-body .notes { gap: 12px; }
+.lesson-body .notes > div { padding: 18px; border: var(--rule); background: var(--paper); }
+.lesson-body .notes > div + div { background: var(--sand); }
+.lesson-body .notes h4 { font-family: var(--font-mono); font-weight: 500; color: var(--teal); }
+.lesson-body .notes > div + div h4 { color: var(--accent-text); }
+
+/* buttons inside widgets (the site's .btn is a large CTA; these are small tools) */
+.lesson-body .btn { min-height: var(--tap); padding: 0 14px; border: var(--rule); background: var(--paper); color: var(--ink); font: 600 14px var(--font-sans); }
+.lesson-body .btn.play { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+.lesson-body :is(.catchip, .cx-root) { min-height: var(--tap); }
+.lesson-body .arpnum { color: var(--ink); }
+.lesson-body .acell.now b, .lesson-body .acell.now span { color: var(--ink); }
+.lesson-body .kbd-svg .wk.now + .kl { fill: var(--ink); }
+.lesson-body .kbd-svg :is(.bdg, .ctag) text { fill: var(--ink); }
+.lesson-body .kbd-svg :is(.bdg-b, .bdg.now) circle, .lesson-body .kbd-svg .ctag-b rect { fill: #ffffff; }
+.lesson-body .kbd-svg :is(.bdg-b, .bdg.now) text, .lesson-body .kbd-svg .ctag-b text { fill: var(--accent-text); }
+
+/* step grids */
+.lesson-body .steps .c { border-radius: 0; }
+.lesson-body .steps .c.on { background: var(--ink); }
+.lesson-body .steps .c.on.t { background: var(--teal); }
+.lesson-body .songmap .seg { color: var(--ground); }
+.lesson-body .songmap .s-chorus { background: var(--accent); color: var(--ink); }
+
+/* facts strip (Night Bus) */
+.lesson-body .facts { font-family: var(--font-mono); font-size: 13px; }
+
+/* code blocks inside a section keep the reading width */
+.lesson-body .codeblock { max-width: 100%; }
+
+@media (max-width: 480px) {
+  .lesson-body { gap: 44px; }
+  .lesson-body .notes > div { padding: 14px; }
+}
+
+/* "Build it step by step" card that leads to a guided sequence */
+.lesson-body .guided-cta { display: flex; flex-direction: column; gap: 6px; padding: 20px 22px; border: var(--rule); background: var(--ink); color: var(--ground); text-decoration: none; }
+.lesson-body .guided-cta:hover { background: var(--ink-2); color: var(--ground); }
+.lesson-body .guided-cta b { font-size: 22px; letter-spacing: -0.02em; }
+.lesson-body .guided-cta-eyebrow { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+.lesson-body .guided-cta-text { font-size: 15px; color: var(--muted-on-ink); }
+.lesson-body.compact { gap: 14px; }
+
+/* former h4: note labels and small subheadings (see lib/lessons.ts) */
+.lesson-body .notes .notes-h { margin: 0; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--teal); }
+.lesson-body .notes > div + div .notes-h { color: var(--accent-text); }
+.lesson-body section > h3.sub-h { font-size: 1.05rem; margin: var(--s-4) 0 0; }

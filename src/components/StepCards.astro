@@ -1,0 +1,36 @@
+---
+// The course steps; each icon's sun sits a little higher (docs/02 "sunrise progress").
+import Cover from './Cover.astro';
+import { PARTS, stepLabel, sunBpm } from '../lib/course';
+
+interface Props { large?: boolean }
+const { large = false } = Astro.props;
+---
+<ol class:list={['steps', { large }]}>
+  {PARTS.map((p) => (
+    <li>
+      <a href={`/course/${p.slug}/`} data-part={p.n}>
+        <span class="top">
+          <span class="n">STEP {stepLabel(p.n)}</span>
+          <Cover kick="x...x...x...x..." bpm={sunBpm(p.n)} key="C major" size={40} class="sunrise" />
+        </span>
+        <span class="title">{p.title}</span>
+        <span class="desc">{p.desc}</span>
+      </a>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 2px; background: var(--ink); border: var(--rule); }
+  li { background: var(--paper); }
+  a { display: flex; flex-direction: column; gap: 10px; min-height: 170px; height: 100%; padding: 24px; text-decoration: none; color: var(--ink); }
+  a:hover { background: var(--ground); color: var(--ink); }
+  .large a { min-height: 210px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; font-family: var(--font-mono); font-size: var(--fs-label); }
+  .n { color: var(--accent-text); }
+  a[data-visited] .n::after { content: ' · ✓ visited'; color: var(--teal); }
+  .top :global(.sunrise) { border: 1px solid var(--ink); }
+  .title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+  .desc { font-size: var(--fs-small); color: var(--muted); }
+</style>

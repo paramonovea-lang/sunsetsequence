@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lesson — Lab notebook</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;family=DM+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#ECEEE8}
+a{color:#13201B}a:hover{color:#0E6B5B}
+</style>
+</helmet>
+<div style="background: #ECEEE8; color: #13201B; font-family: 'Schibsted Grotesk', system-ui, sans-serif; font-size: 17px; line-height: 1.6">
+
+<header style="border-bottom: 2px solid #13201B; background: #ECEEE8">
+<div style="max-width: 1360px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Home.dc.html" style="font-weight: 800; font-size: 19px; letter-spacing: 0.06em; text-decoration: none; padding: 8px 0">SUNSET SEQUENCE</a>
+<div style="flex: 1 1 260px; max-width: 420px; display: flex; align-items: center; gap: 12px; font-family: 'DM Mono', monospace; font-size: 13px">
+<span>2 / 9</span>
+<div aria-hidden="true" style="flex: 1; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px">
+<div style="height: 8px; background: #13201B"></div><div style="height: 8px; background: {{accent}}"></div><div style="height: 8px; background: #C9CFC7"></div><div style="height: 8px; background: #C9CFC7"></div><div style="height: 8px; background: #C9CFC7"></div><div style="height: 8px; background: #C9CFC7"></div><div style="height: 8px; background: #C9CFC7"></div><div style="height: 8px; background: #C9CFC7"></div><div style="height: 8px; background: #C9CFC7"></div>
+</div>
+</div>
+<a href="LessonRepl.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; background: #13201B; color: #ECEEE8; text-decoration: none; font-weight: 600; font-size: 15px">Open Strudel ↗</a>
+</div>
+</header>
+
+<div style="max-width: 1360px; margin: 0 auto; padding: 0 24px; display: flex; flex-wrap: wrap; gap: 0 56px">
+<nav aria-label="Course" style="flex: 1 1 240px; max-width: 280px; padding: 36px 0; font-size: 15px">
+<p style="margin: 0 0 12px; font-family: 'DM Mono', monospace; font-size: 12px; color: #4E5A54">THE PROTOCOL · FREE</p>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px">
+<li><a href="LessonDocs.dc.html" style="display: flex; gap: 10px; padding: 10px 8px; text-decoration: none"><span style="font-family: 'DM Mono', monospace; color: #0E6B5B">✓</span>Start here</a></li>
+<li>
+<a href="LessonDocs.dc.html" aria-current="page" style="display: flex; gap: 10px; padding: 10px 8px; text-decoration: none; background: #13201B; color: #ECEEE8; font-weight: 600"><span style="font-family: 'DM Mono', monospace; color: {{accent}}">02</span>Rhythm and drums</a>
+<ol style="margin: 4px 0 8px 30px; padding: 0 0 0 12px; list-style: none; border-left: 2px solid #13201B; display: flex; flex-direction: column">
+<li><a href="#pulse" style="display: block; padding: 7px 8px; text-decoration: none; font-weight: 600">The pulse</a></li>
+<li><a href="#meter" style="display: block; padding: 7px 8px; text-decoration: none; color: #33403A">Meter and note length</a></li>
+<li><a href="#kit" style="display: block; padding: 7px 8px; text-decoration: none; color: #33403A">The drum kit</a></li>
+<li><a href="#kit" style="display: block; padding: 7px 8px; text-decoration: none; color: #33403A">Beat lab</a></li>
+<li><a href="#kit" style="display: block; padding: 7px 8px; text-decoration: none; color: #33403A">Hi-hats</a></li>
+</ol>
+</li>
+<sc-for list="{{rest}}" as="p" hint-placeholder-count="7">
+<li><a href="LessonDocs.dc.html" style="display: flex; gap: 10px; padding: 10px 8px; text-decoration: none; color: #33403A"><span style="font-family: 'DM Mono', monospace; color: #4E5A54">{{p.n}}</span>{{p.title}}</a></li>
+</sc-for>
+</ol>
+</nav>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 36px 0 72px; display: flex; flex-direction: column; gap: 56px">
+
+<div style="display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-end; padding-bottom: 32px; border-bottom: 2px solid #13201B">
+<div aria-hidden="true" style="position: relative; width: 150px; height: 150px; flex: none; background: #F1E7D4; border: 2px solid #13201B; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end">
+<div style="position: absolute; left: 34px; top: 46px; width: 78px; height: 78px; border-radius: 50%; background: {{accent}}"></div>
+<div style="position: relative; height: 60px; background: #F1E7D4; display: flex; flex-direction: column; justify-content: space-between; padding-top: 6px; box-sizing: border-box"><div style="height: 4px; background: #13201B"></div><div style="height: 7px; background: #13201B"></div><div style="height: 10px; background: #13201B"></div><div style="height: 20px; background: #13201B"></div></div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0">
+<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: #4E5A54">STEP 02 OF 09</p>
+<h1 style="margin: 6px 0 10px; font-size: clamp(44px, 5vw, 72px); line-height: 0.95; letter-spacing: -0.045em; font-weight: 800">Rhythm and drums</h1>
+<p style="margin: 0; color: #33403A">The pulse, meter and note lengths, the drum kit, the beat lab and hi-hats.</p>
+</div>
+</div>
+
+<section id="pulse" style="display: flex; flex-direction: column; gap: 18px; max-width: 820px">
+<h2 style="margin: 0; display: flex; gap: 14px; align-items: baseline; font-size: 34px; letter-spacing: -0.03em; font-weight: 800"><span style="font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; color: #B23A16">01</span>The pulse</h2>
+<p style="margin: 0">Everything loops in cycles. <code style="font-family: 'DM Mono', monospace; font-size: 15px; background: #DDE2D9; padding: 1px 5px">s("bd*4")</code> plays the sample <b>bd</b> (bass drum) four times per cycle: a four-on-the-floor kick. <code style="font-family: 'DM Mono', monospace; font-size: 15px; background: #DDE2D9; padding: 1px 5px">setcpm</code> sets cycles per minute, so <code style="font-family: 'DM Mono', monospace; font-size: 15px; background: #DDE2D9; padding: 1px 5px">124/4</code> gives 31 bars a minute, which is 124 BPM.</p>
+<div style="border: 2px solid #13201B; background: #0C1612">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 6px 6px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: #B5BDB7">
+<span>STRUDEL</span>
+<div style="display: flex; gap: 6px">
+<button type="button" style="min-height: 44px; padding: 0 14px; border: 1px solid #33403A; background: transparent; color: #ECEEE8; font: 500 13px 'DM Mono', monospace; cursor: pointer">copy</button>
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: none; background: {{accent}}; color: #13201B; font: 600 13px 'DM Mono', monospace; cursor: pointer"><svg width="10" height="10" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 1l11 6-11 6z" fill="currentColor"></path></svg>run</button>
+</div>
+</div>
+<pre style="margin: 0; padding: 4px 18px 20px; color: #ECEEE8; font-family: 'DM Mono', monospace; font-size: 15px; line-height: 1.75; overflow-x: auto">setcpm(124/4)
+s("bd*4")</pre>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 260px; min-width: 0; padding: 18px; background: #F8F9F5; border: 2px solid #13201B">
+<p style="margin: 0 0 6px; font-family: 'DM Mono', monospace; font-size: 12px; color: #0E6B5B">LISTEN FOR</p>
+<p style="margin: 0; font-size: 16px">A steady kick on every beat. The word <b>bd</b> lights up each time it plays.</p>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; padding: 18px; background: #F1E7D4; border: 2px solid #13201B">
+<p style="margin: 0 0 6px; font-family: 'DM Mono', monospace; font-size: 12px; color: #B23A16">TRY CHANGING</p>
+<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 14px; line-height: 1.9">"bd*2" or "bd*8"<br>"bd(3,8)"  3 hits over 8 steps<br>setcpm(90/4)</p>
+</div>
+</div>
+</section>
+
+<section id="meter" style="display: flex; flex-direction: column; gap: 18px; max-width: 820px">
+<h2 style="margin: 0; display: flex; gap: 14px; align-items: baseline; font-size: 34px; letter-spacing: -0.03em; font-weight: 800"><span style="font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; color: #B23A16">01+</span>Meter and note length</h2>
+<p style="margin: 0">In Strudel and Tidal, meter and note length come from one rule: a cycle is one bar, and whatever you write inside the quotes shares that bar equally. Four items make four beats, three make three. To set the tempo for any meter, divide the BPM by the beats in the bar.</p>
+<div style="overflow-x: auto; border: 2px solid #13201B; background: #F8F9F5">
+<table style="width: 100%; min-width: 560px; border-collapse: collapse; font-size: 15px">
+<thead><tr style="background: #13201B; color: #ECEEE8; text-align: left"><th style="padding: 10px 14px; font-weight: 600">Meter</th><th style="padding: 10px 14px; font-weight: 600">Feel</th><th style="padding: 10px 14px; font-weight: 600">Strudel</th><th style="padding: 10px 14px; font-weight: 600">Tidal</th></tr></thead>
+<tbody>
+<sc-for list="{{meters}}" as="m" hint-placeholder-count="5">
+<tr style="border-top: 1px solid #C9CFC7"><td style="padding: 10px 14px; font-weight: 600">{{m.meter}}</td><td style="padding: 10px 14px; color: #33403A">{{m.feel}}</td><td style="padding: 10px 14px; font-family: 'DM Mono', monospace; font-size: 14px">{{m.s}}</td><td style="padding: 10px 14px; font-family: 'DM Mono', monospace; font-size: 14px">{{m.t}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="kit" style="display: flex; flex-direction: column; gap: 18px; max-width: 820px">
+<h2 style="margin: 0; display: flex; gap: 14px; align-items: baseline; font-size: 34px; letter-spacing: -0.03em; font-weight: 800"><span style="font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; color: #B23A16">02</span>The drum kit</h2>
+<p style="margin: 0">Each line that starts with <code style="font-family: 'DM Mono', monospace; font-size: 15px; background: #DDE2D9; padding: 1px 5px">$:</code> is a separate layer, and all layers play together. <code style="font-family: 'DM Mono', monospace; font-size: 15px; background: #DDE2D9; padding: 1px 5px">~</code> is a rest, so <code style="font-family: 'DM Mono', monospace; font-size: 15px; background: #DDE2D9; padding: 1px 5px">"~ cp ~ cp"</code> puts a clap on beats 2 and 4.</p>
+<div style="border: 2px solid #13201B; background: #0C1612">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 6px 6px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: #B5BDB7">
+<span>STRUDEL · highlighted lines are new</span>
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: none; background: {{accent}}; color: #13201B; font: 600 13px 'DM Mono', monospace; cursor: pointer"><svg width="10" height="10" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 1l11 6-11 6z" fill="currentColor"></path></svg>run</button>
+</div>
+<pre style="margin: 0; padding: 4px 0 20px; color: #ECEEE8; font-family: 'DM Mono', monospace; font-size: 15px; line-height: 1.75; overflow-x: auto"><span style="display: block; padding: 0 18px">setcpm(124/4)</span><span style="display: block; padding: 0 18px; background: #1E3A2F">$: s("bd*4").bank("RolandTR909")</span><span style="display: block; padding: 0 18px; background: #1E3A2F">$: s("~ cp ~ cp").bank("RolandTR909")</span><span style="display: block; padding: 0 18px; background: #1E3A2F">$: s("[~ oh]*4").bank("RolandTR909").gain(.4)</span></pre>
+</div>
+<div role="img" aria-label="One cycle in 16 steps: kick on every beat, clap on 2 and 4, open hat on the off-beats" style="padding: 18px; background: #F8F9F5; border: 2px solid #13201B; display: flex; flex-direction: column; gap: 5px">
+<sc-for list="{{grid}}" as="r" hint-placeholder-count="3">
+<div style="display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 10px; align-items: center">
+<span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #4E5A54">{{r.label}}</span>
+<div style="display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 3px">
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="16">
+<sc-if value="{{c.on}}" hint-placeholder-val="{{true}}"><div style="height: 24px; background: {{r.color}}"></div></sc-if>
+<sc-if value="{{c.off}}" hint-placeholder-val="{{false}}"><div style="height: 24px; background: #E0E4DC"></div></sc-if>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+<details style="border: 2px solid #13201B; background: #F8F9F5">
+<summary style="padding: 14px 18px; min-height: 24px; font-weight: 700; cursor: pointer">Mini-notation cheat sheet</summary>
+<div style="overflow-x: auto; border-top: 1px solid #C9CFC7">
+<table style="width: 100%; min-width: 480px; border-collapse: collapse; font-size: 15px">
+<tbody>
+<sc-for list="{{cheat}}" as="c" hint-placeholder-count="10">
+<tr style="border-top: 1px solid #E0E4DC"><td style="padding: 9px 18px; font-family: 'DM Mono', monospace; font-weight: 500; width: 80px">{{c.w}}</td><td style="padding: 9px 18px; color: #33403A">{{c.m}}</td><td style="padding: 9px 18px; font-family: 'DM Mono', monospace; font-size: 14px">{{c.e}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</details>
+</section>
+
+<nav aria-label="Previous and next step" style="display: flex; flex-wrap: wrap; gap: 12px; max-width: 820px">
+<a href="LessonDocs.dc.html" style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 4px; padding: 18px; border: 2px solid #13201B; text-decoration: none"><span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #4E5A54">← STEP 01</span><b>Start here</b></a>
+<a href="LessonDocs.dc.html" style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 4px; padding: 18px; background: #13201B; color: #ECEEE8; text-decoration: none; text-align: right"><span style="font-family: 'DM Mono', monospace; font-size: 12px; color: {{accent}}">STEP 03 →</span><b>Notes and chords</b></a>
+</nav>
+</main>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F0562A","options":["#F0562A","#F2C94C","#7FD3B0"]},"$preview":{"width":1440,"height":3000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cells = (pat) => pat.split('').map((ch) => ({ on: ch === 'x', off: ch !== 'x' }));
+    return {
+      accent: this.props.accent ?? '#F0562A',
+      rest: [
+        { n: '03', title: 'Notes and chords' },
+        { n: '04', title: 'Sound and effects' },
+        { n: '05', title: 'Structure and visuals' },
+        { n: '06', title: 'Tidal, export, practice' },
+        { n: '07', title: 'Command reference' },
+        { n: '08', title: 'Sounds and errors' },
+        { n: '09', title: 'Example tracks' }
+      ],
+      meters: [
+        { meter: '4/4 at 124 BPM', feel: 'Pop, house, rock', s: 'setcpm(124/4)', t: 'setcps (124/60/4)' },
+        { meter: '3/4 at 90 BPM', feel: 'Waltz', s: 'setcpm(90/3)', t: 'setcps (90/60/3)' },
+        { meter: '6/8, 80 beats', feel: 'Ballad, folk', s: 'setcpm(80/2)', t: 'setcps (80/60/2)' },
+        { meter: '5/4 at 140 BPM', feel: 'Jazz', s: 'setcpm(140/5)', t: 'setcps (140/60/5)' },
+        { meter: '7/8, eighth = 210', feel: 'Balkan, prog', s: 'setcpm(210/7)', t: 'setcps (210/60/7)' }
+      ],
+      grid: [
+        { label: 'bd', color: '#13201B', cells: cells('x...x...x...x...') },
+        { label: 'cp', color: '#F0562A', cells: cells('....x.......x...') },
+        { label: 'oh', color: '#0E6B5B', cells: cells('..x...x...x...x.') }
+      ],
+      cheat: [
+        { w: 'a b c', m: 'Split the cycle into equal steps', e: '"bd sd hh"' },
+        { w: '~', m: 'Rest (silence)', e: '"bd ~ sd ~"' },
+        { w: '[ ]', m: 'Group several sounds into one step', e: '"bd [sd sd]"' },
+        { w: '*n', m: 'Repeat n times inside the step', e: '"hh*8"' },
+        { w: '< >', m: 'Play one item per cycle, in turn', e: '"<bd cp>"' },
+        { w: ',', m: 'Play at the same time', e: '"bd*2, hh*4"' },
+        { w: '(k,n)', m: 'Euclidean rhythm: k hits over n steps', e: '"bd(3,8)"' },
+        { w: '!n', m: 'Repeat the item n times as steps', e: '"bd!3 sd"' },
+        { w: '@n', m: 'Make a step n times longer', e: '"c@3 e"' },
+        { w: ':n', m: 'Pick sample number n', e: '"hh:2"' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

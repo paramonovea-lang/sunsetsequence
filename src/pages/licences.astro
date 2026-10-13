@@ -1,0 +1,129 @@
+---
+// The licence policy in plain words (LICENSING.md holds the folder-by-folder map).
+import Base from '../layouts/Base.astro';
+import Email from '../components/Email.astro';
+import { SITE } from '../site';
+
+const repoFile = (path: string) => `${SITE.sourceRepo}/blob/main/${path}`;
+const L = {
+  agpl: { label: 'GNU AGPL 3.0', href: 'https://www.gnu.org/licenses/agpl-3.0.html' },
+  bysa: { label: 'CC BY-SA 4.0 (summary)', href: 'https://creativecommons.org/licenses/by-sa/4.0/' },
+  bysaLegal: { label: 'legal code', href: 'https://creativecommons.org/licenses/by-sa/4.0/legalcode.en' },
+  cc0: { label: 'CC0 1.0 (summary)', href: 'https://creativecommons.org/publicdomain/zero/1.0/' },
+  cc0Legal: { label: 'legal code', href: 'https://creativecommons.org/publicdomain/zero/1.0/legalcode.en' },
+  ofl: { label: 'SIL Open Font License 1.1', href: 'https://openfontlicense.org/' },
+};
+
+const parts = [
+  {
+    what: 'Releases: music and code',
+    covers: 'The tracks in the catalog (SQ-001 Hope, SQ-002 Quarrel, …): the recordings and the Strudel code they are made from.',
+    licence: SITE.licenses.trackAudio,
+    may: 'Listen here, play the code live on its track page, read it on GitHub and link to it. Anything else (copying the code or audio into your own work, remixing, uploading, selling) needs the author’s permission.',
+    why: 'This is the author’s own music, released for sale. The code is the score of the recording, so it is protected the same way. The sounds inside (drum machines, piano, instruments from Strudel’s sample packs) keep their own licences; this covers the author’s part.',
+    links: [],
+    ask: true,
+  },
+  {
+    what: 'Course text',
+    covers: 'The lessons and guided steps: explanations, tables, pictures.',
+    licence: SITE.licenses.course,
+    may: 'Share, translate and adapt it, also commercially, if you credit “Egor P., sunsetsequence.com”, link the licence and share your version under the same licence.',
+    why: 'Teaching material should spread freely, and improved versions should stay free for the next learner.',
+    links: [L.bysa, L.bysaLegal],
+  },
+  {
+    what: 'Course code',
+    covers: 'Every code box in the lessons, the guided steps’ code and the course’s own example tracks.',
+    licence: SITE.licenses.courseCode,
+    may: 'Anything, with no conditions: use the code in your own tracks, change it, perform it, sell the music. Credit is welcome but not required.',
+    why: 'The course exists so you can write your own music. Creative Commons advises against BY-SA for code: it would make every track built from a snippet BY-SA too.',
+    links: [L.cc0, L.cc0Legal],
+  },
+  {
+    what: 'Site code',
+    covers: 'The code that builds and runs this site: pages, player, scripts, tests, documentation.',
+    licence: SITE.licenses.site,
+    may: 'Use, study, change and share it. If you run a changed version for others, including as a website, you must offer them its source under the same licence.',
+    why: 'The site includes Strudel, which is AGPL-3.0, so the site is too. Its full source is public on GitHub.',
+    links: [L.agpl, { label: 'LICENSE in the repository', href: repoFile('LICENSE') }],
+  },
+  {
+    what: 'Name, logo and author picture',
+    covers: 'The Sunset Sequence name, logo, icons, social image and the avatar.',
+    licence: SITE.licenses.logo,
+    may: 'Link to the site and mention it by name. If you reuse the site code, replace the name and logo with your own.',
+    why: 'They identify this site and its author, so they are not part of the open licences.',
+    links: [],
+  },
+  {
+    what: 'Fonts',
+    covers: 'Schibsted Grotesk and DM Mono, served from this site.',
+    licence: 'SIL OFL 1.1',
+    may: 'Use them under their own licence; the licence texts sit next to the font files in the repository.',
+    why: 'This is the licence their makers chose.',
+    links: [L.ofl],
+  },
+];
+---
+<Base title="Licences" description="What you may do with the music, the course and the code on sunsetsequence.com, and why.">
+  <section class="container section">
+    <p class="eyebrow">Licences</p>
+    <h1>What you may use, and how</h1>
+    <p class="lede">Each part of this site has its own licence. In short: the course code is yours to use freely, the course text is free to share, the site code is open source, and the released music is the author’s.</p>
+
+    <ul class="parts" role="list">
+      {parts.map((p) => (
+        <li class="part">
+          <div class="head">
+            <h2>{p.what}</h2>
+            <p class="badge mono">{p.licence}</p>
+          </div>
+          <p class="covers">{p.covers}</p>
+          <dl>
+            <dt>You may</dt>
+            <dd>{p.may}{p.ask && <> <Email text="Ask the author →" /></>}</dd>
+            <dt>Why</dt>
+            <dd>{p.why}</dd>
+          </dl>
+          {p.links.length > 0 && (
+            <p class="links mono">{p.links.map((l) => <a href={l.href} rel="noopener">{l.label}</a>)}</p>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <div class="notes">
+      <h2>Good to know</h2>
+      <ul>
+        <li>The examples run on <a href="https://strudel.cc/">Strudel</a> (<a href={L.agpl.href}>AGPL-3.0</a>). Its sounds load from Strudel’s own servers and are not part of this site; the sample packs have their own licences.</li>
+        <li>Which licence covers which folder of the repository: <a href={repoFile('LICENSING.md')}>LICENSING.md</a>. The source code: <a href={SITE.sourceRepo}>github.com/paramonovea-lang/sunsetsequence</a>.</li>
+        <li>Copyright © 2026 {SITE.artist}</li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 { font-size: var(--fs-h2); letter-spacing: var(--tracking-h2); margin-top: 8px; }
+  .lede { margin-top: 16px; max-width: 680px; }
+  .parts { list-style: none; padding: 0; margin: 40px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: var(--gap); }
+  .part { background: var(--paper); border: var(--rule); padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+  h2 { font-size: var(--fs-h3); }
+  .badge { font-size: var(--fs-label); letter-spacing: var(--tracking-label); text-transform: uppercase; border: var(--rule); padding: 4px 8px; background: var(--ground); }
+  .covers { color: var(--ink-2); }
+  dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 16px; margin: 0; }
+  dt { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+  dd { margin: 0; }
+  .links { display: flex; flex-wrap: wrap; gap: 0 20px; font-size: var(--fs-small); margin-top: auto; }
+  .links a, dd :global(.sq-email) { display: inline-flex; align-items: center; min-height: var(--tap); }
+  dd :global(.sq-email) { font-weight: 600; }
+  .notes { margin-top: 56px; max-width: 760px; }
+  .notes ul { margin: 16px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+  @media (max-width: 480px) {
+    .part { padding: 18px; }
+    dl { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    dd { margin-bottom: 8px; }
+  }
+</style>

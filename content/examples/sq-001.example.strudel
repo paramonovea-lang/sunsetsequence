@@ -1,0 +1,8 @@
+// [Track title] · SQ-001 · placeholder code — replace with the real track
+setcpm(122/4)
+$: s("bd*4").bank("RolandTR909")
+$: s("~ cp ~ cp").bank("RolandTR909")
+$: s("[~ oh]*4").bank("RolandTR909").gain(.4)
+$: s("hh*16").bank("RolandTR909").gain(rand.range(.25, .7))
+$: note("<d2 bb1 f1 c2>").s("sawtooth").lpf(800)
+$: chord("<Dm7 Bb^7 F^7 C7>").voicing().s("gm_epiano1").gain(.6)

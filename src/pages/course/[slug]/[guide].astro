@@ -1,0 +1,53 @@
+---
+// Guided Split REPL page (docs/03 "Guided mode"): one guided sequence of a lesson.
+import Base from '../../../layouts/Base.astro';
+import GuidedSteps from '../../../islands/GuidedSteps';
+import { partBySlug, stepLabel } from '../../../lib/course';
+import { allGuides, type Guide } from '../../../lib/guided';
+import { prepareCode } from '../../../lib/highlight';
+import '../../../styles/lesson-content.css';
+import '../../../styles/lesson-theme.css';
+
+export function getStaticPaths() {
+  return allGuides().map((g) => ({ params: { slug: g.lesson, guide: g.id }, props: { guide: g } }));
+}
+
+const { guide } = Astro.props as { guide: Guide };
+const part = partBySlug(guide.lesson)!;
+const lessonHref = `/course/${part.slug}/`;
+const steps = guide.steps.map((s) => {
+  const { lines, plain } = prepareCode(s.code, 'strudel');
+  return {
+    title: s.title,
+    html: s.html,
+    listen: s.listen,
+    code: plain,
+    newLines: lines.flatMap((l, n) => (l.isNew ? [n + 1] : [])),
+    staticHtml: lines.map((l) => `<span class="ln${l.isNew ? ' new' : ''}">${l.html}\n</span>`).join(''),
+    grid: s.grid,
+    codeless: s.codeless,
+  };
+});
+---
+<Base title={`${guide.title} step by step · Step ${stepLabel(part.n)}`} description={`${guide.title}, built one ${guide.stepWord.toLowerCase()} at a time in a Strudel editor that runs in your browser.`}>
+  <div class="container crumbs">
+    <p class="mono">Step {stepLabel(part.n)} · {part.title} · {guide.title}</p>
+    <a href={`${lessonHref}#${guide.anchor}`} class="btn btn-secondary all">← Back to the lesson</a>
+  </div>
+  <GuidedSteps
+    client:load
+    id={guide.id}
+    title={guide.title}
+    stepWord={guide.stepWord}
+    nextLabel={guide.nextLabel}
+    steps={steps}
+    doneHref={`${lessonHref}#${guide.anchor}`}
+    doneLabel="Done. Back to the lesson →"
+  />
+</Base>
+
+<style>
+  .crumbs { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-top: 12px; padding-bottom: 12px; }
+  .mono { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .all { min-height: var(--tap); padding: 0 14px; font-size: 14px; font-weight: 600; }
+</style>

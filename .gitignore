@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+media/
+public/og/
+test-results/
+playwright-report/
+.env
+MyTracks/

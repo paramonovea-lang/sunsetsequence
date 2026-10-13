@@ -1,0 +1,32 @@
+---
+import HorizonStripes from './HorizonStripes.astro';
+import ExtLink from './ExtLink.astro';
+import { SITE } from '../site';
+
+interface Props { stripesBg?: string }
+const { stripesBg } = Astro.props;
+---
+<HorizonStripes variant="footer" bg={stripesBg} />
+<footer class="site-footer on-ink">
+  <div class="container row">
+    <span>{SITE.domain}</span>
+    <span class="links">
+      {SITE.links.map((l) => <ExtLink href={l.href}>{l.label}</ExtLink>)}
+      <ExtLink href={SITE.sourceRepo}>Source</ExtLink>
+    </span>
+  </div>
+  <div class="container row fine">
+    <span>Releases (music and code): {SITE.licenses.trackAudio}. Course text: {SITE.licenses.course}, course code: {SITE.licenses.courseCode}. Site code: {SITE.licenses.site}. Name and logo: {SITE.licenses.logo}. <a href="/licences/">Licences →</a></span>
+    <span>Live coding by <a href="https://strudel.cc/">Strudel</a> and <a href="https://tidalcycles.org/">TidalCycles</a>.</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--ink); color: var(--muted-on-ink); font-family: var(--font-mono); font-size: var(--fs-label); padding-bottom: 26px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; padding-top: 4px; }
+  .fine { padding-top: 14px; font-size: 12px; }
+  .links { display: flex; flex-wrap: wrap; gap: 20px; }
+  .links > :global(a), .links > :global(span) { color: var(--ground); padding: 10px 0; }
+  a { color: var(--ground); }
+  a:hover { color: var(--sand); }
+</style>

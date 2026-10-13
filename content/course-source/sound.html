@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sound and effects · Strudel course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="course.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="toc" aria-label="Course">
+    <p class="toc-label">Course</p>
+    <ol class="pages">
+      <li><a href="index.html"><span class="n">1</span>Start here</a></li>
+      <li><a href="rhythm.html"><span class="n">2</span>Rhythm and drums</a></li>
+      <li><a href="harmony.html"><span class="n">3</span>Notes and chords</a></li>
+      <li class="current"><a href="sound.html" aria-current="page"><span class="n">4</span>Sound and effects</a>
+        <ol class="sub">
+          <li><a href="#l7"><span class="n">4.1</span>Movement</a></li>
+          <li><a href="#effects"><span class="n">4.2</span>Effects</a></li>
+          <li><a href="#layering"><span class="n">4.3</span>Several sounds in one layer</a></li>
+          <li><a href="#sfx"><span class="n">4.4</span>A sound effect</a></li>
+        </ol>
+      </li>
+      <li><a href="structure.html"><span class="n">5</span>Song structure</a></li>
+      <li><a href="visuals.html"><span class="n">6</span>Visuals</a></li>
+      <li><a href="export.html"><span class="n">7</span>Save, export and practice</a></li>
+      <li><a href="commands.html"><span class="n">8</span>Command reference</a></li>
+      <li><a href="reference.html"><span class="n">9</span>Sound bank</a></li>
+      <li><a href="errors.html"><span class="n">10</span>Error messages</a></li>
+      <li><a href="tracks.html"><span class="n">11</span>Example tracks</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <p class="eyebrow">Part 4 of 11 · Live-coding course · Strudel</p>
+      <h1>Sound and effects</h1>
+      <p class="lede">Movement, effects and what their numbers mean, effects per instrument, several sounds in one layer, and a sound effect.</p>
+      <ul class="onpage"><li><a href="#l7">4.1 Movement</a></li><li><a href="#effects">4.2 Effects</a></li><li><a href="#layering">4.3 Several sounds in one layer</a></li><li><a href="#sfx">4.4 A sound effect</a></li></ul>
+    </header>
+
+<section id="l7">
+      <h2><span class="num">4.1</span>Movement</h2>
+      <p>Static loops get boring. Any number can be replaced with a pattern that changes over time. <code>sine.range(300, 1800).slow(8)</code> is a slow wave: the bass filter opens and closes once every 8 bars. <code>.jux(rev)</code> keeps the melody in the left ear and plays it reversed in the right ear, which makes it wider.</p>
+      <div class="codebox strudel" data-label="Strudel · lesson 4.1">
+<pre class="code">setcpm(124/4)
+
+$: s("bd*4").bank("RolandTR909")
+$: s("~ cp ~ cp").bank("RolandTR909")
+$: s("[~ oh]*4").bank("RolandTR909").gain(.4)
+$: s("hh*16").bank("RolandTR909")
+  .gain("[.25 .5]*8")
+  .sometimesBy(.2, x =&gt; x.ply(2))
+
+$: note("&lt;a1 f1 c2 g1&gt;")
+  .struct("x ~ x x ~ x x ~")
+  .s("sawtooth")
++   .lpf(sine.range(300, 1800).slow(8))
+  .decay(.15).sustain(0)
+
+$: chord("&lt;Am7 F^7 C^7 G7&gt;")
+  .struct("[~ x]*2")
+  .voicing()
+  .s("gm_epiano1")
+  .room(.5).gain(.6)
+
+$: n("0 [~ 2] 4 [3 2]".add("&lt;0 -2 2 -1&gt;"))
+  .scale("A4:minor")
+  .s("triangle")
++   .jux(rev)
+  .delay(.4).gain(.5)</pre>
+      </div>
+      <div class="notes">
+        <div><h4>Listen for</h4><p>The bass gets brighter and darker over 8 bars. The melody now fills both speakers.</p></div>
+        <div><h4>Try changing</h4><ul><li><code>saw.range(…)</code> instead of <code>sine</code></li><li><code>.slow(2)</code> for a faster sweep</li><li><code>.jux(x =&gt; x.fast(2))</code></li></ul></div>
+      </div>
+    </section>
+
+<section id="effects" data-nav="Effects">
+      <h2><span class="num">4.2</span>Effects: reverb, delay, distortion and more</h2>
+      <p>Effects change how a sound sounds after it's played: they add space (reverb), echoes (delay), grit (distortion), or take away brightness (filters). You add them with a dot: <code>.room(.5)</code>. Effects can be patterns too, like any other value: <code>.room("&lt;0 .8&gt;")</code>.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Effect</th><th class="s">Code</th><th>What it does · useful values</th></tr></thead>
+          <tbody>
+            <tr><td><b>Reverb</b></td><td class="s"><code>.room(.5)</code><br><code>.roomsize(4)</code></td><td>Puts the sound in a room. <code>room</code> sets how much (0–1); <code>roomsize</code> sets how long the tail lasts, in seconds (0–10).</td></tr>
+            <tr><td><b>Delay</b> (echo)</td><td class="s"><code>.delay(.5)</code><br><code>.delaytime(.36)</code><br><code>.delayfeedback(.5)</code></td><td>Repeats the sound. delay is how loud the echoes are, delaytime is the time between echoes in seconds, and feedback is how many echoes there are. Keep feedback below 0.9, or the echoes never stop.</td></tr>
+            <tr><td><b>Distortion</b></td><td class="s"><code>.distort("3:.5")</code></td><td>Overdrive and crunch: the amount (0–10+), then after a colon the output volume. Turn the volume down as the amount goes up.</td></tr>
+            <tr><td><b>Saturation</b></td><td class="s"><code>.shape(.4)</code></td><td>Softer warmth, 0–1. Above 0.7 it gets loud and harsh.</td></tr>
+            <tr><td><b>Bitcrusher</b></td><td class="s"><code>.crush(4)</code></td><td>Lo-fi, retro-game grit. 16 = clean, 1 = destroyed.</td></tr>
+            <tr><td><b>Downsampling</b></td><td class="s"><code>.coarse(8)</code></td><td>A cheap-sampler sound. 1 = clean, higher = rougher.</td></tr>
+            <tr><td><b>Low-pass filter</b></td><td class="s"><code>.lpf(800)</code><br><code>.lpq(10)</code></td><td>Removes highs, so it sounds darker and softer. Frequency in Hz (100–20000). Resonance adds a whistling peak (the acid sound).</td></tr>
+            <tr><td><b>High-pass filter</b></td><td class="s"><code>.hpf(300)</code></td><td>Removes lows, so it sounds thinner, like on a phone. Good for cleaning up mud.</td></tr>
+            <tr><td><b>Vowel filter</b></td><td class="s"><code>.vowel("a")</code></td><td>Makes a sound "talk": <code>a e i o u</code></td></tr>
+            <tr><td><b>Phaser</b></td><td class="s"><code>.phaser(4)</code></td><td>A swirling, jet-plane sweep. The number is the speed.</td></tr>
+            <tr><td><b>Tremolo</b></td><td class="s"><code>.tremolo(8)</code></td><td>Volume pulsing. The number is pulses per second.</td></tr>
+            <tr><td><b>Pan</b></td><td class="s"><code>.pan(sine)</code></td><td>Left (0) to right (1). <code>sine</code> moves it back and forth.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <h3 id="fx-numbers">What the numbers mean (and which to pick)</h3>
+      <p>Every effect number is one of four kinds. Once you know which kind you're looking at, you know which direction to turn it:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kind of number</th><th>Effects</th><th>How to read it</th></tr></thead>
+          <tbody>
+            <tr><td><b>An amount, 0 – 1</b><br>like a volume knob</td><td><code>room</code> <code>delay</code> <code>delayfeedback</code> <code>shape</code> <code>gain</code> <code>pan</code> <code>tremolodepth</code></td><td>0 = none, 1 = maximum, .5 = half. <code>.room(.4)</code> = 40 % reverb.</td></tr>
+            <tr><td><b>A frequency, in Hz</b></td><td><code>lpf</code> <code>hpf</code></td><td>Where the filter cuts. You hear from about 20 Hz (deep rumble) to 20000 Hz (the highest hiss). <code>lpf</code> removes what's above the number; <code>hpf</code> removes what's below it.</td></tr>
+            <tr><td><b>A time, in seconds</b></td><td><code>delaytime</code> <code>roomsize</code> <code>attack</code> <code>release</code></td><td><code>.delaytime(.47)</code> = an echo every 0.47 s; <code>.roomsize(6)</code> = a reverb tail about 6 s long.</td></tr>
+            <tr><td><b>A strength or speed, on its own scale</b></td><td><code>distort</code> <code>crush</code> <code>coarse</code> <code>lpq</code> <code>phaser</code> <code>tremolo</code></td><td>Each has its own range; see the table below. Watch out: <code>crush</code> runs <b>backwards</b> (16 = clean, 1 = destroyed).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><b>Example: the guitar chain from "Chaining effects" below,</b> <code>.distort("4:.3").lpf(2200).room(.4)</code>. There are four numbers in it. Here is where each one sits on its scale:</p>
+      <figure class="fxscale-fig" style="margin:0">
+        <svg class="fxscale" viewBox="0 0 640 314" role="img" aria-label="Four scales. distort amount 0 to 10: the value 4 sits in the heavy zone. Distort volume 0 to 1: 0.3 means 30 percent volume. lpf on a 20 to 20000 Hz scale: 2200 sits in the warm, soft zone. room 0 to 1: 0.4 means 40 percent reverb, a clear room."><text class="fxs-code" x="8" y="48">distort("4:.3")</text><text class="fxs-what" x="8" y="64">amount: 0 – 10</text><rect class="fxs-z fxs-z0" x="150.0" y="36" width="19.0" height="16"/><text class="fxs-zl" x="159.5" y="65" text-anchor="middle">0 clean</text><rect class="fxs-z fxs-z1" x="169.0" y="36" width="52.3" height="16"/><text class="fxs-zl" x="195.1" y="65" text-anchor="middle">warm</text><rect class="fxs-z fxs-z2" x="221.3" y="36" width="71.3" height="16"/><text class="fxs-zl" x="256.9" y="65" text-anchor="middle">crunchy</text><rect class="fxs-z fxs-z3" x="292.5" y="36" width="142.5" height="16"/><text class="fxs-zl" x="363.8" y="65" text-anchor="middle">heavy</text><rect class="fxs-z fxs-z4" x="435.0" y="36" width="190.0" height="16"/><text class="fxs-zl" x="530.0" y="65" text-anchor="middle">fuzz / square</text><path class="fxs-m" d="M340.0 34 l-6 -9 h12 z"/><text class="fxs-v" x="340.0" y="22" text-anchor="middle">4 = heavy</text><text class="fxs-code" x="8" y="122">distort("4:.3")</text><text class="fxs-what" x="8" y="138">volume after it: 0 – 1</text><rect class="fxs-z fxs-z0" x="150.0" y="110" width="95.0" height="16"/><text class="fxs-zl" x="197.5" y="139" text-anchor="middle">very quiet</text><rect class="fxs-z fxs-z1" x="245.0" y="110" width="142.5" height="16"/><text class="fxs-zl" x="316.3" y="139" text-anchor="middle">quieter</text><rect class="fxs-z fxs-z2" x="387.5" y="110" width="142.5" height="16"/><text class="fxs-zl" x="458.8" y="139" text-anchor="middle">a bit lower</text><rect class="fxs-z fxs-z3" x="530.0" y="110" width="95.0" height="16"/><text class="fxs-zl" x="577.5" y="139" text-anchor="middle">full</text><path class="fxs-m" d="M292.5 108 l-6 -9 h12 z"/><text class="fxs-v" x="292.5" y="96" text-anchor="middle">.3 = 30 % volume</text><text class="fxs-code" x="8" y="196">lpf(2200)</text><text class="fxs-what" x="8" y="212">Hz: removes everything above</text><rect class="fxs-z fxs-z0" x="150.0" y="184" width="173.7" height="16"/><text class="fxs-zl" x="236.8" y="213" text-anchor="middle">only bass</text><rect class="fxs-z fxs-z1" x="323.7" y="184" width="95.3" height="16"/><text class="fxs-zl" x="371.3" y="213" text-anchor="middle">muffled</text><rect class="fxs-z fxs-z2" x="419.0" y="184" width="95.3" height="16"/><text class="fxs-zl" x="466.7" y="213" text-anchor="middle">warm, soft</text><rect class="fxs-z fxs-z3" x="514.3" y="184" width="75.5" height="16"/><text class="fxs-zl" x="552.1" y="213" text-anchor="middle">slightly dull</text><rect class="fxs-z fxs-z4" x="589.9" y="184" width="35.1" height="16"/><text class="fxs-zl" x="607.4" y="213" text-anchor="middle">open</text><path class="fxs-m" d="M473.2 182 l-6 -9 h12 z"/><text class="fxs-v" x="473.2" y="170" text-anchor="middle">2200 Hz = warm</text><text class="fxs-code" x="8" y="270">room(.4)</text><text class="fxs-what" x="8" y="286">reverb mixed in: 0 – 1</text><rect class="fxs-z fxs-z0" x="150.0" y="258" width="38.0" height="16"/><text class="fxs-zl" x="169.0" y="287" text-anchor="middle">dry</text><rect class="fxs-z fxs-z1" x="188.0" y="258" width="104.5" height="16"/><text class="fxs-zl" x="240.3" y="287" text-anchor="middle">a touch</text><rect class="fxs-z fxs-z2" x="292.5" y="258" width="142.5" height="16"/><text class="fxs-zl" x="363.8" y="287" text-anchor="middle">clear room</text><rect class="fxs-z fxs-z3" x="435.0" y="258" width="190.0" height="16"/><text class="fxs-zl" x="530.0" y="287" text-anchor="middle">washed out</text><path class="fxs-m" d="M340.0 256 l-6 -9 h12 z"/><text class="fxs-v" x="340.0" y="244" text-anchor="middle">.4 = 40 % reverb</text></svg>
+        <figcaption>Read it as: <b>heavy distortion (4), turned down to 30 % volume (.3) because distortion makes the sound much louder; highs above 2200 Hz removed, so the sound is warm rather than harsh; 40 % reverb, a clear room.</b> For a lighter rock tone try <code>distort("2:.5")</code>; for a brighter one, <code>lpf(4000)</code>; for a tighter, drier one, <code>room(.15)</code>.</figcaption>
+      </figure>
+
+      <h4>Every effect: from gentle to extreme</h4>
+      <div class="table-wrap fx-dial">
+        <table>
+          <thead><tr><th>Effect</th><th>The number is…</th><th>No effect</th><th>Gentle</th><th>Medium</th><th>Strong</th><th>Start with</th></tr></thead>
+          <tbody>
+            <tr><td><code>.room(x)</code></td><td>how much reverb is mixed in (0–1)</td><td>0</td><td>.1–.2</td><td>.3–.5</td><td>.7–1</td><td><code>.3</code></td></tr>
+            <tr><td><code>.roomsize(x)</code></td><td>length of the reverb tail in seconds (default 2)</td><td>–</td><td>.5–1 small room</td><td>2–4 hall</td><td>6–10 cathedral</td><td><code>2</code></td></tr>
+            <tr><td><code>.delay(x)</code></td><td>how loud the echoes are (0–1)</td><td>0</td><td>.2</td><td>.4</td><td>.7+</td><td><code>.4</code></td></tr>
+            <tr><td><code>.delaytime(x)</code></td><td>seconds between echoes</td><td colspan="4">Match it to the beat: one beat = 60 ÷ BPM seconds. Then × ½ = eighth note, × ¾ = dotted eighth (the classic echo), × 1 = one beat. At 120 BPM: .25 · .375 · .5</td><td><code>60/BPM*.75</code></td></tr>
+            <tr><td><code>.delayfeedback(x)</code></td><td>how long the echoes go on (0–0.98)</td><td>0 = 1 echo</td><td>.3 = 2–3 echoes</td><td>.5 = about 5</td><td>.8+ = a long trail</td><td><code>.4</code></td></tr>
+            <tr><td><code>.lpf(x)</code></td><td>Hz: everything <b>above</b> is removed</td><td>20000</td><td>5000–8000</td><td>1000–2500</td><td>200–500 (only bass left)</td><td><code>2000</code></td></tr>
+            <tr><td><code>.hpf(x)</code></td><td>Hz: everything <b>below</b> is removed</td><td>20</td><td>100–200</td><td>300–800</td><td>2000+ (a phone)</td><td><code>200</code></td></tr>
+            <tr><td><code>.lpq(x)</code></td><td>resonance: a peak at the filter's frequency (0–50)</td><td>0</td><td>2–5</td><td>8–15</td><td>20+ (whistles)</td><td><code>5</code></td></tr>
+            <tr><td><code>.shape(x)</code></td><td>saturation (0–1)</td><td>0</td><td>.2</td><td>.4–.6</td><td>.8+ (very loud!)</td><td><code>.3</code></td></tr>
+            <tr><td><code>.distort("a:v")</code></td><td>a = amount (0–10), v = volume after it (0–1)</td><td>0</td><td>1:.8</td><td>2–4:.5</td><td>6–10:.3</td><td><code>"2:.5"</code></td></tr>
+            <tr><td><code>.crush(x)</code></td><td>bits: <b>lower = dirtier</b> (16 → 1)</td><td>16</td><td>8</td><td>4–6</td><td>1–3</td><td><code>6</code></td></tr>
+            <tr><td><code>.coarse(x)</code></td><td>roughness: <b>higher = rougher</b> (1 → 32)</td><td>1</td><td>2–4</td><td>8</td><td>16–32</td><td><code>4</code></td></tr>
+            <tr><td><code>.phaser(x)</code></td><td>sweeps per second</td><td>–</td><td>.25–.5 slow swirl</td><td>1–2</td><td>8+ fast wobble</td><td><code>.5</code></td></tr>
+            <tr><td><code>.tremolo(x)</code></td><td>volume pulses per second (depth: <code>.tremolodepth(0–1)</code>)</td><td>–</td><td>2</td><td>4–8</td><td>16+ buzz</td><td><code>4</code></td></tr>
+            <tr><td><code>.pan(x)</code></td><td>position: 0 left · .5 centre · 1 right</td><td>.5</td><td>.4 / .6</td><td>.25 / .75</td><td>0 / 1</td><td><code>.5</code></td></tr>
+            <tr><td><code>.gain(x)</code></td><td>volume, 1 = normal</td><td>0 = silent</td><td>.3</td><td>.6–.8</td><td>1+ (may clip)</td><td><code>.8</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="plain">
+        <li><b>Change one number at a time,</b> in big steps first (double it or halve it), then fine-tune.</li>
+        <li><b>Frequencies work by doubling:</b> 200 → 400 Hz sounds like as big a step as 4000 → 8000 Hz. Try 250, 500, 1000, 2000, 4000.</li>
+        <li><b>Distortion and saturation make the sound louder,</b> so lower the volume (the second number in <code>distort</code>, or <code>.gain</code>) as you raise the amount.</li>
+        <li><b>Let the number change every bar</b> to compare values side by side: <code>.lpf("&lt;500 1000 2000 4000&gt;")</code>.</li>
+      </ul>
+
+      <h4>Several numbers in one: the colon</h4>
+      <p>Some effects take extra numbers after a colon. The order is fixed, so you need to know what each position means:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Short form</th><th>Means the same as</th><th>Positions</th></tr></thead>
+          <tbody>
+            <tr><td><code>.distort("4:.3")</code></td><td><code>.distort(4).distortvol(.3)</code></td><td>amount : volume</td></tr>
+            <tr><td><code>.lpf("2200:8")</code></td><td><code>.lpf(2200).lpq(8)</code></td><td>frequency : resonance</td></tr>
+            <tr><td><code>.delay(".5:.375:.4")</code></td><td><code>.delay(.5).delaytime(.375).delayfeedback(.4)</code></td><td>echo volume : time : feedback</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">Set the reverb size separately, <code>.room(.4).roomsize(3)</code>. In this Strudel version a second number in <code>room("…:…")</code> doesn't reach the reverb.</p>
+
+      <h4>Hear the scales</h4>
+      <p>Each example below changes one number every bar (<code>&lt; &gt;</code>), from no effect to extreme. Watch the highlighted value in the editor while you listen.</p>
+      <div class="codebox strudel" data-label="Strudel · distortion amount, bar by bar">
+<pre class="code">setcpm(100/4)
+
+// amount 0 (clean) → 1 → 2 → 4 → 8; the volume goes down as the amount goes up
+note("[a2,e3,a3]").struct("x ~ x x ~ x ~ x").s("sawtooth")
+  .distort("&lt;0:1 1:.8 2:.6 4:.4 8:.3&gt;")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>note("[a2,e3,a3]").struct("x ~ x x ~ x ~ x")</code></td><td>A power chord (A, E, A) in a rock rhythm.</td></tr>
+            <tr><td><code>.distort("&lt;0:1 1:.8 2:.6 4:.4 8:.3&gt;")</code></td><td>Five bars, one <code>amount:volume</code> pair each. Bar 1 is clean (0), bar 2 warm (1), bar 3 crunchy (2), bar 4 heavy (4, the value from the guitar example), bar 5 fuzz (8). The volume drops from 1 to .3 so every bar sounds about equally loud.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="codebox strudel" data-label="Strudel · low-pass frequency, bar by bar">
+<pre class="code">setcpm(100/4)
+
+// cut-off 20000 Hz (open) → 5000 → 2000 → 800 → 300 (only the bass left)
+note("[a2,e3,a3]").struct("x ~ x x ~ x ~ x").s("sawtooth")
+  .lpf("&lt;20000 5000 2000 800 300&gt;")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>.lpf("&lt;20000 5000 2000 800 300&gt;")</code></td><td>Bar 1: nothing removed, bright and buzzy. Bar 2: slightly softer. Bar 3: warm (close to the 2200 of the guitar example). Bar 4: muffled, like music through a wall. Bar 5: only the low part is left.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="codebox strudel" data-label="Strudel · reverb amount, bar by bar">
+<pre class="code">setcpm(100/4)
+
+// room 0 (dry) → .2 → .4 → .7 → 1, in a 3-second hall
+s("~ cp ~ [cp ~ ~ cp]").bank("RolandTR909")
+  .room("&lt;0 .2 .4 .7 1&gt;").roomsize(3)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>.room("&lt;0 .2 .4 .7 1&gt;")</code></td><td>Bar 1: dry. Bar 2: a touch of space. Bar 3: a clear room (.4, as in the guitar example). Bars 4–5: the reverb gets as loud as the clap itself, so the clap sounds far away.</td></tr>
+            <tr><td><code>.roomsize(3)</code></td><td>The tail lasts about 3 seconds in every bar, so only the amount changes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Reverb</h3>
+      <p><b>Reverb</b> is the sound of a room: thousands of tiny echoes bounce off the walls and blend into a soft tail after each note. A little reverb makes a sound feel natural. A lot makes it sound far away.</p>
+      <div class="codebox strudel" data-label="Strudel · reverb">
+<pre class="code">setcpm(90/4)
+
+// bar 1 dry · bar 2 small room · bar 3 big hall
+s("~ cp ~ cp").bank("RolandTR909")
+  .room("&lt;0 .3 .8&gt;").roomsize("&lt;1 2 8&gt;")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>setcpm(90/4)</code></td><td>90 BPM, slow enough to hear each tail die away.</td></tr>
+            <tr><td><code>s("~ cp ~ cp").bank("RolandTR909")</code></td><td>A TR-909 clap on beats 2 and 4 (<code>~</code> is a rest), with a gap after each clap where you hear the reverb.</td></tr>
+            <tr><td><code>.room("&lt;0 .3 .8&gt;")</code></td><td>How much reverb is mixed in, a new value each bar (<code>&lt; &gt;</code>). The scale is 0–1: <b>0</b> = none (dry), <b>.3</b> = a little, <b>.8</b> = a lot.</td></tr>
+            <tr><td><code>.roomsize("&lt;1 2 8&gt;")</code></td><td>How long the tail lasts, in seconds: <b>1</b> = a small room, <b>2</b> = a studio, <b>8</b> = a big hall. It changes together with <code>room</code>, so bar 3 is both loud and long.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Delay</h3>
+      <p><b>Delay</b> is an echo: the sound repeats a moment later, and each repeat is quieter than the one before, like shouting in a canyon. When the echo time fits the tempo, the echoes become part of the rhythm.</p>
+      <div class="codebox strudel" data-label="Strudel · delay">
+<pre class="code">setcpm(124/4)
+
+// an echo every 0.36 s (a dotted eighth at 124 BPM), each echo a bit quieter
+note("a4 ~ ~ ~ c5 ~ ~ ~").s("triangle")
+  .delay(.6).delaytime(.36).delayfeedback(.55)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>note("a4 ~ ~ ~ c5 ~ ~ ~")</code></td><td>Two notes per bar, A and C, each followed by three empty steps, so the echoes have room to sound.</td></tr>
+            <tr><td><code>.s("triangle")</code></td><td>A soft, simple synth tone.</td></tr>
+            <tr><td><code>.delay(.6)</code></td><td>How loud the echoes are, on a 0–1 scale: <b>0</b> = no echo, <b>1</b> = as loud as the note. <b>.6</b> is clearly audible.</td></tr>
+            <tr><td><code>.delaytime(.36)</code></td><td>The time between echoes, in seconds. <b>0.36 s</b> is a dotted eighth note at 124 BPM (see below).</td></tr>
+            <tr><td><code>.delayfeedback(.55)</code></td><td>How much of each echo comes back as the next echo. <b>.55</b> gives about four or five echoes that you can hear. At <b>.9</b> and above the echoes never die away.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">To fit echoes to the beat: one beat lasts 60 ÷ BPM seconds. At 124 BPM a beat is 0.48 s, an eighth note 0.24 s, and a dotted eighth (an eighth plus half of one, the classic U2/dub echo) 0.36 s.</p>
+
+      <h3>Distortion</h3>
+      <p><b>Distortion</b> pushes a sound harder than it can take, so its smooth waves get flattened at the top and bottom and turn gritty: the overdrive of a rock guitar, the growl of an 808 bass. The more you add, the louder and rougher it gets.</p>
+      <div class="codebox strudel" data-label="Strudel · distortion">
+<pre class="code">setcpm(124/4)
+
+// 808-style bass: bar 1 clean → bar 4 extreme (amount:volume)
+note("a1*8").s("sine").decay(.2).sustain(0)
+  .distort("&lt;0 2 5 10:.4&gt;")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>note("a1*8").s("sine")</code></td><td>Eight low A notes per bar (<code>a1</code> = 55 Hz, sub-bass) on a sine wave, the purest tone. A clean sine has no grit, so you hear exactly what the distortion adds.</td></tr>
+            <tr><td><code>.decay(.2).sustain(0)</code></td><td>Each note fades out in 0.2 seconds: a short "boom".</td></tr>
+            <tr><td><code>.distort("&lt;0 2 5 10:.4&gt;")</code></td><td>The distortion amount, one value per bar: <b>0</b> = clean, <b>2</b> = crunchy, <b>5</b> = heavy, <b>10</b> = extreme. In <code>10:.4</code> the number after the colon is the volume after the distortion (40 %), turned down because that much distortion is very loud.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Bitcrusher and downsampling</h3>
+      <p>A <b>bitcrusher</b> makes a sound lo-fi, like an old video game. Digital audio stores the sound as a long row of numbers, and the <b>bit depth</b> says how precise each number is (a CD uses 16 bits). <code>.crush()</code> lowers that precision, so the smooth wave turns into coarse steps with a fizzy, broken edge. <b>Downsampling</b> (<code>.coarse()</code>) is its cousin: it keeps fewer of those numbers per second, which sounds like a cheap 1980s sampler.</p>
+      <div class="codebox strudel" data-label="Strudel · bitcrusher and downsampling">
+<pre class="code">setcpm(124/4)
+
+// bitcrusher on drums: 16 = clean, 2 = very dirty
+$: s("bd*4, ~ sd").bank("RolandTR808").crush("&lt;16 8 4 2&gt;")
+// downsampling on hi-hats: 1 = clean, 16 = very rough
+$: s("hh*8").bank("RolandTR808").coarse("&lt;1 4 8 16&gt;").gain(.6)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>s("bd*4, ~ sd").bank("RolandTR808")</code></td><td>A TR-808 kick on every beat. The comma starts a second pattern at the same time: <code>~ sd</code> is "rest, snare", so the snare lands halfway through the bar.</td></tr>
+            <tr><td><code>.crush("&lt;16 8 4 2&gt;")</code></td><td>Bit depth, one value per bar, from <b>16</b> (clean) down to <b>1</b> (the lowest): <b>8</b> = slightly gritty, <b>4</b> = old video game, <b>2</b> = barely recognisable. Lower means dirtier.</td></tr>
+            <tr><td><code>s("hh*8")</code></td><td>Eight closed hi-hats per bar.</td></tr>
+            <tr><td><code>.coarse("&lt;1 4 8 16&gt;")</code></td><td>Keeps only every 1st, 4th, 8th or 16th number of the sound and repeats it: <b>1</b> = clean, <b>4</b> = a cheap sampler, <b>8</b> and <b>16</b> = metallic and rough.</td></tr>
+            <tr><td><code>.gain(.6)</code></td><td>The hi-hats at 60 % volume, so they stay behind the drums.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Saturation</h3>
+      <p><b>Saturation</b> is gentle distortion. It rounds off the loudest peaks of a sound, the way an old tape machine or a valve amplifier does when you push it a little. The sound gets warmer, fuller and louder without an obvious crunch. Use it on kicks and basses.</p>
+      <div class="codebox strudel" data-label="Strudel · saturation">
+<pre class="code">setcpm(124/4)
+
+// the same kick and bass, saturation 0 → .3 → .6 → .8
+$: s("bd*4").bank("RolandTR909").shape("&lt;0 .3 .6 .8&gt;").gain(.8)
+$: note("&lt;a1 f1 c2 g1&gt;").struct("x ~ x x ~ x x ~").s("sawtooth")
+  .lpf(600).decay(.15).sustain(0)
+  .shape("&lt;0 .3 .6 .8&gt;").gain(.7)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>s("bd*4").bank("RolandTR909")</code></td><td>The four-on-the-floor kick from <a href="rhythm.html#l1">2.1</a>.</td></tr>
+            <tr><td><code>note("&lt;a1 f1 c2 g1&gt;").struct("x ~ x x ~ x x ~")</code></td><td>The Night Bus bassline from <a href="harmony.html#l4">3.2</a>, so you hear what saturation does to a bass you know.</td></tr>
+            <tr><td><code>.lpf(600)</code></td><td>Removes everything above 600 Hz, so the bass stays dark.</td></tr>
+            <tr><td><code>.shape("&lt;0 .3 .6 .8&gt;")</code></td><td>How hard the sound is pushed, one value per bar, on a 0–1 scale: <b>0</b> = clean, <b>.3</b> = warm (a good starting point), <b>.6</b> = thick, <b>.8</b> = harsh. Above about .7 it starts to sound like distortion.</td></tr>
+            <tr><td><code>.gain(.8)</code>, <code>.gain(.7)</code></td><td>Each layer a little quieter, because saturation makes a sound louder.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Filters</h3>
+      <p>A <b>filter</b> removes part of the sound. A <b>low-pass filter</b> (<code>.lpf</code>) lets the low frequencies pass and cuts the highs, so the sound gets darker, like music heard through a wall. Moving a filter while the sound plays is one of the most used tricks in electronic music.</p>
+      <div class="codebox strudel" data-label="Strudel · filters">
+<pre class="code">setcpm(124/4)
+
+// low-pass sweep with strong resonance: a classic acid bassline
+$: note("a1 a2 a1 [a2 c3] a1 g2 a1 e2").s("sawtooth")
+  .lpf(sine.range(300, 3000).slow(4)).lpq(12)
+  .decay(.15).sustain(0)
+// the vowel filter makes chords "talk"
+$: note("&lt;[a3,c4,e4] [g3,b3,d4]&gt;").struct("x*4").s("sawtooth")
+  .vowel("&lt;a e i o&gt;").gain(.5)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>note("a1 a2 a1 [a2 c3] a1 g2 a1 e2").s("sawtooth")</code></td><td>An eight-step bassline that jumps between low A (<code>a1</code>) and the A an octave higher (<code>a2</code>), on a bright sawtooth wave with plenty of highs for the filter to remove.</td></tr>
+            <tr><td><code>.lpf(sine.range(300, 3000).slow(4))</code></td><td>The cut-off frequency (where the filter starts cutting) glides between <b>300 Hz</b> (dark) and <b>3000 Hz</b> (bright) and back, once every 4 bars.</td></tr>
+            <tr><td><code>.lpq(12)</code></td><td>Resonance: a boost right at the cut-off frequency, which gives the squelchy, whistling "acid" sound. <b>0</b> = none, <b>12</b> = strong, <b>20</b> and above = it whistles.</td></tr>
+            <tr><td><code>.decay(.15).sustain(0)</code></td><td>Short, plucked notes that fade in 0.15 seconds.</td></tr>
+            <tr><td><code>note("&lt;[a3,c4,e4] [g3,b3,d4]&gt;").struct("x*4")</code></td><td>Two chords, A minor then G major, one per bar, each played four times.</td></tr>
+            <tr><td><code>.vowel("&lt;a e i o&gt;")</code></td><td>A filter that copies the shape of the mouth when you sing a vowel, one vowel per bar, so the chords seem to say "a", "e", "i", "o".</td></tr>
+            <tr><td><code>.gain(.5)</code></td><td>The chords at half volume, behind the bass.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Movement: phaser and tremolo</h3>
+      <p>A <b>phaser</b> sweeps a hollow, swirling colour through the sound, like a jet plane passing overhead. <b>Tremolo</b> makes the volume pulse up and down, like the wobble of an old electric piano.</p>
+      <div class="codebox strudel" data-label="Strudel · phaser &amp; tremolo">
+<pre class="code">setcpm(100/4)
+
+$: n(run(8)).scale("D4:minor pentatonic").s("sawtooth").release(.5)
+  .phaser("&lt;1 2 4 8&gt;")
+$: note("&lt;[d3,f3,a3] [c3,e3,g3]&gt;").s("supersaw")
+  .tremolo("&lt;2 8&gt;").gain(.5)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>n(run(8)).scale("D4:minor pentatonic")</code></td><td><code>run(8)</code> counts 0 to 7. As scale steps, that is eight notes going up the D minor pentatonic scale (a five-note scale), starting at D4.</td></tr>
+            <tr><td><code>.release(.5)</code></td><td>Each note fades out over 0.5 seconds after it ends, so the notes overlap a little.</td></tr>
+            <tr><td><code>.phaser("&lt;1 2 4 8&gt;")</code></td><td>The phaser's speed in sweeps per second, one value per bar: <b>1</b> = a slow swirl, <b>8</b> = a fast wobble.</td></tr>
+            <tr><td><code>note("&lt;[d3,f3,a3] [c3,e3,g3]&gt;").s("supersaw")</code></td><td>Two chords, D minor then C major, one per bar, on <code>supersaw</code>: several sawtooth waves slightly out of tune with each other, a thick, wide synth.</td></tr>
+            <tr><td><code>.tremolo("&lt;2 8&gt;")</code></td><td>Volume pulses per second: <b>2</b> = a slow throb, <b>8</b> = a fast shimmer.</td></tr>
+            <tr><td><code>.gain(.5)</code></td><td>The chords at half volume.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <h3 id="fx-by-instrument">Which effects suit which instrument</h3>
+      <p>Not every effect fits every sound. The main rule: <b>low sounds stay dry and in the centre</b> (reverb and delay smear the bass and make the mix muddy), and <b>high, quiet or slow sounds can be wide and wet</b>. Use the table as a starting point, then trust your ears.</p>
+      <div class="table-wrap fx-inst">
+        <table>
+          <thead><tr><th>Instrument</th><th>Effects that suit it</th><th class="s">Starting point in Strudel</th><th>Why</th><th>Avoid</th></tr></thead>
+          <tbody>
+            <tr><td><b>Kick</b><br><span class="legend">bd, sbd</span></td><td>saturation, light distortion</td><td class="s"><code>.shape(.3)</code><br><code>.distort("1.5:.7")</code></td><td>Adds punch and helps the kick cut through on small speakers.</td><td>reverb, delay, phaser: the kick loses its punch and the low end gets muddy</td></tr>
+            <tr><td><b>Snare / clap</b><br><span class="legend">sd, cp, rim</span></td><td>short reverb, high-pass</td><td class="s"><code>.room(.3).roomsize(2)</code><br><code>.hpf(200)</code></td><td>A small room gives a tail and a sense of space without washing out the beat.</td><td>long delay with high feedback: the echoes fight the groove</td></tr>
+            <tr><td><b>Hi-hats / cymbals</b><br><span class="legend">hh, oh, cr, rd</span></td><td>high-pass, panning, a little room</td><td class="s"><code>.hpf(400)</code><br><code>.pan(sine.range(.3,.7))</code><br><code>.room(.15)</code></td><td>Remove the low rumble and spread them across the stereo field so they don't crowd the snare.</td><td>distortion and bitcrush: harsh and tiring (unless that's the style)</td></tr>
+            <tr><td><b>Sub bass / 808</b><br><span class="legend">sine, gm_synth_bass_1, 808 bd</span></td><td>low-pass, saturation</td><td class="s"><code>.lpf(300)</code><br><code>.shape(.4)</code><br><code>.distort("2:.5")</code></td><td>A clean sub is invisible on phone speakers; saturation adds harmonics you can hear.</td><td>reverb, delay, panning, phaser: bass must stay mono, dry and steady</td></tr>
+            <tr><td><b>Synth / acid bass</b><br><span class="legend">sawtooth, square</span></td><td>resonant low-pass sweep, distortion</td><td class="s"><code>.lpf(sine.range(300,3000)</code><br><code>&nbsp;&nbsp;.slow(4))</code><br><code>.lpq(10)</code><br><code>.distort("2:.5")</code></td><td>The moving filter is the whole character of acid and techno basses.</td><td>big reverb: it blurs the rhythm of the line</td></tr>
+            <tr><td><b>Lead synth / melody</b><br><span class="legend">sawtooth, supersaw, gm_lead_*</span></td><td>tempo delay, medium reverb</td><td class="s"><code>.delay(.4)</code><br><code>.delaytime(.36)</code><br><code>.room(.3)</code><br><code>.lpf(4000)</code></td><td>Echoes fill the gaps between phrases and keep the lead in front.</td><td>too much reverb: it pushes the lead to the back of the mix</td></tr>
+            <tr><td><b>Pad / strings / choir</b><br><span class="legend">supersaw, gm_string_ensemble_1, gm_choir_aahs</span></td><td>big reverb, low-pass, slow movement</td><td class="s"><code>.room(.8).roomsize(6)</code><br><code>.lpf(2000)</code><br><code>.phaser(.5)</code><br><code>.attack(.5)</code></td><td>Pads are the "air" of the track: wide, soft and slowly moving.</td><td>distortion and crush: pads turn harsh and fill the whole mix</td></tr>
+            <tr><td><b>Piano / e-piano</b><br><span class="legend">piano, gm_epiano1</span></td><td>room, tremolo, phaser</td><td class="s"><code>.room(.3)</code><br><code>.tremolo(4)</code> (e-piano wobble)<br><code>.lpf(2500)</code> (lo-fi)</td><td>A real piano is in a room; tremolo is the classic electric-piano sound.</td><td>heavy distortion (unless you want a rock organ sound)</td></tr>
+            <tr><td><b>Pluck / arpeggio</b><br><span class="legend">triangle, gm_harpsichord, gm_kalimba</span></td><td>tempo delay, panning, room</td><td class="s"><code>.delay(.5)</code><br><code>.delaytime(.24)</code><br><code>.delayfeedback(.4)</code><br><code>.pan(sine)</code><br><code>.room(.4)</code></td><td>Short notes leave gaps; echoes and stereo movement fill them.</td><td>long attack: the pluck loses its click</td></tr>
+            <tr><td><b>Guitar</b><br><span class="legend">gm_electric_guitar_*, gm_overdriven_guitar</span></td><td>distortion + filter + reverb, phaser</td><td class="s"><code>.distort("3:.4").lpf(3000)</code><br><code>.room(.3)</code><br><code>.phaser(2)</code> (clean)</td><td>Drive for the crunch, a low-pass to set how bright the sound goes into the drive (Strudel always filters before distorting), reverb for space.</td><td>bitcrush: guitars sound broken, not rocky</td></tr>
+            <tr><td><b>FX / noise / riser</b><br><span class="legend">white, pink, gm_reverse_cymbal</span></td><td>filter sweeps, huge reverb, crush</td><td class="s"><code>.hpf(saw.range(200,8000)</code><br><code>&nbsp;&nbsp;.slow(8))</code><br><code>.room(.9).roomsize(8)</code><br><code>.crush(4)</code></td><td>Effects here are the whole sound: rising filters build tension.</td><td>nothing: go wild, but keep the volume under control</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">Different reverbs per instrument need different orbits (see below).</p>
+      <div class="codebox strudel" data-label="Strudel · effects per instrument">
+<pre class="code">setcpm(120/4)
+
+// kick: saturation only, no reverb
+$: s("bd*4").bank("RolandTR909").shape(.3)
+// clap: a short room
+$: s("~ cp ~ cp").bank("RolandTR909").room(.3).roomsize(2).orbit(2)
+// hats: high-pass and gentle panning
+$: s("hh*8").bank("RolandTR909").hpf(400).pan(sine.range(.3,.7)).gain(.6)
+// bass: dry, filtered and saturated
+$: note("&lt;a1 a1 f1 g1&gt;").struct("x*8").s("sawtooth").lpf(300).shape(.4).decay(.15).sustain(0)
+// pad: big reverb, dark filter, slow attack, its own orbit
+$: note("&lt;[a3,c4,e4] [a3,c4,e4] [f3,a3,c4] [g3,b3,d4]&gt;").s("supersaw")
+  .attack(.5).release(1).lpf(2000).room(.8).roomsize(6).gain(.35).orbit(3)
+// pluck: tempo delay, panning
+$: n("0 2 4 7 4 2 0 4").scale("A4:minor").s("triangle")
+  .delay(.5).delaytime(.375).delayfeedback(.4).pan(sine).gain(.5).orbit(4)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>s("bd*4")…shape(.3)</code></td><td>Kick: saturation adds punch. No <code>.room</code>, so it stays dry and tight.</td></tr>
+            <tr><td><code>.room(.3).roomsize(2).orbit(2)</code></td><td>Clap: a small room for a short tail. <code>.orbit(2)</code> gives the clap its own reverb, separate from the pad.</td></tr>
+            <tr><td><code>.hpf(400)</code></td><td>Hats: cuts everything below 400 Hz, so the hats don't add mud.</td></tr>
+            <tr><td><code>.pan(sine.range(.3,.7))</code></td><td>Hats: drift gently between left and right.</td></tr>
+            <tr><td><code>note("&lt;a1 a1 f1 g1&gt;").struct("x*8")</code></td><td>Bass: one root per bar (A, A, F, G, the same roots as the pad chords), played as 8 short notes.</td></tr>
+            <tr><td><code>.lpf(300).shape(.4)</code></td><td>Bass: the low-pass keeps only the deep part; <code>.shape</code> adds warmth you can hear on small speakers. No reverb, no pan.</td></tr>
+            <tr><td><code>.attack(.5).release(1)</code></td><td>Pad: each chord fades in and out softly.</td></tr>
+            <tr><td><code>.lpf(2000).room(.8).roomsize(6)</code></td><td>Pad: darker, then placed in a big hall.</td></tr>
+            <tr><td><code>.orbit(3)</code></td><td>Pad: its own reverb, so the clap's small room and the pad's big hall don't mix.</td></tr>
+            <tr><td><code>.delay(.5).delaytime(.375).delayfeedback(.4)</code></td><td>Pluck: an echo every 0.375 s, a dotted eighth at 120 BPM (one beat = 0.5 s × ¾).</td></tr>
+            <tr><td><code>.pan(sine)</code> on the pluck</td><td>Pluck: moves fully from left to right and back.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Chaining effects</h3>
+      <p>You can put as many effects on one sound as you like. But unlike a guitarist's pedalboard, <b>the order you write them in doesn't matter</b>: Strudel always runs them in the same fixed order. <code>.room(.4).lpf(2200)</code> sounds exactly like <code>.lpf(2200).room(.4)</code>.</p>
+      <figure class="fxchain-fig" style="margin:0">
+        <ol class="fxchain" aria-label="Strudel's fixed effect order"><li class="end">sound</li><li>lpf · hpf · vowel</li><li>coarse</li><li>crush</li><li>shape</li><li>distort</li><li>tremolo</li><li>pan</li><li>phaser</li><li>delay</li><li>room</li><li class="end">speakers</li></ol>
+        <figcaption>The order inside Strudel. The filters come <b>before</b> the distortion, and delay and reverb always come last.</figcaption>
+      </figure>
+      <p>This matters in the example below: <code>.lpf(2200)</code> darkens the sawtooth <b>before</b> it reaches the distortion, and the distortion then adds new bright overtones of its own. So here <code>lpf</code> sets how bright the sound is going <b>into</b> the distortion. If heavy distortion sounds too harsh, lower the distortion amount or the <code>lpf</code> frequency.</p>
+      <div class="codebox strudel" data-label="Strudel · effect chain">
+<pre class="code">setcpm(110/4)
+
+// a power-chord "guitar": distortion + filter + reverb
+note("&lt;[a2,e3,a3] [f2,c3,f3] [c3,g3,c4] [g2,d3,g3]&gt;")
+  .struct("x ~ x x ~ x ~ x")
+  .s("sawtooth").distort("4:.3").lpf(2200).room(.4)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>note("&lt;[a2,e3,a3] [f2,c3,f3] [c3,g3,c4] [g2,d3,g3]&gt;")</code></td><td>Four power chords, one per bar: A5, F5, C5, G5 (root, fifth, octave).</td></tr>
+            <tr><td><code>.struct("x ~ x x ~ x ~ x")</code></td><td>A rock strumming rhythm: 8 steps per bar, chords on the x steps.</td></tr>
+            <tr><td><code>.s("sawtooth")</code></td><td>A bright, buzzy wave: a good raw material for distortion.</td></tr>
+            <tr><td><code>.distort("4:.3")</code></td><td><b>4</b> = the distortion amount, on a 0–10 scale: heavy (1 is warm, 2 crunchy, 8 fuzz). <b>.3</b> = volume after the distortion, 30 %, because distortion makes the sound much louder.</td></tr>
+            <tr><td><code>.lpf(2200)</code></td><td><b>2200</b> = Hz. Everything above 2200 Hz is removed before the distortion, so the guitar sounds warm rather than fizzy. 20000 = no change, 800 = muffled.</td></tr>
+            <tr><td><code>.room(.4)</code></td><td><b>.4</b> = 40 % reverb mixed in: a clear room around the guitar. 0 = dry, 1 = washed out.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">Where these values sit on their scales, with pictures: <a href="#fx-numbers">What the numbers mean</a>.</p>
+
+      <h3>Separate reverb and delay per layer: orbit</h3>
+      <p>Reverb and delay are shared by every layer on the same <b>orbit</b> (a mixer channel). If one layer wants a huge hall and another wants a dry sound, put them on different orbits:</p>
+      <div class="codebox strudel" data-label="Strudel · orbits">
+<pre class="code">setcpm(124/4)
+
+$: s("~ cp ~ cp").bank("RolandTR909").room(.9).roomsize(8).orbit(2)  // big hall
+$: s("bd*4").bank("RolandTR909")                                     // stays dry</pre>
+      </div>
+
+    </section>
+
+<section id="layering">
+      <h2><span class="num">4.3</span>Several sounds in one layer</h2>
+      <p>One <code>$:</code> layer doesn't have to be one instrument. There are several ways to mix sounds inside it. Choose the one that matches what you want to hear.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>You want…</th><th class="s">Code</th></tr></thead>
+          <tbody>
+            <tr><td>A different sound on each step</td><td class="s"><code>s("bd [sd,cp] hh")</code>, <code>.s("piano sawtooth")</code></td></tr>
+            <tr><td>A different sound each bar</td><td class="s"><code>.s("&lt;piano gm_marimba&gt;")</code></td></tr>
+            <tr><td>Two instruments on the <b>same</b> notes (doubling)</td><td class="s"><code>.s("piano, gm_string_ensemble_1")</code></td></tr>
+            <tr><td>Doubling, each with its own settings</td><td class="s"><code>.layer(x =&gt; …, x =&gt; …)</code></td></tr>
+            <tr><td>The original plus a changed copy</td><td class="s"><code>.superimpose(x =&gt; …)</code></td></tr>
+            <tr><td>A delayed copy (call and answer)</td><td class="s"><code>.off(1/8, x =&gt; …)</code></td></tr>
+            <tr><td>Several whole patterns in one layer</td><td class="s"><code>stack(…, …, …)</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>A different sound per step or per bar</h3>
+      <div class="codebox strudel" data-label="Strudel · sound per step">
+<pre class="code">setcpm(100/4)
+
+// first half of the bar: piano, then marimba next bar (&lt; &gt;) · second half: sawtooth
+note("c3 e3 g3 b3").s("&lt;piano gm_marimba&gt; sawtooth").lpf(2000)</pre>
+      </div>
+
+      <h3>Doubling: two instruments on the same notes</h3>
+      <p>A comma inside <code>s("…")</code> plays <b>both</b> sounds on every note. Producers do this all the time: piano plus strings, or bass guitar plus synth bass.</p>
+      <div class="codebox strudel" data-label="Strudel · doubling">
+<pre class="code">setcpm(80/4)
+
+note("&lt;[c3,e3,g3] [a2,c3,e3]&gt;").s("piano, gm_string_ensemble_1")</pre>
+      </div>
+
+      <h3>Each copy with its own settings: layer()</h3>
+      <p><code>.layer()</code> makes one copy per function. Each copy can have its own sound, octave, filter and volume.</p>
+      <div class="codebox strudel" data-label="Strudel · layer()">
+<pre class="code">setcpm(100/4)
+
+note("c3 e3 g3 e3").layer(
+  x =&gt; x.s("piano"),                                            // copy 1: piano as written
+  x =&gt; x.s("sawtooth").transpose(12).lpf(1500).gain(.3)          // copy 2: soft synth an octave up
+)</pre>
+      </div>
+
+      <h3>Original plus an extra copy: superimpose()</h3>
+      <div class="codebox strudel" data-label="Strudel · superimpose()">
+<pre class="code">setcpm(100/4)
+
+// the piano melody, plus a glockenspiel two octaves up
+n("0 2 4 [6 4]").scale("C4:major").s("piano")
+  .superimpose(x =&gt; x.transpose(24).s("gm_glockenspiel").gain(.4))</pre>
+      </div>
+
+      <h3>Call and answer: off()</h3>
+      <div class="codebox strudel" data-label="Strudel · off()">
+<pre class="code">setcpm(100/4)
+
+// vibraphone plays, pizzicato strings answer 1/8 of a bar later, an octave lower
+n("0 2 4 7").scale("A4:minor").s("gm_vibraphone")
+  .off(1/8, x =&gt; x.s("gm_pizzicato_strings").transpose(-12))</pre>
+      </div>
+
+      <h3>Whole patterns in one layer: stack()</h3>
+      <div class="codebox strudel" data-label="Strudel · stack()">
+<pre class="code">setcpm(124/4)
+
+// drums, bass and chords together in a single $: layer
+$: stack(
+  s("bd*4").bank("RolandTR909"),
+  note("&lt;a1 f1 c2 g1&gt;").s("sawtooth").lpf(600),
+  chord("&lt;Am F C G&gt;").voicing().s("gm_epiano1").struct("[~ x]*2")
+)</pre>
+      </div>
+
+    </section>
+
+<section id="sfx" data-nav="A sound effect">
+      <h2><span class="num">4.4</span>Using a sound effect: <code>gm_gunshot</code></h2>
+        <p>The General MIDI instruments (<a href="reference.html#gm">9.5</a>) end with a group of <b>sound effects</b>: rain, a helicopter, applause, a gunshot. They play like any other <code>gm_…</code> instrument: write the name in <code>s("…")</code>. With no <code>note</code> they play at <code>c3</code>. Most have several recordings, and <code>.n()</code> picks one. <code>gm_gunshot</code> has 11, numbered 0 to 10. Some of them don't sound much like a gun, so listen through them first.</p>
+        <div class="codebox strudel" data-label="Strudel · sound effect">
+<pre class="code">$: s("bd*4").bank("RolandTR909")
+$: s("~ ~ ~ gm_gunshot").n("&lt;0 1 2 3 4 5 6 7 8 9 10&gt;").note("&lt;c3 c2&gt;")
+  .decay(.4).sustain(0).room(.4).gain(.8)
+$: s("gm_gunshot*8").n(7).note("c4").gain(.4).mask("&lt;0 0 0 1&gt;")</pre>
+        </div>
+        <div class="table-wrap cmd">
+          <table>
+            <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>s("~ ~ ~ gm_gunshot")</code></td><td>Four steps per cycle: three rests (<code>~</code>), then one shot on beat 4.</td></tr>
+              <tr><td><code>.n("&lt;0 1 2 … 10&gt;")</code></td><td>Picks the recording, a new one each cycle, so you hear all 11. Write down the numbers you like. <code>n(11)</code> is an empty slot and stays silent.</td></tr>
+              <tr><td><code>.note("&lt;c3 c2&gt;")</code></td><td>Pitch. <code>c3</code> is the default. <code>c2</code> is an octave lower: a deeper, bigger boom. <code>c4</code> is higher: a small pop.</td></tr>
+              <tr><td><code>.decay(.4).sustain(0)</code></td><td>Fades the shot to silence in 0.4 seconds, which cuts off a long tail.</td></tr>
+              <tr><td><code>.room(.4)</code></td><td>Adds reverb (the echo of a room), as if the shot were fired in a hall.</td></tr>
+              <tr><td><code>.gain(.8)</code></td><td>A little quieter. The shot is loud next to drums.</td></tr>
+              <tr><td><code>s("gm_gunshot*8").n(7)</code></td><td>Rapid fire: 8 shots per cycle, all with recording 7.</td></tr>
+              <tr><td><code>.mask("&lt;0 0 0 1&gt;")</code></td><td>Silent for three cycles, plays on the fourth (0 = mute, 1 = play).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="legend">Keep <code>.bank()</code> on the drum line only. <code>s("bd*4, ~ ~ ~ gm_gunshot").bank("RolandTR909")</code> looks for a sound called <code>RolandTR909_gm_gunshot</code>, finds nothing, and the shot stays silent ("not found" in the console).</p>
+    </section>
+
+    <nav class="pager" aria-label="Previous and next part">
+      <a class="prev" href="harmony.html"><span>← Part 3</span><b>Notes and chords</b></a>
+      <a class="next" href="structure.html"><span>Part 5 →</span><b>Song structure</b></a>
+    </nav>
+
+    <footer>
+      <p>Written for the setup in <code>E:\Tindal</code>: Strudel running locally on port 4321.</p>
+      <p>Every code block can be copied. The Strudel blocks also open directly in the editor.</p>
+    </footer>
+  </main>
+</div>
+
+<script src="course.js"></script>
+</body>
+</html>

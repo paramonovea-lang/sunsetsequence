@@ -1,0 +1,169 @@
+---
+import Base from '../layouts/Base.astro';
+import Cover from '../components/Cover.astro';
+import Catalog from '../components/Catalog.astro';
+import ExtLink from '../components/ExtLink.astro';
+import HorizonStripes from '../components/HorizonStripes.astro';
+import PlayButton from '../components/PlayButton.astro';
+import SequenceGrid from '../components/SequenceGrid.astro';
+import StepCards from '../components/StepCards.astro';
+import { SITE } from '../site';
+import { coverInput, meta, releasedTracks, sequenceRows } from '../lib/tracks';
+
+const tracks = await releasedTracks();
+const latest = tracks[0];
+import Avatar from '../components/Avatar.astro';
+---
+<Base footerStripesBg="var(--sand)">
+  <section class="container hero">
+    <div class="hero-text">
+      <p class="eyebrow">Catalog of sequenced music · free course</p>
+      <h1>Every track has a sequence.</h1>
+      <div class="hero-bottom">
+        <p class="lede">Original music written in code with Strudel and TidalCycles. Each release is filed with its full sequence, and its cover is drawn from it. Read it, play it, change it. The course is free.</p>
+        <div class="buttons">
+          {latest && <PlayButton id={latest.data.id} title={latest.data.title} variant="primary" text="Play the latest release" />}
+          <a href="/course/" class="btn btn-secondary">Free course →</a>
+        </div>
+      </div>
+    </div>
+
+    {latest && (
+      <article class="specimen">
+        <div class="strip mono">
+          <span class="strong">SPECIMEN {latest.data.id}</span>
+          <span class="muted">latest release</span>
+        </div>
+        <div class="body">
+          <div class="art">
+            <Cover {...coverInput(latest)} label="Cover: a sun over striped water, drawn from the track's kick pattern" />
+          </div>
+          <div class="details">
+            <div>
+              <h2 class="name">{latest.data.title}</h2>
+              <p class="mono muted">{meta(latest)}</p>
+            </div>
+            <SequenceGrid rows={sequenceRows(latest, true)} size="mini" label="Sequence: kick, clap, hats and bass over 16 steps" />
+            <div class="links">
+              <a href={`/tracks/${latest.data.slug}/`} class="strong">Specimen sheet →</a>
+              {latest.data.links.bandcamp && <ExtLink href={latest.data.links.bandcamp} class="muted">Bandcamp</ExtLink>}
+              {latest.data.links.soundcloud && <ExtLink href={latest.data.links.soundcloud} class="muted">SoundCloud</ExtLink>}
+            </div>
+          </div>
+        </div>
+        <div class="strip bottom">
+          <PlayButton id={latest.data.id} title={latest.data.title} variant="bar" />
+          <div class="progress" aria-hidden="true" data-steps-for={latest.data.id}>{Array.from({ length: 16 }, () => <i />)}</div>
+          <span class="mono muted">cycle <span data-cycle-for={latest.data.id} data-idle="[n]">[n]</span> / {latest.data.placeholder || !latest.data.formCycles ? '[total]' : latest.data.formCycles}</span>
+        </div>
+      </article>
+    )}
+  </section>
+
+  <HorizonStripes />
+
+  <Catalog tracks={tracks} />
+
+  <section id="covers" class="container section how">
+    <div class="how-text">
+      <h2 class="big">The sunset is the sequence.</h2>
+      <p class="ink2">No artwork is drawn by hand. Each cover is generated from its track's code, so no two are alike, and you can read a track before you hear it.</p>
+    </div>
+    <dl class="defs">
+      <div><dt>SUN HEIGHT</dt><dd>Tempo. Faster tracks sit higher in the sky.</dd></div>
+      <div><dt>WATER STRIPES</dt><dd>The kick pattern, beat by beat. More hits, thicker stripe.</dd></div>
+      <div><dt>COLOURS</dt><dd>The key. Each key has its own sky, sun and sea.</dd></div>
+      <div><dt>CATALOG NUMBER</dt><dd>Order of release. SQ-001 was the first.</dd></div>
+    </dl>
+  </section>
+
+  <section id="course" class="course">
+    <div class="container section">
+      <div class="course-head">
+        <div class="course-title">
+          <p class="eyebrow">The course · free · 11 parts · nothing to install</p>
+          <h2 class="big">Sequence your first track.</h2>
+        </div>
+        <p class="ink2 course-lede">One track, built one layer at a time, in a Strudel editor that runs right on this site. Each step lifts the sun a little higher. By step 05 you have a finished track.</p>
+      </div>
+      <StepCards />
+      <div class="cta"><a href="/course/01-start-here/" class="btn btn-primary">Start step 01, free →</a></div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="sun" aria-hidden="true"></div>
+    <div class="container about-row">
+      <div class="about-text">
+        <p class="mono muted">PRODUCER · AUTHOR OF THE COURSE</p>
+        <div class="who">
+          <Avatar size={96} />
+          <h2 class="artist">{SITE.artist}</h2>
+        </div>
+        <p class="ink2">{SITE.about}</p>
+        <p class="follow">
+          <a href="/rss.xml" class="strong">
+            <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3a10 10 0 0 1 10 10M3 7.5A5.5 5.5 0 0 1 8.5 13" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="3.5" cy="12.5" r="1.5" fill="currentColor" /></svg>
+            Follow new releases (RSS) →
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .mono { font-family: var(--font-mono); font-size: var(--fs-label); }
+  .muted { color: var(--muted); }
+  .strong { font-weight: 600; }
+  .ink2 { color: var(--ink-2); }
+  .big { font-size: clamp(40px, 5vw, 72px); line-height: 0.95; letter-spacing: -0.04em; }
+
+  .hero { display: flex; flex-wrap: wrap; gap: 56px; align-items: stretch; padding-top: 72px; padding-bottom: var(--section-y); }
+  .hero-text { flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; }
+  .hero-bottom { display: flex; flex-direction: column; gap: 24px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .specimen { flex: 1 1 520px; min-width: 0; background: var(--paper); border: var(--rule); display: flex; flex-direction: column; }
+  .strip { display: flex; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: var(--rule); }
+  .strip.bottom { border-bottom: none; border-top: var(--rule); align-items: center; flex-wrap: wrap; gap: 16px; }
+  .body { display: flex; flex-wrap: wrap; }
+  .art { flex: 1 1 260px; min-width: 0; border-right: var(--rule); }
+  .details { flex: 1 1 240px; min-width: 0; padding: 22px 20px; display: flex; flex-direction: column; gap: 18px; }
+  .name { font-size: 34px; line-height: 1.05; letter-spacing: -0.03em; }
+  .details .mono { margin-top: 6px; }
+  .links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; }
+  .links > :global(*) { padding: 10px 0; }
+  .progress { flex: 1 1 160px; display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 3px; }
+  .progress i { height: 6px; background: var(--line); }
+  .progress i.on { background: var(--accent); }
+  .strip :global(.btn) { min-height: 48px; padding: 0 18px; font-size: 15px; font-weight: 600; }
+
+  .how { display: flex; flex-wrap: wrap; gap: 56px; align-items: center; }
+  .how-text { flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+  .how .big { font-size: clamp(40px, 4.6vw, 64px); }
+  .defs { flex: 1.2 1 520px; min-width: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 2px; background: var(--ink); border: var(--rule); }
+  .defs div { background: var(--paper); padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .defs dt { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .defs dd { margin: 0; font-weight: 600; }
+
+  .course { background: var(--paper); border-top: var(--rule); border-bottom: var(--rule); }
+  .course-head { display: flex; flex-wrap: wrap; gap: 32px 56px; align-items: flex-end; justify-content: space-between; margin-bottom: 44px; }
+  .course-title { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .course-lede { flex: 1 1 360px; min-width: 0; }
+  .cta { margin-top: 32px; }
+
+  .about { position: relative; background: var(--sand); overflow: hidden; }
+  .sun { position: absolute; right: -80px; top: 40px; width: 420px; height: 420px; border-radius: 50%; background: var(--accent); }
+  .about-row { position: relative; padding-top: var(--section-y); padding-bottom: 56px; display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; align-items: flex-end; }
+  /* The text keeps clear of the sun on the right. */
+  .about-text { flex: 0 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .artist { font-size: 44px; letter-spacing: -0.03em; }
+  .who { display: flex; align-items: center; gap: 20px; }
+  .follow a { display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); }
+
+  @media (max-width: 760px) {
+    .art { border-right: none; border-bottom: var(--rule); }
+    .sun { width: 260px; height: 260px; right: -110px; top: auto; bottom: 40px; }
+  }
+</style>

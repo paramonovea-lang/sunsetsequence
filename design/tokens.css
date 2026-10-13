@@ -1,0 +1,58 @@
+/* sunsetsequence.com — Specimen × Sunset design tokens */
+/* Fonts are self-hosted as WOFF2: @font-face in src/styles/global.css (sources + OFL licences in design/fonts). */
+
+:root {
+  /* colour */
+  --ground: #ECEEE8;
+  --paper: #F8F9F5;
+  --ink: #13201B;
+  --ink-2: #33403A;
+  --muted: #4E5A54;
+  --muted-on-ink: #B5BDB7;
+  --line: #C9CFC7;
+  --line-on-ink: #33403A;
+  --border-on-ink: #50605A;
+  --cell-off: #E0E4DC;
+  --accent: #F0562A;
+  --accent-text: #B23A16;
+  --teal: #0E6B5B;
+  --chords: #C99A1E;
+  --sand: #F1E7D4;
+  --sun-yellow: #F2C94C;
+  --sea-blue: #2D5B6E;
+  --mint: #D8E3DD;
+  --code-bg: #0C1612;
+  --code-text: #ECEEE8;
+  --code-comment: #7F8F87;
+
+  /* type */
+  --font-sans: "Schibsted Grotesk", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+  --fs-body: 17px;
+  --fs-small: 15px;
+  --fs-label: 13px;
+  --fs-h1: clamp(56px, 7.4vw, 116px);
+  --fs-h2: clamp(36px, 4vw, 56px);
+  --fs-h3: 24px;
+  --lh-body: 1.5;
+  --tracking-h1: -0.045em;
+  --tracking-h2: -0.035em;
+  --tracking-label: 0.08em;
+
+  /* layout */
+  --container: 1320px;
+  --gutter: 24px;
+  --section-y: 88px;
+  --gap: 20px;
+
+  /* shape */
+  --rule: 2px solid var(--ink);
+  --hairline: 1px solid var(--line);
+  --radius: 0;
+  --tap: 44px;
+  --btn-h: 52px;
+}
+
+@media (max-width: 480px) {
+  :root { --gutter: 16px; --section-y: 48px; }
+}

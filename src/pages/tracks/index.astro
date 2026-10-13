@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import Catalog from '../../components/Catalog.astro';
+import { releasedTracks } from '../../lib/tracks';
+
+const tracks = await releasedTracks();
+---
+<Base title="Catalog" description="Every release, filed with its full sequence.">
+  <Catalog tracks={tracks} heading="The catalog" headingLevel="h1" />
+</Base>

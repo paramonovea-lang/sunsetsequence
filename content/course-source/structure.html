@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Song structure · Strudel course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="course.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="toc" aria-label="Course">
+    <p class="toc-label">Course</p>
+    <ol class="pages">
+      <li><a href="index.html"><span class="n">1</span>Start here</a></li>
+      <li><a href="rhythm.html"><span class="n">2</span>Rhythm and drums</a></li>
+      <li><a href="harmony.html"><span class="n">3</span>Notes and chords</a></li>
+      <li><a href="sound.html"><span class="n">4</span>Sound and effects</a></li>
+      <li class="current"><a href="structure.html" aria-current="page"><span class="n">5</span>Song structure</a>
+        <ol class="sub">
+          <li><a href="#l8"><span class="n">5.1</span>Arrangement</a></li>
+          <li><a href="#song"><span class="n">5.2</span>Song from blocks</a></li>
+        </ol>
+      </li>
+      <li><a href="visuals.html"><span class="n">6</span>Visuals</a></li>
+      <li><a href="export.html"><span class="n">7</span>Save, export and practice</a></li>
+      <li><a href="commands.html"><span class="n">8</span>Command reference</a></li>
+      <li><a href="reference.html"><span class="n">9</span>Sound bank</a></li>
+      <li><a href="errors.html"><span class="n">10</span>Error messages</a></li>
+      <li><a href="tracks.html"><span class="n">11</span>Example tracks</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <p class="eyebrow">Part 5 of 11 · Live-coding course · Strudel</p>
+      <h1>Song structure</h1>
+      <p class="lede">The finished arrangement of Night Bus, and longer songs built from blocks.</p>
+      <ul class="onpage"><li><a href="#l8">5.1 Arrangement</a></li><li><a href="#song">5.2 Song from blocks</a></li></ul>
+    </header>
+
+<section id="l8" data-nav="Arrangement">
+      <h2><span class="num">5.1</span>Arrangement: the finished track</h2>
+      <p><code>.mask()</code> switches a layer on or off per cycle. <code>"&lt;0!4 1!12&gt;"</code> means "off for 4 cycles, then on for 12", so it's one 16-cycle loop. Each layer gets its own mask, and the result is the arrangement from the top of the page. This is the complete <b>Night Bus</b>.</p>
+      <div class="codebox strudel" data-label="Strudel · Night Bus (final)">
+<pre class="code">// Night Bus · A minor · 124 BPM · 16 cycles
+setcpm(124/4)
+
+// drums
+$: s("bd*4").bank("RolandTR909")
+$: s("~ cp ~ cp").bank("RolandTR909")
++   .mask("&lt;0!2 1!14&gt;")
+$: s("[~ oh]*4").bank("RolandTR909").gain(.4)
++   .mask("&lt;0!2 1!14&gt;")
+$: s("hh*16").bank("RolandTR909")
+  .gain("[.25 .5]*8")
+  .sometimesBy(.2, x =&gt; x.ply(2))
++   .mask("&lt;0!2 1!14&gt;")
+
+// bass
+$: note("&lt;a1 f1 c2 g1&gt;")
+  .struct("x ~ x x ~ x x ~")
+  .s("sawtooth")
+  .lpf(sine.range(300, 1800).slow(8))
+  .decay(.15).sustain(0)
++   .mask("&lt;0!4 1!12&gt;")
+
+// chords
+$: chord("&lt;Am7 F^7 C^7 G7&gt;")
+  .struct("[~ x]*2")
+  .voicing()
+  .s("gm_epiano1")
+  .room(.5).gain(.6)
++   .mask("&lt;0!8 1!8&gt;")
+
+// melody
+$: n("0 [~ 2] 4 [3 2]".add("&lt;0 -2 2 -1&gt;"))
+  .scale("A4:minor")
+  .s("triangle")
+  .jux(rev)
+  .delay(.4).gain(.5)
++   .mask("&lt;0!12 1!4&gt;")</pre>
+      </div>
+      <h3>Playing it live</h3>
+      <ul class="plain">
+        <li>Edit while it plays, then press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>. The change lands on the next cycle without stopping the music.</li>
+        <li>Write <code>_$:</code> instead of <code>$:</code> to mute a layer. Remove the underscore to bring it back.</li>
+        <li>Delete the <code>.mask(…)</code> lines when you want to "drop" every layer at once.</li>
+        <li>Add <code>.pianoroll()</code> to the end of the melody to see its notes scroll by.</li>
+      </ul>
+    </section>
+
+<section id="song" data-nav="Song from blocks">
+      <h2><span class="num">5.2</span>A song from blocks</h2>
+      <p>In lesson 5.1, layers switched on one after another inside a single 16-bar loop. Real songs work differently: they're made of <b>blocks</b> (sections) that <b>replace</b> each other. First an intro, then a verse, a build-up, the chorus, a quiet breakdown, the chorus again, and an outro. Each block is a fixed group of layers, played for a set number of bars.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Block</th><th>Job in the song</th><th>Typical length</th></tr></thead>
+          <tbody>
+            <tr><td><b>Intro</b></td><td>Sets the tempo and mood with only a few layers. DJs mix in over it.</td><td>8–16 bars</td></tr>
+            <tr><td><b>Verse</b></td><td>The main groove, without the strongest hook</td><td>8–16 bars</td></tr>
+            <tr><td><b>Build</b></td><td>Tension before the chorus: rolls, risers, the kick drops out</td><td>4–8 bars</td></tr>
+            <tr><td><b>Chorus / drop</b></td><td>The peak: every layer plus the melody</td><td>8–16 bars</td></tr>
+            <tr><td><b>Breakdown</b></td><td>A rest: drums stop, pads and melody stay</td><td>4–8 bars</td></tr>
+            <tr><td><b>Outro</b></td><td>Layers leave and the track winds down</td><td>8–16 bars</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">Keep every block a multiple of 4 bars, the length of the chord progression, so each block starts on the first chord.</p>
+
+      <h3>The plan for Night Bus</h3>
+      <figure class="grid-fig" style="margin:0">
+        <div class="songmap-wrap">
+          <div class="songmap" role="img" aria-label="Song map: intro 8 bars, verse 8, build 4, chorus 8, breakdown 4, chorus 8, outro 8. 48 bars in total.">
+            <div class="seg s-intro" style="flex-grow:8"><b>Intro</b><span>8 bars</span></div>
+            <div class="seg s-verse" style="flex-grow:8"><b>Verse</b><span>8</span></div>
+            <div class="seg s-build" style="flex-grow:4"><b>Build</b><span>4</span></div>
+            <div class="seg s-chorus" style="flex-grow:8"><b>Chorus</b><span>8</span></div>
+            <div class="seg s-break" style="flex-grow:4"><b>Break</b><span>4</span></div>
+            <div class="seg s-chorus" style="flex-grow:8"><b>Chorus</b><span>8</span></div>
+            <div class="seg s-intro" style="flex-grow:8"><b>Outro</b><span>8</span></div>
+          </div>
+        </div>
+        <figcaption>48 bars, about 1 minute 33 seconds at 124 BPM. The width of each block is its number of bars.</figcaption>
+      </figure>
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead><tr><th>Layer</th><th>Intro</th><th>Verse</th><th>Build</th><th>Chorus</th><th>Break</th><th>Outro</th></tr></thead>
+          <tbody>
+            <tr><td><code>kick</code></td><td class="on">●</td><td class="on">●</td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="on">●</td></tr>
+            <tr><td><code>clap</code></td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="off">·</td></tr>
+            <tr><td><code>hats</code></td><td class="on">●</td><td class="on">●</td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="off">·</td></tr>
+            <tr><td><code>ohats</code></td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="off">·</td></tr>
+            <tr><td><code>fill</code> (toms, bar 8)</td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td></tr>
+            <tr><td><code>roll</code> (snare roll)</td><td class="off">·</td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="off">·</td><td class="off">·</td></tr>
+            <tr><td><code>bass</code></td><td class="off">·</td><td class="on">●</td><td class="on">●</td><td class="on">●</td><td class="off">·</td><td class="off">·</td></tr>
+            <tr><td><code>chords</code></td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="off">·</td></tr>
+            <tr><td><code>pad</code></td><td class="on">●</td><td class="off">·</td><td class="on">●</td><td class="off">·</td><td class="on">●</td><td class="on">●</td></tr>
+            <tr><td><code>melody</code></td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="on">●</td><td class="on">●</td><td class="off">·</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Three steps in code</h3>
+      <ol class="plain">
+        <li><b>Layers:</b> define every instrument part once, with <code>const</code> and a name.</li>
+        <li><b>Blocks:</b> combine layers with <code>stack(…)</code>. One block is a list of layers that play together.</li>
+        <li><b>Song:</b> put the blocks in order with <code>arrange([bars, block], …)</code>. Each block starts from its own first bar, so a fill written for "bar 8" lands on the last bar of an 8-bar block.</li>
+      </ol>
+      <div class="codebox strudel" data-label="Strudel · Night Bus, full song">
+<pre class="code">// Night Bus · full song · A minor · 124 BPM
+setcpm(124/4)
+
+// ---------- 1. layers: every instrument part, defined once ----------
+const kick   = s("bd*4").bank("RolandTR909")
+const clap   = s("~ cp ~ cp").bank("RolandTR909")
+const hats   = s("hh*16").bank("RolandTR909").gain("[.25 .5]*8")
+const ohats  = s("[~ oh]*4").bank("RolandTR909").gain(.4)
+const fill   = s("&lt;~!7 [~ ~ [ht mt] [lt lt]]&gt;").bank("RolandTR909")  // tom fill in bar 8
+const roll   = s("sd*16").bank("RolandTR909")
+  .ply("&lt;1 1 2 2&gt;").gain(saw.range(.1, .7).slow(4))               // snare roll, louder and faster
+const bass   = note("&lt;a1 f1 c2 g1&gt;").struct("x ~ x x ~ x x ~")
+  .s("sawtooth").lpf(sine.range(300, 1800).slow(8)).decay(.15).sustain(0)
+const chords = chord("&lt;Am7 F^7 C^7 G7&gt;").struct("[~ x]*2").voicing()
+  .s("gm_epiano1").room(.5).gain(.6)
+const pad    = chord("&lt;Am7 F^7 C^7 G7&gt;").voicing().s("gm_pad_warm").gain(.35)
+const melody = n("0 [~ 2] 4 [3 2]".add("&lt;0 -2 2 -1&gt;")).scale("A4:minor")
+  .s("triangle").jux(rev).delay(.4).gain(.5)
+
+// ---------- 2. blocks: which layers play together ----------
+const intro     = stack(kick, hats, pad)
+const verse     = stack(kick, clap, hats, bass, chords, fill)
+const build     = stack(roll, pad, bass)
+const chorus    = stack(kick, clap, hats, ohats, bass, chords, melody)
+const breakdown = stack(pad, melody)
+const outro     = stack(kick, pad)
+
+// ---------- 3. the song: [number of bars, block] ----------
+$: arrange(
+  [8, intro],
+  [8, verse],
+  [4, build],
+  [8, chorus],
+  [4, breakdown],
+  [8, chorus],
+  [8, outro]
+)</pre>
+      </div>
+      <p class="legend">The song loops after the outro. To stop at the end, press <kbd>Ctrl</kbd>+<kbd>.</kbd>. To get a file, export cycles 0–48 as a WAV (lesson 7.1).</p>
+
+      <h3>Transitions between blocks</h3>
+      <p>A plain cut from one block to the next can sound abrupt. These tricks tell the listener that something new is coming:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Trick</th><th>Code</th><th>Where it's used above</th></tr></thead>
+          <tbody>
+            <tr><td>Fill in the last bar</td><td><code>s("&lt;~!7 [~ ~ [ht mt] [lt lt]]&gt;")</code></td><td><code>fill</code> in the verse</td></tr>
+            <tr><td>Roll that speeds up and gets louder</td><td><code>s("sd*16").ply("&lt;1 1 2 2&gt;").gain(saw.range(.1, .7).slow(4))</code></td><td><code>roll</code> in the build</td></tr>
+            <tr><td>Drop the kick before the chorus</td><td>Leave <code>kick</code> out of the build block</td><td><code>build</code></td></tr>
+            <tr><td>Kick stops for the last bar of a block</td><td><code>kick.mask("&lt;1!7 0&gt;")</code></td><td>Try it in the verse</td></tr>
+            <tr><td>Filter opens across a block</td><td><code>.lpf(saw.range(300, 4000).slow(8))</code></td><td>Try it on <code>chords</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Another way: the song as one line</h3>
+      <p>Replace the <code>arrange(…)</code> part with a "score line". <code>!8</code> means "for 8 bars", and <code>.pick()</code> looks up each block by name. Keep the three steps above and change only step 3:</p>
+      <div class="codebox strudel" data-noplay data-label="Strudel · score line (replace step 3)">
+<pre class="code">// 3. the song as a score line: name!bars
+$: "&lt;intro!8 verse!8 build!4 chorus!8 breakdown!4 chorus!8 outro!8&gt;"
+  .pick({intro, verse, build, chorus, breakdown, outro})</pre>
+      </div>
+      <p class="legend">Unlike <code>arrange</code>, <code>pick</code> plays each block by the song's global clock. A block that starts at bar 17 plays its own bar 17, not bar 1. That's fine as long as every block starts on a multiple of its pattern lengths (4 or 8 bars here). The full song above follows this rule.</p>
+
+      <h3>Playing the blocks live</h3>
+      <p>When you perform, you choose the next block by hand instead of writing out the order. Keep steps 1 and 2, and replace step 3 with a single line. Then change the word and press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>: the new block starts right away, in time.</p>
+      <div class="codebox strudel" data-noplay data-label="Strudel · live switching (replace step 3)">
+<pre class="code">// change the word (intro, verse, build, chorus, breakdown, outro) and press Ctrl+Enter
+$: verse</pre>
+      </div>
+    </section>
+
+
+    <nav class="pager" aria-label="Previous and next part">
+      <a class="prev" href="sound.html"><span>← Part 4</span><b>Sound and effects</b></a>
+      <a class="next" href="visuals.html"><span>Part 6 →</span><b>Visuals</b></a>
+    </nav>
+
+    <footer>
+      <p>Written for the setup in <code>E:\Tindal</code>: Strudel running locally on port 4321.</p>
+      <p>Every code block can be copied. The Strudel blocks also open directly in the editor.</p>
+    </footer>
+  </main>
+</div>
+
+<script src="course.js"></script>
+</body>
+</html>

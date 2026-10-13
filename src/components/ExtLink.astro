@@ -1,0 +1,6 @@
+---
+// A link the owner hasn't supplied yet renders as its visible [PLACEHOLDER] text, not a dead link.
+interface Props { href?: string; class?: string }
+const { href, class: cls } = Astro.props;
+---
+{href ? <a href={href} class={cls} rel="noopener"><slot /></a> : <span class:list={['placeholder', cls]}><slot /></span>}

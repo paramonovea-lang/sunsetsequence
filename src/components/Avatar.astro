@@ -1,0 +1,12 @@
+---
+// The author's avatar, "The path" (design/avatar/HANDOFF.md): a person's image, not the brand mark.
+// Always a plain circle crop: no frame, shadow or recolouring. alt is empty by default because the
+// name is printed next to it everywhere on the site.
+interface Props { size: number; alt?: string; class?: string; dark?: boolean }
+const { size, alt = '', class: cls, dark = false } = Astro.props;
+---
+<img class:list={['sq-avatar', cls]} src={dark ? '/avatar/avatar-dark.svg' : '/avatar/avatar.svg'} width={size} height={size} alt={alt} loading="lazy" decoding="async" />
+
+<style>
+  .sq-avatar { display: block; flex: none; border-radius: 50%; }
+</style>

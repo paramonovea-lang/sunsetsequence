@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command reference · Strudel course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="course.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="toc" aria-label="Course">
+    <p class="toc-label">Course</p>
+    <ol class="pages">
+      <li><a href="index.html"><span class="n">1</span>Start here</a></li>
+      <li><a href="rhythm.html"><span class="n">2</span>Rhythm and drums</a></li>
+      <li><a href="harmony.html"><span class="n">3</span>Notes and chords</a></li>
+      <li><a href="sound.html"><span class="n">4</span>Sound and effects</a></li>
+      <li><a href="structure.html"><span class="n">5</span>Song structure</a></li>
+      <li><a href="visuals.html"><span class="n">6</span>Visuals</a></li>
+      <li><a href="export.html"><span class="n">7</span>Save, export and practice</a></li>
+      <li class="current"><a href="commands.html" aria-current="page"><span class="n">8</span>Command reference</a>
+        <ol class="sub">
+          <li><a href="#cmd-intro"><span class="n">8.1</span>How to read it</a></li>
+          <li><a href="#cmd-play"><span class="n">8.2</span>Tempo and playing</a></li>
+          <li><a href="#cmd-mini"><span class="n">8.3</span>Mini-notation</a></li>
+          <li><a href="#cmd-sound"><span class="n">8.4</span>Sounds and notes</a></li>
+          <li><a href="#cmd-chords"><span class="n">8.5</span>Chords</a></li>
+          <li><a href="#cmd-time"><span class="n">8.6</span>Rhythm and time</a></li>
+          <li><a href="#cmd-copies"><span class="n">8.7</span>Copies and layers</a></li>
+          <li><a href="#cmd-env"><span class="n">8.8</span>Note shape (envelope)</a></li>
+          <li><a href="#cmd-fx"><span class="n">8.9</span>Effects</a></li>
+          <li><a href="#cmd-signals"><span class="n">8.10</span>Signals</a></li>
+          <li><a href="#cmd-struct"><span class="n">8.11</span>Building songs</a></li>
+          <li><a href="#cmd-visual"><span class="n">8.12</span>Visuals</a></li>
+        </ol>
+      </li>
+      <li><a href="reference.html"><span class="n">9</span>Sound bank</a></li>
+      <li><a href="errors.html"><span class="n">10</span>Error messages</a></li>
+      <li><a href="tracks.html"><span class="n">11</span>Example tracks</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <p class="eyebrow">Part 8 of 11 · Live-coding course · Strudel</p>
+      <h1>Command reference</h1>
+      <p class="lede">Every command in the course: what it does, what its numbers mean, with an example.</p>
+      <ul class="onpage"><li><a href="#cmd-intro">8.1 How to read it</a></li><li><a href="#cmd-play">8.2 Tempo and playing</a></li><li><a href="#cmd-mini">8.3 Mini-notation</a></li><li><a href="#cmd-sound">8.4 Sounds and notes</a></li><li><a href="#cmd-chords">8.5 Chords</a></li><li><a href="#cmd-time">8.6 Rhythm and time</a></li><li><a href="#cmd-copies">8.7 Copies and layers</a></li><li><a href="#cmd-env">8.8 Note shape (envelope)</a></li><li><a href="#cmd-fx">8.9 Effects</a></li><li><a href="#cmd-signals">8.10 Signals</a></li><li><a href="#cmd-struct">8.11 Building songs</a></li><li><a href="#cmd-visual">8.12 Visuals</a></li></ul>
+    </header>
+
+
+    <section id="cmd-intro" data-nav="How to read it">
+      <h2><span class="num">8.1</span>How to read this reference</h2>
+      <p>Every command used in the course, grouped by what it does. Each row shows the command, what it does, what its numbers mean, and a short example. The Strudel examples are complete: copy one into Strudel and press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.</p>
+      <ul class="chips cmd-jump"><li><a href="#cmd-play">Tempo and playing</a></li><li><a href="#cmd-mini">Mini-notation</a></li><li><a href="#cmd-sound">Sounds and notes</a></li><li><a href="#cmd-chords">Chords</a></li><li><a href="#cmd-time">Rhythm and time</a></li><li><a href="#cmd-copies">Copies and layers</a></li><li><a href="#cmd-env">Note shape (envelope)</a></li><li><a href="#cmd-fx">Effects</a></li><li><a href="#cmd-signals">Signals</a></li><li><a href="#cmd-struct">Building songs</a></li><li><a href="#cmd-visual">Visuals</a></li></ul>
+    </section>
+
+    <section id="cmd-play">
+      <h2><span class="num">8.2</span>Tempo and playing</h2>
+      <p>How fast the music runs, and how layers start and stop.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>setcpm(124/4)</code></td><td>Sets the tempo. Strudel counts <b>cycles (bars) per minute</b>.<div class="ex"><span>Example</span><code>setcpm(90/4)
+$: s("bd*4")</code></div></td><td>BPM ÷ beats per bar. <code>124/4</code> = 124 BPM in 4/4.</td></tr>
+            <tr><td class="s"><code>$: …</code></td><td>Starts a layer: a pattern that plays. Several layers play together.<div class="ex"><span>Example</span><code>$: s("bd*4")
+$: s("hh*8")</code></div></td><td>–</td></tr>
+            <tr><td class="s"><code>_$: …</code></td><td>Mutes one layer without deleting it.<div class="ex"><span>Example</span><code>$: s("bd*4")
+_$: s("hh*8")</code></div></td><td>–</td></tr>
+            <tr><td class="s"><code>Ctrl+Enter · Ctrl+.</code></td><td>Runs the code · stops everything.</td><td>–</td></tr>
+            <tr><td class="s"><code>samples("github:user/repo")</code></td><td>Loads an extra sample pack from GitHub.</td><td>The address of the pack.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-mini" data-nav="Mini-notation">
+      <h2><span class="num">8.3</span>Mini-notation: the symbols inside quotes</h2>
+      <p>Everything inside <code>"…"</code> is mini-notation.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>"bd sd hh"</code></td><td><b>Spaces</b>: steps one after another, sharing the bar evenly.<div class="ex"><span>Example</span><code>s("bd sd hh")</code></div></td><td>3 steps = a third of a bar each.</td></tr>
+            <tr><td class="s"><code>"bd [sd sd]"</code></td><td><b>[ ]</b>: squeezes several steps into one.<div class="ex"><span>Example</span><code>s("bd [sd sd]")</code></div></td><td></td></tr>
+            <tr><td class="s"><code>"[c4,e4,g4]" · "bd*4, hh*8"</code></td><td><b>Comma</b>: at the same time (a chord, or two rhythms at once).<div class="ex"><span>Example</span><code>note("[c4,e4,g4]").s("piano")</code></div></td><td></td></tr>
+            <tr><td class="s"><code>"&lt;c4 e4 g4&gt;"</code></td><td><b>&lt; &gt;</b>: one item per bar, in turn.<div class="ex"><span>Example</span><code>note("&lt;c4 e4 g4&gt;").s("piano")</code></div></td><td>3 items = a 3-bar cycle.</td></tr>
+            <tr><td class="s"><code>"hh*8"</code></td><td><b>*n</b>: plays the step n times in its space.<div class="ex"><span>Example</span><code>s("hh*8")</code></div></td><td></td></tr>
+            <tr><td class="s"><code>"[c4 e4]/2"</code></td><td><b>/n</b>: stretches the step over n bars.<div class="ex"><span>Example</span><code>note("[c4 e4 g4 b4]/2").s("piano")</code></div></td><td></td></tr>
+            <tr><td class="s"><code>"bd!3 sd"</code></td><td><b>!n</b>: repeats the step as n separate steps.<div class="ex"><span>Example</span><code>s("bd!3 sd")</code></div></td><td><code>bd!3 sd</code> = <code>bd bd bd sd</code></td></tr>
+            <tr><td class="s"><code>"c4@3 e4"</code></td><td><b>@n</b>: makes a step n times longer than the others.<div class="ex"><span>Example</span><code>note("c4@3 e4").s("piano")</code></div></td><td><code>c4@3 e4</code>: C lasts ¾ of the bar.</td></tr>
+            <tr><td class="s"><code>"bd ~ sd ~"</code></td><td><b>~</b>: a rest (silence).<div class="ex"><span>Example</span><code>s("bd ~ sd ~")</code></div></td><td></td></tr>
+            <tr><td class="s"><code>"hh*8?"</code></td><td><b>?</b>: each step plays only half of the time, at random.<div class="ex"><span>Example</span><code>s("hh*8?")</code></div></td><td></td></tr>
+            <tr><td class="s"><code>"bd(3,8)"</code></td><td><b>(k,n,r)</b>: a Euclidean rhythm, k hits spread as evenly as possible over n steps, rotated by r.<div class="ex"><span>Example</span><code>s("bd(3,8), hh*8")</code></div></td><td><code>(3,8)</code> = the tresillo, x ~ ~ x ~ ~ x ~</td></tr>
+            <tr><td class="s"><code>"bd:3"</code></td><td><b>:n</b>: picks sample number n of a sound.<div class="ex"><span>Example</span><code>s("bd:0 bd:3")</code></div></td><td>0 = the first one.</td></tr>
+            <tr><td class="s"><code>"{bd sd hh}%4"</code></td><td><b>{ }%n</b>: polymeter, steps run at n per bar and wrap around.<div class="ex"><span>Example</span><code>s("{bd sd hh}%4")</code></div></td><td>A 3-step loop at 4 per bar drifts against the beat.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-sound">
+      <h2><span class="num">8.4</span>Sounds and notes</h2>
+      <p>What plays, and at which pitch.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>s("bd")</code></td><td>Which sound: a sample (<code>bd</code>, <code>piano</code>, <code>gm_…</code>) or a synth wave (<code>sine</code>, <code>sawtooth</code>, <code>square</code>, <code>triangle</code>, <code>supersaw</code>, <code>white</code>, <code>pink</code>).<div class="ex"><span>Example</span><code>s("bd sd:2")</code></div></td><td>A name; <code>:n</code> picks a variant.</td></tr>
+            <tr><td class="s"><code>.bank("RolandTR909")</code></td><td>Which drum machine the drum names come from.<div class="ex"><span>Example</span><code>s("bd sd").bank("RolandTR808")</code></div></td><td>TR909, TR808, TR707, LinnDrum… see the sound bank.</td></tr>
+            <tr><td class="s"><code>note("c4 e4")</code></td><td>The pitch, by name or MIDI number.<div class="ex"><span>Example</span><code>note("c4 eb4 g4").s("piano")</code></div></td><td><code>c4</code> = 60 = middle C. Sharps/flats: <code>c#4 eb4</code>.</td></tr>
+            <tr><td class="s"><code>n("0 2 4")</code></td><td>A number. On its own it picks a sample variant; with <code>.scale</code> it is a scale step.<div class="ex"><span>Example</span><code>n("0 2 4").scale("C4:major").s("piano")</code></div></td><td>0 = first.</td></tr>
+            <tr><td class="s"><code>.scale("C4:major")</code></td><td>Turns step numbers into notes of a scale.<div class="ex"><span>Example</span><code>n("0 1 2 3 4 5 6 7").scale("A3:minor").s("piano")</code></div></td><td><code>root+octave:scale</code>. Scales: major, minor, dorian, mixolydian, minor pentatonic, major pentatonic, blues…</td></tr>
+            <tr><td class="s"><code>.add(12)</code></td><td>Adds numbers. On notes = semitones up; on n with a scale = scale steps up.<div class="ex"><span>Example</span><code>n("0 2 4".add("&lt;0 3&gt;")).scale("C4:major").s("piano")</code></div></td><td>Negative numbers go down.</td></tr>
+            <tr><td class="s"><code>.transpose(12)</code></td><td>Moves notes up or down in semitones.<div class="ex"><span>Example</span><code>note("c4 e4 g4").transpose(12).s("piano")</code></div></td><td>12 = one octave, 7 = a fifth.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-chords">
+      <h2><span class="num">8.5</span>Chords</h2>
+      <p>Chord symbols and how they become notes. To write chords note by note, see <a href="harmony.html#chord-notes">3.4 Chords from notes</a>.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>chord("&lt;Am F C G&gt;")</code></td><td>Chord symbols: <code>C</code>, <code>Am</code>, <code>G7</code>, <code>C^7</code> (maj7), <code>Dm9</code>, <code>Bo</code> (dim), <code>D2</code> (sus2), <code>Dsus</code> (sus4)… <a href="harmony.html#chord-names">All names</a>.<div class="ex"><span>Example</span><code>chord("&lt;Am F C G&gt;").voicing().s("piano")</code></div></td><td>One symbol per step.</td></tr>
+            <tr><td class="s"><code>.voicing()</code></td><td>Turns chord symbols into notes, choosing a voicing close to the previous chord.<div class="ex"><span>Example</span><code>chord("&lt;C G Am F&gt;").voicing().s("piano")</code></div></td><td>Always comes <b>after</b> <code>dict</code>, <code>mode</code>, <code>anchor</code>.</td></tr>
+            <tr><td class="s"><code>.dict("triads")</code></td><td>Which set of voicings to use.<div class="ex"><span>Example</span><code>chord("&lt;C G Am F&gt;").dict("triads").voicing().s("piano")</code></div></td><td><code>ireal</code> (default, jazz voicings with 7ths), <code>triads</code>, <code>lefthand</code>, <code>guidetones</code>, <code>legacy</code>.</td></tr>
+            <tr><td class="s"><code>.mode("above").anchor("c4")</code></td><td>Where the voicing sits. <code>below</code> (default): top note at or under the anchor; <code>above</code>: bottom note at or above it; <code>root</code>: root position; <code>duck</code>: like below, but avoids the anchor note.<div class="ex"><span>Example</span><code>chord("&lt;C G Am F&gt;").dict("triads").mode("above").anchor("c4").voicing().s("piano")</code></div></td><td>Anchor: a note name; the default is <code>c5</code>.</td></tr>
+            <tr><td class="s"><code>.rootNotes(2)</code></td><td>Only the root of each chord, in the given octave: a ready-made bass line.<div class="ex"><span>Example</span><code>chord("&lt;Am F C G&gt;").rootNotes(2).s("sawtooth").lpf(400)</code></div></td><td>Octave number. Use it <b>without</b> <code>.note()</code>.</td></tr>
+            <tr><td class="s"><code>.arp("0 1 2 1")</code></td><td>Plays the notes of a stacked chord one at a time, by position.<div class="ex"><span>Example</span><code>note("[c4,e4,g4]").arp("0 1 2 1").s("piano")</code></div></td><td>0 = lowest note; numbers past the top wrap round.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-time">
+      <h2><span class="num">8.6</span>Rhythm and time</h2>
+      <p>Commands that change when things happen.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>.struct("x ~ x x")</code></td><td>A rhythm template: the pattern plays only on the x steps.<div class="ex"><span>Example</span><code>note("[c3,e3,g3]").struct("x ~ x x ~ x ~ ~").s("piano")</code></div></td><td>x = hit, ~ = rest.</td></tr>
+            <tr><td class="s"><code>.mask("1 0 1 1")</code></td><td>Silences parts: 0 = muted, 1 = plays.<div class="ex"><span>Example</span><code>s("hh*8").mask("1 0 1 1")</code></div></td><td><code>"&lt;0!4 1!4&gt;"</code> = silent for 4 bars, then plays for 4.</td></tr>
+            <tr><td class="s"><code>.fast(2) · .slow(2)</code></td><td>Plays faster or slower.<div class="ex"><span>Example</span><code>s("bd sd").fast(2)</code></div></td><td>2 = twice as fast / spread over 2 bars.</td></tr>
+            <tr><td class="s"><code>.late(.25) · .early(.25)</code></td><td>Shifts in time.<div class="ex"><span>Example</span><code>s("cp").late(.25)</code></div></td><td>In bars: .25 = one beat in 4/4.</td></tr>
+            <tr><td class="s"><code>.ply(2)</code></td><td>Repeats each event n times inside its own length.<div class="ex"><span>Example</span><code>s("bd sd").ply(2)</code></div></td><td>2 = doubles every hit (a roll).</td></tr>
+            <tr><td class="s"><code>.swingBy(1/3, 4)</code></td><td>Shuffle: splits the bar into n parts and delays the second half of each part.<div class="ex"><span>Example</span><code>s("hh*8").swingBy(1/3, 4)</code></div></td><td>First number: how much (0 = straight, 1/3 = triplet swing). Second: parts per bar.</td></tr>
+            <tr><td class="s"><code>.degradeBy(.3)</code></td><td>Drops events at random.<div class="ex"><span>Example</span><code>s("hh*16").degradeBy(.3)</code></div></td><td>0–1: the share removed (.3 = 30 %).</td></tr>
+            <tr><td class="s"><code>.sometimesBy(.5, x =&gt; x.ply(2))</code></td><td>Applies a change to a random share of events.<div class="ex"><span>Example</span><code>s("hh*8").sometimesBy(.3, x =&gt; x.ply(2))</code></div></td><td>0–1: the probability.</td></tr>
+            <tr><td class="s"><code>.segment(8)</code></td><td>Turns a smooth signal into n separate steps per bar.<div class="ex"><span>Example</span><code>n(irand(8).segment(8)).scale("A3:minor pentatonic").s("piano")</code></div></td><td>Steps per bar.</td></tr>
+            <tr><td class="s"><code>.rev()</code></td><td>Plays each bar backwards.<div class="ex"><span>Example</span><code>n("0 1 2 3").scale("C4:major").rev().s("piano")</code></div></td><td>–</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-copies">
+      <h2><span class="num">8.7</span>Copies and layers</h2>
+      <p>Commands that play a pattern together with changed copies of itself. <code>x =&gt; …</code> means "take the pattern x and change it like this".</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>.off(1/8, x =&gt; x.add(note(12)))</code></td><td>Adds a copy that starts later and is changed by the function.<div class="ex"><span>Example</span><code>note("c4 e4 g4").off(1/8, x =&gt; x.add(note(12))).s("piano")</code></div></td><td>Delay in bars: 1/8 = an eighth note in 4/4.</td></tr>
+            <tr><td class="s"><code>.superimpose(x =&gt; x.transpose(12))</code></td><td>The original plus a changed copy, at the same time.<div class="ex"><span>Example</span><code>note("c4 e4 g4").superimpose(x =&gt; x.transpose(12)).s("piano")</code></div></td><td>–</td></tr>
+            <tr><td class="s"><code>.layer(x =&gt; …, x =&gt; …)</code></td><td>Only the changed copies; the original is not played on its own.<div class="ex"><span>Example</span><code>note("c4 e4").layer(x =&gt; x.s("piano"), x =&gt; x.s("sawtooth").transpose(12).gain(.4))</code></div></td><td>Any number of functions.</td></tr>
+            <tr><td class="s"><code>.jux(rev)</code></td><td>Original in the left speaker, a changed copy in the right.<div class="ex"><span>Example</span><code>n("0 1 2 3").scale("C4:major").s("piano").jux(rev)</code></div></td><td>–</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-env">
+      <h2><span class="num">8.8</span>Note shape (envelope)</h2>
+      <p>How each note starts, holds and ends.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>.attack(.1)</code></td><td>Fade-in time.<div class="ex"><span>Example</span><code>note("c3").s("sawtooth").attack(.5)</code></div></td><td>Seconds. 0 = instant, .5 = slow swell.</td></tr>
+            <tr><td class="s"><code>.decay(.2)</code></td><td>Time to fall from full volume to the sustain level.<div class="ex"><span>Example</span><code>note("c3*4").s("sawtooth").decay(.2).sustain(0)</code></div></td><td>Seconds.</td></tr>
+            <tr><td class="s"><code>.sustain(.5)</code></td><td>The level held after the decay.<div class="ex"><span>Example</span><code>note("c3*4").s("sawtooth").decay(.2).sustain(.5)</code></div></td><td>0–1. 0 = a short pluck, 1 = held at full volume.</td></tr>
+            <tr><td class="s"><code>.release(1)</code></td><td>Fade-out after the note ends.<div class="ex"><span>Example</span><code>note("c3 ~").s("sawtooth").release(1)</code></div></td><td>Seconds.</td></tr>
+            <tr><td class="s"><code>.clip(.5)</code></td><td>Note length relative to its step.<div class="ex"><span>Example</span><code>note("c4 e4 g4 c5").s("piano").clip(.3)</code></div></td><td>1 = the whole step, .5 = half (short), 2 = overlaps the next note.</td></tr>
+            <tr><td class="s"><code>.penv(24).pdecay(.1)</code></td><td>A pitch envelope: the note starts higher and slides down. Used for synth kicks and booms.<div class="ex"><span>Example</span><code>note("a1*4").s("sine").penv(24).pdecay(.1).decay(.3).sustain(0)</code></div></td><td>penv: semitones above; pdecay: seconds for the slide.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-fx">
+      <h2><span class="num">8.9</span>Effects</h2>
+      <p>Short list. For what every number means and which values to choose, see <a href="sound.html#fx-numbers">Effect numbers explained</a>.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>.gain(.8)</code></td><td>Volume.<div class="ex"><span>Example</span><code>s("hh*8").gain(".2 .8")</code></div></td><td>1 = normal, 0 = silent.</td></tr>
+            <tr><td class="s"><code>.pan(.3)</code></td><td>Left–right position.<div class="ex"><span>Example</span><code>s("hh*8").pan(sine)</code></div></td><td>0 left · .5 centre · 1 right.</td></tr>
+            <tr><td class="s"><code>.lpf(800) · .lpq(10)</code></td><td>Low-pass filter: removes highs · resonance peak.<div class="ex"><span>Example</span><code>note("a1*8").s("sawtooth").lpf(800).lpq(10)</code></div></td><td>Hz (20–20000) · 0–50.</td></tr>
+            <tr><td class="s"><code>.hpf(300)</code></td><td>High-pass filter: removes lows.<div class="ex"><span>Example</span><code>s("hh*8").hpf(3000)</code></div></td><td>Hz.</td></tr>
+            <tr><td class="s"><code>.vowel("a")</code></td><td>Makes the sound "talk".<div class="ex"><span>Example</span><code>note("[a3,c4,e4]*4").s("sawtooth").vowel("&lt;a e i o&gt;")</code></div></td><td>a e i o u</td></tr>
+            <tr><td class="s"><code>.room(.4) · .roomsize(4)</code></td><td>Reverb amount · reverb length.<div class="ex"><span>Example</span><code>s("~ cp").room(.4).roomsize(4)</code></div></td><td>0–1 · seconds.</td></tr>
+            <tr><td class="s"><code>.delay(.5) · .delaytime(.375) · .delayfeedback(.4)</code></td><td>Echo volume · time between echoes · how many echoes.<div class="ex"><span>Example</span><code>note("a4 ~ ~ ~").s("triangle").delay(.5).delaytime(.375).delayfeedback(.4)</code></div></td><td>0–1 · seconds · 0–0.98.</td></tr>
+            <tr><td class="s"><code>.shape(.4) · .distort("3:.5")</code></td><td>Saturation · distortion (amount:volume).<div class="ex"><span>Example</span><code>note("a1*4").s("sawtooth").distort("3:.5")</code></div></td><td>0–1 · 0–10 : 0–1.</td></tr>
+            <tr><td class="s"><code>.crush(4) · .coarse(8)</code></td><td>Bitcrusher (lower = dirtier) · downsampling (higher = rougher).<div class="ex"><span>Example</span><code>s("bd*4, hh*8").crush(4)</code></div></td><td>16 → 1 · 1 → 32.</td></tr>
+            <tr><td class="s"><code>.phaser(2) · .tremolo(4)</code></td><td>Swirl · volume pulsing.<div class="ex"><span>Example</span><code>note("[c3,e3,g3]").s("supersaw").tremolo(4).gain(.5)</code></div></td><td>Speed per second.</td></tr>
+            <tr><td class="s"><code>.orbit(2)</code></td><td>A separate effects channel, so layers can have different reverb and delay settings.<div class="ex"><span>Example</span><code>s("~ cp").room(.9).roomsize(8).orbit(2)</code></div></td><td>A channel number.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-signals" data-nav="Signals">
+      <h2><span class="num">8.10</span>Signals: values that move</h2>
+      <p>Signals are smooth values between 0 and 1 that change during each bar. Put them where a number goes: <code>.lpf(sine.range(300, 3000))</code>.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>sine</code></td><td>A smooth wave: 0.5 → 1 → 0 → 0.5 once per bar.<div class="ex"><span>Example</span><code>s("hh*16").gain(sine.range(.2, .8))</code></div></td><td>0–1</td></tr>
+            <tr><td class="s"><code>saw · isaw</code></td><td>A ramp: saw rises 0 → 1, isaw falls 1 → 0, each bar.<div class="ex"><span>Example</span><code>note("a2*16").s("sawtooth").lpf(saw.range(300, 3000))</code></div></td><td>0–1</td></tr>
+            <tr><td class="s"><code>tri · square</code></td><td>tri: up then down in straight lines. square: 0 for half the bar, 1 for the other half.<div class="ex"><span>Example</span><code>s("hh*16").gain(tri.range(.2, .8))</code></div></td><td>0–1</td></tr>
+            <tr><td class="s"><code>rand · irand(8)</code></td><td>Random values: rand gives 0–1, irand(n) a whole number from 0 to n−1.<div class="ex"><span>Example</span><code>s("hh*16").gain(rand.range(.2, .8))</code></div></td><td></td></tr>
+            <tr><td class="s"><code>run(8)</code></td><td>The numbers 0, 1, 2 … n−1 as a pattern.<div class="ex"><span>Example</span><code>n(run(8)).scale("C4:major").s("piano")</code></div></td><td></td></tr>
+            <tr><td class="s"><code>.range(a, b)</code></td><td>Rescales a 0–1 signal to the range a … b.<div class="ex"><span>Example</span><code>note("a2*16").s("sawtooth").lpf(sine.range(300, 3000))</code></div></td><td>Any two numbers.</td></tr>
+            <tr><td class="s"><code>.slow(4)</code></td><td>On a signal: one sweep takes 4 bars instead of 1.<div class="ex"><span>Example</span><code>note("a2*16").s("sawtooth").lpf(saw.range(300, 3000).slow(4))</code></div></td><td></td></tr>
+            <tr><td class="s"><code>.round()</code></td><td>Rounds to whole numbers (for scale steps).<div class="ex"><span>Example</span><code>n(sine.range(0, 7).segment(8).round()).scale("C4:major").s("piano")</code></div></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-struct">
+      <h2><span class="num">8.11</span>Building songs</h2>
+      <p>Combining patterns into layers, sections and songs.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>stack(a, b)</code></td><td>Plays several patterns together, as one.<div class="ex"><span>Example</span><code>stack(s("bd*4"), s("hh*8"))</code></div></td><td></td></tr>
+            <tr><td class="s"><code>cat(a, b)</code></td><td>One pattern per bar, in turn.<div class="ex"><span>Example</span><code>cat(s("bd*4"), s("bd*2 sd*2"))</code></div></td><td></td></tr>
+            <tr><td class="s"><code>arrange([4, a], [8, b])</code></td><td>Plays blocks in order, each for its number of bars. Each block starts from its own beginning.<div class="ex"><span>Example</span><code>arrange([2, s("bd*4")], [2, s("bd*4, hh*8")])</code></div></td><td>Bars per block.</td></tr>
+            <tr><td class="s"><code>"&lt;0 1&gt;".pick([a, b])</code></td><td>Chooses a pattern by number (or name) every bar. Follows the global clock.<div class="ex"><span>Example</span><code>"&lt;0 1&gt;".pick([s("bd*4"), s("hh*8")])</code></div></td><td>0 = the first in the list.</td></tr>
+            <tr><td class="s"><code>const verse = …</code></td><td>Stores a pattern under a name, to use it again.</td><td></td></tr>
+            <tr><td class="s"><code>const keys = p =&gt; note(p)…</code></td><td>A function: an instrument that can play any chords you give it.</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="cmd-visual">
+      <h2><span class="num">8.12</span>Visuals</h2>
+      <p>Drawings of the music in the editor. See <a href="visuals.html#visuals">6 Visuals</a>.</p>
+      <div class="table-wrap cmdref">
+        <table>
+          <thead><tr><th class="s">Command</th><th>What it does</th><th>Values · numbers</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>._pianoroll()</code></td><td>A piano roll inside the code, under the line.<div class="ex"><span>Example</span><code>note("c4 e4 g4 b4").s("piano")._pianoroll()</code></div></td><td></td></tr>
+            <tr><td class="s"><code>.pianoroll()</code></td><td>A piano roll in the background of the editor (one background visual at a time).<div class="ex"><span>Example</span><code>note("c4 e4 g4 b4").s("piano").pianoroll()</code></div></td><td><code>{labels: 1}</code> shows note names.</td></tr>
+            <tr><td class="s"><code>._punchcard() · ._scope() · ._spectrum() · ._pitchwheel() · ._spiral()</code></td><td>Other drawings: events as blocks, the waveform, the frequencies, the notes on a circle, a spiral.<div class="ex"><span>Example</span><code>s("bd*4, hh*8")._punchcard()</code></div></td><td></td></tr>
+            <tr><td class="s"><code>.color("cyan")</code></td><td>The colour of a layer in the visuals.<div class="ex"><span>Example</span><code>note("c4 e4").s("piano").color("cyan")._pianoroll()</code></div></td><td>Any CSS colour name.</td></tr>
+            <tr><td class="s"><code>all(x =&gt; x.pianoroll())</code></td><td>Applies something to every <code>$:</code> layer at once.</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+
+    <nav class="pager" aria-label="Previous and next part">
+      <a class="prev" href="export.html"><span>← Part 7</span><b>Save, export and practice</b></a>
+      <a class="next" href="reference.html"><span>Part 9 →</span><b>Sound bank</b></a>
+    </nav>
+
+    <footer>
+      <p>Written for the setup in <code>E:\Tindal</code>: Strudel running locally on port 4321.</p>
+      <p>Every code block can be copied. The Strudel blocks also open directly in the editor.</p>
+    </footer>
+  </main>
+</div>
+
+<script src="course.js"></script>
+</body>
+</html>

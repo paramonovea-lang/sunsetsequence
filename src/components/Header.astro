@@ -1,0 +1,70 @@
+---
+import { SITE } from '../site';
+
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/tracks/', label: 'Catalog' },
+  { href: '/course/', label: 'Free course' },
+  { href: '/about/', label: 'About' },
+];
+---
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="wordmark" aria-label="Sunset Sequence, home">
+      <img src="/logo-mark.svg" width="36" height="36" alt="" class="mark" />
+      <span aria-hidden="true">{SITE.wordmark}</span>
+    </a>
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="1.6" fill="none" /></svg>
+      <span>Menu</span>
+    </button>
+    <div id="site-menu" class="menu">
+      <nav aria-label="Main">
+        {nav.map((n) => (
+          <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>
+        ))}
+      </nav>
+      <a href="/course/" class="btn btn-ink cta">Start the course</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  function bindMenu() {
+    const btn = document.querySelector<HTMLButtonElement>('.site-header .menu-btn');
+    const menu = document.getElementById('site-menu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('open', open);
+    });
+  }
+  document.addEventListener('astro:page-load', bindMenu);
+</script>
+
+<style>
+  .site-header { border-bottom: var(--rule); background: var(--ground); }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 18px; padding-bottom: 18px; }
+  .wordmark { display: flex; align-items: center; gap: 12px; padding: 6px 0; text-decoration: none; font-weight: 800; font-size: 19px; letter-spacing: 0.06em; }
+  .mark { width: 36px; height: 36px; flex: none; }
+  .menu { display: flex; align-items: center; gap: 24px; }
+  nav { display: flex; flex-wrap: wrap; gap: 2px; font-size: 15px; font-weight: 500; }
+  nav a { padding: 12px 14px; text-decoration: none; }
+  nav a[aria-current='page'] { box-shadow: inset 0 -3px 0 var(--accent); }
+  .cta { min-height: var(--tap); padding: 0 18px; font-size: 15px; font-weight: 600; }
+  .menu-btn { display: none; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 14px; background: transparent; border: var(--rule); color: var(--ink); font: 600 15px var(--font-sans); cursor: pointer; }
+
+  @media (max-width: 420px) {
+    .wordmark { gap: 10px; font-size: 16px; letter-spacing: 0.04em; }
+    .menu-btn { padding: 0 12px; }
+  }
+  @media (max-width: 760px) {
+    .menu-btn { display: inline-flex; }
+    .menu { display: none; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 12px; padding: 8px 0 4px; }
+    .menu.open { display: flex; }
+    nav { flex-direction: column; font-size: 18px; }
+    nav a { padding: 12px 0; border-bottom: var(--hairline); }
+    .cta { justify-content: center; }
+  }
+</style>

@@ -1,0 +1,184 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import Cover from '../../components/Cover.astro';
+import ExtLink from '../../components/ExtLink.astro';
+import PlayButton from '../../components/PlayButton.astro';
+import SequenceGrid from '../../components/SequenceGrid.astro';
+import Waveform from '../../islands/Waveform';
+import { partBySlug, stepLabel } from '../../lib/course';
+import { readBars } from '../../lib/peaks';
+import { strudelUrl } from '../../lib/strudel-hash';
+import { coverInput, facts, meta, releasedTracks, sequenceRows, trackCode, type Track } from '../../lib/tracks';
+
+export async function getStaticPaths() {
+  const tracks = await releasedTracks();
+  return tracks.map((t) => ({ params: { slug: t.data.slug }, props: { track: t, all: tracks } }));
+}
+
+interface Props { track: Track; all: Track[] }
+const { track, all } = Astro.props;
+const d = track.data;
+const f = facts(track);
+const code = trackCode(track);
+const { Content } = await render(track);
+const more = all.filter((t) => t.id !== track.id).slice(0, 4);
+const lessons = d.lessons.map(partBySlug).filter((p) => !!p);
+const codeFile = d.code.split('/').pop();
+const data = [
+  ['KEY', f.key],
+  ['TEMPO', `${f.bpm} BPM`],
+  ['FORM', f.form],
+  ['CHORDS', f.chords],
+  ['ENGINE', f.engine],
+  ['DRUMS', f.drums],
+];
+---
+<Base title={`${d.title} (${d.id})`} description={`${d.id} · ${meta(track)}`} image={`/og/${d.id.toLowerCase()}.png`}>
+  <nav class="container crumbs mono" aria-label="Breadcrumb">
+    <a href="/tracks/">Catalog</a> / <span aria-current="page">{d.id}</span>
+  </nav>
+
+  <section class="container top">
+    <div class="frame">
+      <Cover {...coverInput(track)} label={`Cover of ${d.id}: a sun over striped water, drawn from the track's kick pattern`} />
+      <span class="badge mono">SPECIMEN {d.id}</span>
+    </div>
+
+    <div class="side">
+      <div>
+        <p class="eyebrow">{f.date} · {d.style}</p>
+        <h1 class="title">{d.title}</h1>
+      </div>
+
+      <div class="panel">
+        <PlayButton id={d.id} title={d.title} size={64} />
+        <Waveform
+          client:load
+          id={d.id}
+          title={d.title}
+          bars={readBars(d.audio.peaks)}
+          bpm={d.bpm}
+          totalCycles={d.placeholder || !d.formCycles ? '[total]' : String(d.formCycles)}
+          lengthText={f.length}
+        />
+      </div>
+
+      <div class="buttons">
+        <a href={strudelUrl(code)} class="btn btn-primary" target="_blank" rel="noopener">Open the code in Strudel ↗</a>
+        <a href="#code" class="btn btn-secondary">Play it live from the code ↓</a>
+        <a href="#notes" class="btn btn-secondary">How it was made</a>
+        {d.links.bandcamp && <ExtLink href={d.links.bandcamp} class="btn btn-secondary">Bandcamp</ExtLink>}
+      </div>
+
+      <dl class="data">
+        {data.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <section class="sequence">
+    <div class="container seq-inner">
+      <div class="seq-head">
+        <h2 class="h2s">The sequence</h2>
+        <p class="mono muted">one cycle · 16 steps · lights up as it plays</p>
+      </div>
+      <div class="scroll">
+        <SequenceGrid rows={sequenceRows(track)} numbers playId={d.id} label={`The sequence of ${d.id}: ${sequenceRows(track).map((r) => r.label).join(', ')} over 16 steps`} />
+      </div>
+    </div>
+  </section>
+
+  <section id="notes" class="container notes">
+    <div class="notes-text">
+      <p class="eyebrow">Lab notes</p>
+      <h2 class="h2s">How it was made</h2>
+      <div class="prose"><Content /></div>
+      {lessons.length > 0 && (
+        <div class="learn">
+          <span class="mono learn-label">LEARN THE TECHNIQUES · FREE</span>
+          {lessons.map((p) => <a href={`/course/${p.slug}/`}>Step {stepLabel(p.n)} · {p.title} →</a>)}
+        </div>
+      )}
+      <p class="mono muted small">Code: {d.licenses.code} · Audio: {d.licenses.audio} · <a href="/licences/">Licences</a></p>
+    </div>
+    <div id="code" class="notes-code">
+      <CodeBlock code={code} filename={codeFile} />
+    </div>
+  </section>
+
+  {more.length > 0 && (
+    <section class="more">
+      <div class="container more-inner">
+        <div class="seq-head">
+          <h2 class="h3s">More from the catalog</h2>
+          <a href="/tracks/" class="strong">All specimens →</a>
+        </div>
+        <ul class="more-grid">
+          {more.map((t) => (
+            <li>
+              <a href={`/tracks/${t.data.slug}/`}>
+                <Cover {...coverInput(t)} />
+                <span><strong>{t.data.title}</strong><span class="mono muted small">{t.data.id} · {t.data.style}</span></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .mono { font-family: var(--font-mono); font-size: var(--fs-label); }
+  .muted { color: var(--muted); }
+  .small { font-size: 12px; }
+  .strong { font-weight: 600; }
+  .crumbs { display: block; padding-top: 20px; color: var(--muted); }
+  .crumbs a { color: var(--muted); }
+  .crumbs span { color: var(--ink); }
+
+  .top { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; padding-top: 28px; padding-bottom: 64px; }
+  .frame { position: relative; flex: 1 1 440px; min-width: 0; border: var(--rule); }
+  .badge { position: absolute; left: 16px; top: 14px; padding: 4px 8px; background: var(--paper); }
+  .side { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 28px; }
+  .side .eyebrow { margin-bottom: 8px; }
+  .title { font-size: clamp(48px, 6vw, 88px); line-height: 0.95; }
+
+  .panel { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px 16px; padding: 18px; background: var(--paper); border: var(--rule); }
+
+  .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+  .buttons > :global(*) { min-height: 50px; padding: 0 20px; }
+  .buttons :global(span.btn) { color: var(--muted); }
+
+  .data { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); border-top: var(--rule); }
+  .data div { padding: 14px 0; border-bottom: var(--hairline); }
+  .data dt { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .data dd { margin: 0; font-weight: 600; font-size: 20px; overflow-wrap: anywhere; }
+
+  .sequence { background: var(--paper); border-top: var(--rule); border-bottom: var(--rule); }
+  .seq-inner { padding-top: 64px; padding-bottom: 64px; }
+  .seq-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 24px; }
+  .h2s { font-size: 36px; letter-spacing: -0.03em; }
+  .h3s { font-size: 28px; letter-spacing: -0.02em; }
+  .scroll { overflow-x: auto; }
+
+  .notes { display: flex; flex-wrap: wrap; gap: 48px; padding-top: 72px; padding-bottom: 72px; }
+  .notes-text { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .prose { color: var(--ink-2); display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  /* Command → what it does tables in the notes: long code fragments wrap instead of widening the page. */
+  .prose :global(table) { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+  .prose :global(th), .prose :global(td) { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .prose :global(td code) { overflow-wrap: anywhere; }
+  .learn { padding: 20px; background: var(--ink); color: var(--ground); display: flex; flex-direction: column; gap: 10px; }
+  .learn-label { font-size: 12px; color: var(--accent); }
+  .learn a { color: var(--ground); font-weight: 600; padding: 4px 0; }
+  .notes-code { flex: 1.2 1 520px; min-width: 0; }
+
+  .more { border-top: var(--rule); }
+  .more-inner { padding-top: 56px; padding-bottom: 72px; }
+  .more-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 20px; }
+  .more-grid a { display: flex; flex-direction: column; gap: 10px; text-decoration: none; }
+  .more-grid strong, .more-grid .mono { display: block; }
+</style>

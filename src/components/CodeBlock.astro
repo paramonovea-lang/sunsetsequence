@@ -1,0 +1,14 @@
+---
+// Dark code panel with Run (Strudel, in the page), Open in Strudel, Copy. Markup: lib/codeblock-html.ts.
+import { codeBlockHtml } from '../lib/codeblock-html';
+import type { Lang } from '../lib/highlight';
+
+interface Props {
+  code: string;
+  lang?: Lang;
+  filename?: string;
+  runnable?: boolean;
+}
+const { code, lang = 'strudel', filename, runnable = true } = Astro.props;
+---
+<Fragment set:html={codeBlockHtml({ code, lang, label: filename, runnable })} />

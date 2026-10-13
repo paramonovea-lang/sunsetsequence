@@ -1,0 +1,51 @@
+# sunsetsequence.com — Caddy config (docs/09). Installed to /etc/caddy/Caddyfile by deploy/server-setup.sh.
+# Headers must match deploy/headers.json (tests/unit checks it).
+
+sunsetsequence.com {
+	# Password until launch: /etc/caddy/auth.caddy holds a basic_auth block (not in git).
+	# At launch it is emptied (see docs/09 "Launch").
+	import /etc/caddy/auth.caddy
+
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' data:; worker-src 'self' blob:; connect-src 'self' https:; media-src 'self' https: blob: data:; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+		-Server
+	}
+
+	@immutable path /_astro/* /covers/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	handle_path /media/* {
+		root * /srv/sunsetsequence/media
+		header Cache-Control "public, max-age=86400"
+		file_server
+	}
+
+	handle {
+		root * /srv/sunsetsequence/site
+		file_server
+	}
+
+	handle_errors 404 {
+		root * /srv/sunsetsequence/site
+		rewrite * /404.html
+		file_server
+	}
+
+	log {
+		output file /var/log/caddy/sunsetsequence.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+	}
+}
+
+www.sunsetsequence.com {
+	redir https://sunsetsequence.com{uri} permanent
+}

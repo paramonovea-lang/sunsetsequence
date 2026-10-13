@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes and chords · Strudel course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="course.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="toc" aria-label="Course">
+    <p class="toc-label">Course</p>
+    <ol class="pages">
+      <li><a href="index.html"><span class="n">1</span>Start here</a></li>
+      <li><a href="rhythm.html"><span class="n">2</span>Rhythm and drums</a></li>
+      <li class="current"><a href="harmony.html" aria-current="page"><span class="n">3</span>Notes and chords</a>
+        <ol class="sub">
+          <li><a href="#octaves"><span class="n">3.1</span>Notes and octaves</a></li>
+          <li><a href="#l4"><span class="n">3.2</span>Bassline</a></li>
+          <li><a href="#l5"><span class="n">3.3</span>Chords</a></li>
+          <li><a href="#chord-notes"><span class="n">3.4</span>Chords from notes</a></li>
+          <li><a href="#l6"><span class="n">3.5</span>Melody</a></li>
+          <li><a href="#scales"><span class="n">3.6</span>Scales &amp; arpeggios</a></li>
+        </ol>
+      </li>
+      <li><a href="sound.html"><span class="n">4</span>Sound and effects</a></li>
+      <li><a href="structure.html"><span class="n">5</span>Song structure</a></li>
+      <li><a href="visuals.html"><span class="n">6</span>Visuals</a></li>
+      <li><a href="export.html"><span class="n">7</span>Save, export and practice</a></li>
+      <li><a href="commands.html"><span class="n">8</span>Command reference</a></li>
+      <li><a href="reference.html"><span class="n">9</span>Sound bank</a></li>
+      <li><a href="errors.html"><span class="n">10</span>Error messages</a></li>
+      <li><a href="tracks.html"><span class="n">11</span>Example tracks</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <p class="eyebrow">Part 3 of 11 · Live-coding course · Strudel</p>
+      <h1>Notes and chords</h1>
+      <p class="lede">Octaves, basslines, chords and inversions, chords from notes (with the keyboard explorer), melody, scales and arpeggios.</p>
+      <ul class="onpage"><li><a href="#octaves">3.1 Notes and octaves</a></li><li><a href="#l4">3.2 Bassline</a></li><li><a href="#l5">3.3 Chords</a></li><li><a href="#chord-notes">3.4 Chords from notes</a></li><li><a href="#l6">3.5 Melody</a></li><li><a href="#scales">3.6 Scales &amp; arpeggios</a></li></ul>
+    </header>
+
+<section id="octaves" data-nav="Notes and octaves">
+        <h2><span class="num">3.1</span>Notes and octaves: where each part belongs</h2>
+        <p>Music uses seven letter names, <b>A B C D E F G</b>, and then starts again. The distance from one note to the next note with the same name is an <b>octave</b>: the higher note vibrates exactly twice as fast and sounds like the same note, only higher. That is why every note name in Strudel ends in a number. You will use these numbers in every lesson from <a href="#l4">3.2 Bassline</a> on.</p>
+        <p>A note name like <code>a2</code> is the note plus an <b>octave number</b>. Each step up doubles the frequency: <code>a1</code> = 55 Hz, <code>a2</code> = 110 Hz, <code>a3</code> = 220 Hz, <code>a4</code> = 440 Hz (concert A). The number changes at C, so <code>b3</code> is directly below <code>c4</code>, and <code>c4</code> is middle C.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Octave</th><th>Range</th><th>What lives here</th></tr></thead>
+            <tbody>
+              <tr><td><code>c0</code>–<code>b0</code></td><td>16–31 Hz</td><td>Too low for most speakers. Avoid it.</td></tr>
+              <tr><td><code>c1</code>–<code>b1</code></td><td>33–62 Hz</td><td><b>Sub-bass:</b> 808 bass, the low end of a kick drum. You feel it more than hear it; laptop speakers barely play it.</td></tr>
+              <tr><td><code>c2</code>–<code>b2</code></td><td>65–123 Hz</td><td><b>Bass:</b> basslines, bass guitar, low synths</td></tr>
+              <tr><td><code>c3</code>–<code>b3</code></td><td>131–247 Hz</td><td><b>Low-mid:</b> lower chord notes, piano left hand, cello</td></tr>
+              <tr><td><code>c4</code>–<code>b4</code></td><td>262–494 Hz</td><td><b>Middle:</b> chords, pads, singing range, main melodies</td></tr>
+              <tr><td><code>c5</code>–<code>b5</code></td><td>523–988 Hz</td><td><b>High:</b> lead synths, high melodies, arpeggios</td></tr>
+              <tr><td><code>c6</code>–<code>b6</code></td><td>1–2 kHz</td><td><b>Top:</b> bells, glockenspiel, sparkles</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Good octaves for each part</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Part</th><th>Octaves (Strudel)</th><th>Example</th><th>Tips</th></tr></thead>
+            <tbody>
+              <tr><td>808 / sub bass</td><td>1</td><td><code>note("a1").s("sine")</code></td><td>Use a simple wave (<code>sine</code>) and only one note at a time. Leave the kick room, or make the two hit at different moments.</td></tr>
+              <tr><td>Bassline</td><td>1–2</td><td><code>note("a1 a2").s("sawtooth")</code></td><td>Mostly the root note of each chord. A bass guitar's lowest note is <code>e1</code>.</td></tr>
+              <tr><td>Chords, pads</td><td>3–4</td><td><code>chord("Am7").voicing()</code></td><td>Below <code>c3</code>, chords sound muddy. <code>voicing()</code> keeps the top note at or below <code>c5</code> automatically.</td></tr>
+              <tr><td>Melody, lead</td><td>4–5</td><td><code>.scale("A4:minor")</code></td><td>Keep it above the chords so it stands out.</td></tr>
+              <tr><td>Arpeggios, bells</td><td>5–6</td><td><code>.scale("A5:minor")</code></td><td>Use them quietly, as decoration.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>The example below plays every register at once. Each layer uses the same progression, so they all fit together. <code>.rootNotes(1)</code> takes each chord's root note in octave 1, so the bass follows the chords without your writing the notes out.</p>
+        <div class="codebox strudel" data-label="Strudel · registers">
+<pre class="code">setcpm(100/4)
+const prog = "&lt;Am7 F^7 C^7 G7&gt;"
+
+// octave 1: sub bass (felt more than heard)
+$: prog.rootNotes(1).note().s("sine").gain(.8)
+// octave 2: bassline
+$: prog.rootNotes(2).note().struct("x ~ x x ~ x x ~")
+  .s("sawtooth").lpf(700).decay(.15).sustain(0)
+// octaves 3-4: chords
+$: chord(prog).struct("[~ x]*2").voicing().s("gm_epiano1").gain(.6)
+// octave 4: melody
+$: n("0 2 4 2").scale("A4:minor").s("triangle").gain(.5)
+// octaves 5-6: sparkle
+$: n("[0 2 4 7]*2").scale("A5:minor").s("gm_glockenspiel").gain(.25)</pre>
+        </div>
+
+        <h3>Moving a part up or down</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Goal</th><th class="s">Code</th></tr></thead>
+            <tbody>
+              <tr><td>Whole part one octave down</td><td class="s"><code>.transpose(-12)</code></td></tr>
+              <tr><td>Whole part one octave up</td><td class="s"><code>.transpose(12)</code></td></tr>
+              <tr><td>Scale melody in another octave</td><td class="s"><code>.scale("A3:minor")</code></td></tr>
+              <tr><td>Chords lower</td><td class="s"><code>.anchor("c4").voicing()</code> (anchor must come <b>before</b> <code>voicing()</code>)</td></tr>
+              <tr><td>A note with no number</td><td class="s"><code>"c"</code> means <code>c3</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+<section id="l4">
+      <h2><span class="num">3.2</span>Bassline</h2>
+      <p><code>note()</code> takes pitches with octave numbers. <code>"&lt;a1 f1 c2 g1&gt;"</code> plays one root note per bar, which gives the four-bar progression A, F, C, G. <code>.struct()</code> supplies the rhythm: each <code>x</code> is a hit. The <code>sawtooth</code> synth goes through a low-pass filter (<code>lpf</code>), and <code>decay</code> with <code>sustain(0)</code> makes each note short and plucky.</p>
+      <div class="codebox strudel" data-label="Strudel · lesson 3.2">
+<pre class="code">setcpm(124/4)
+
+$: s("bd*4").bank("RolandTR909")
+$: s("~ cp ~ cp").bank("RolandTR909")
+$: s("[~ oh]*4").bank("RolandTR909").gain(.4)
+$: s("hh*16").bank("RolandTR909")
+  .gain("[.25 .5]*8")
+  .sometimesBy(.2, x =&gt; x.ply(2))
+
++ $: note("&lt;a1 f1 c2 g1&gt;")
++   .struct("x ~ x x ~ x x ~")
++   .s("sawtooth")
++   .lpf(500)
++   .decay(.15).sustain(0)</pre>
+      </div>
+      <div class="notes">
+        <div><h4>Listen for</h4><p>The bass changes note every bar and repeats every 4 bars.</p></div>
+        <div><h4>Try changing</h4><ul><li><code>.lpf(1200)</code> for a brighter sound</li><li><code>.s("square")</code></li><li><code>.struct("x(5,8)")</code></li></ul></div>
+      </div>
+    </section>
+
+<section id="l5">
+      <h2><span class="num">3.3</span>Chords</h2>
+      <p><code>chord()</code> reads chord symbols; <code>^7</code> means major seventh. <code>.voicing()</code> turns each symbol into notes and keeps them close together, so the chords move smoothly. <code>.struct("[~ x]*2")</code> places stabs on the off-beats. <code>gm_epiano1</code> is the General MIDI electric piano, and <code>.room(.5)</code> adds reverb.</p>
+      <div class="codebox strudel" data-label="Strudel · lesson 3.3">
+<pre class="code">setcpm(124/4)
+
+$: s("bd*4").bank("RolandTR909")
+$: s("~ cp ~ cp").bank("RolandTR909")
+$: s("[~ oh]*4").bank("RolandTR909").gain(.4)
+$: s("hh*16").bank("RolandTR909")
+  .gain("[.25 .5]*8")
+  .sometimesBy(.2, x =&gt; x.ply(2))
+
+$: note("&lt;a1 f1 c2 g1&gt;")
+  .struct("x ~ x x ~ x x ~")
+  .s("sawtooth")
+  .lpf(500)
+  .decay(.15).sustain(0)
+
++ $: chord("&lt;Am7 F^7 C^7 G7&gt;")
++   .struct("[~ x]*2")
++   .voicing()
++   .s("gm_epiano1")
++   .room(.5).gain(.6)</pre>
+      </div>
+      <div class="notes">
+        <div><h4>Listen for</h4><p>The chords follow the same A, F, C, G roots as the bass.</p></div>
+        <div><h4>Try changing</h4><ul><li><code>.s("piano")</code></li><li><code>.struct("x ~ ~ x ~ ~ x ~")</code></li><li><code>"&lt;Dm7 G7 C^7 A7&gt;"</code> (also change the bass)</li></ul></div>
+      </div>
+
+      <h3 id="inversions">Going deeper: chord inversions</h3>
+      <p>A chord's notes can be stacked in different orders. C major in <b>root position</b> is C-E-G. Move the bottom note up an octave and you get the <b>1st inversion</b>, E-G-C. Do it again for the <b>2nd inversion</b>, G-C-E. It's the same chord with a different color. Inversions let you change chords while each note moves only a little ("voice leading"), which sounds smooth instead of jumpy.</p>
+      <p>Listen for the difference: bars 1–4 play every chord in root position, and bars 5–8 play the same chords with inversions.</p>
+      <div class="codebox strudel" data-label="Strudel · root position vs inversions">
+<pre class="code">setcpm(90/4)
+
+// bars 1-4: root position, every chord starts on its root and jumps around
+$: note("&lt;[a3,c4,e4] [f3,a3,c4] [c4,e4,g4] [g3,b3,d4]&gt;")
+  .s("gm_piano").mask("&lt;1 1 1 1 0 0 0 0&gt;")
+// bars 5-8: inversions, the notes barely move
+$: note("&lt;[a3,c4,e4] [a3,c4,f4] [g3,c4,e4] [g3,b3,d4]&gt;")
+  .s("gm_piano").mask("&lt;0 0 0 0 1 1 1 1&gt;")</pre>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>What you want</th><th class="s">Strudel</th></tr></thead>
+          <tbody>
+            <tr><td>Smooth chords chosen for you</td><td class="s"><code>chord("&lt;Am F C G&gt;").voicing()</code> picks inversions automatically</td></tr>
+            <tr><td>Root position</td><td class="s"><code>chord("C").mode("root").anchor("c3").voicing()</code> → C3 G3 C4 E4</td></tr>
+            <tr><td>1st inversion</td><td class="s"><code>chord("C").dict("triads").mode("above").anchor("e4").voicing()</code> → E4 G4 C5</td></tr>
+            <tr><td>2nd inversion</td><td class="s"><code>chord("C").dict("triads").mode("above").anchor("g4").voicing()</code> → G4 C5 E5</td></tr>
+            <tr><td>Open (spread) voicing</td><td class="s">Write the notes: <code>note("[c3,g3,e4]")</code></td></tr>
+            <tr><td>Drop voicing</td><td class="s">Write the notes: <code>note("[b3,c4,e4,g4]")</code></td></tr>
+            <tr><td>More notes, stacked up</td><td class="s">Write the notes: <code>note("[c4,e4,g4,c5,e5]")</code></td></tr>
+            <tr><td>Any shape you like</td><td class="s"><code>note("[e3,g3,c4]")</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">In Strudel, <code>dict</code>, <code>mode</code> and <code>anchor</code> must all come <b>before</b> <code>.voicing()</code>. After it, they have no effect.</p>
+
+      <h3>Choosing the inversion of each chord</h3>
+      <p>The easiest way to control inversions in Strudel is to choose the <b>lowest note</b> of each chord. <code>.dict("triads")</code> gives plain three-note chords. <code>.mode("above")</code> builds each chord upward from the <code>anchor</code> note, so the anchor becomes the bass note. That decides the inversion:</p>
+      <ul class="plain">
+        <li>Lowest note = the <b>root</b> (C in C major): root position</li>
+        <li>Lowest note = the <b>third</b> (E in C major): 1st inversion</li>
+        <li>Lowest note = the <b>fifth</b> (G in C major): 2nd inversion</li>
+      </ul>
+      <p>Musicians write this as a slash chord: <b>F/A</b> means "F major with A in the bass", which is F's 1st inversion. Give <code>anchor</code> one note per chord, in the same rhythm as the chords.</p>
+
+      <div class="codebox strudel" data-label="Strudel · one chord, three inversions">
+<pre class="code">// C major: root position, 1st inversion, 2nd inversion
+// the anchor is the lowest note: C4 → C4 E4 G4, E4 → E4 G4 C5, G4 → G4 C5 E5
+chord("&lt;C C C&gt;").dict("triads").mode("above")
+  .anchor("&lt;c4 e4 g4&gt;")
+  .voicing().s("gm_epiano1")</pre>
+      </div>
+
+      <div class="codebox strudel" data-label="Strudel · a progression with chosen inversions">
+<pre class="code">setcpm(90/4)
+
+// Am     → A3 C4 E4  root position
+// F/A    → A3 C4 F4  1st inversion
+// C/G    → G3 C4 E4  2nd inversion
+// G/B    → B3 D4 G4  1st inversion
+$: chord("&lt;Am F C G&gt;").dict("triads").mode("above")
+  .anchor("&lt;a3 a3 g3 b3&gt;")
+  .voicing().s("gm_piano")
+// the bass plays the same lowest notes an octave down: A A G B
+$: note("&lt;a2 a2 g2 b2&gt;").s("gm_acoustic_bass")</pre>
+      </div>
+
+      <div class="codebox strudel" data-label="Strudel · two chords per bar">
+<pre class="code">setcpm(90/4)
+
+// bar 1: Am, then F/A · bar 2: C/G, then G
+// chords and anchors use the same [ ] grouping, so each chord gets its own bass note
+$: chord("&lt;[Am F] [C G]&gt;").dict("triads").mode("above")
+  .anchor("&lt;[a3 a3] [g3 g3]&gt;")
+  .voicing().s("gm_epiano1")
+$: note("&lt;[a2 a2] [g2 g2]&gt;").s("gm_acoustic_bass")</pre>
+      </div>
+
+      <div class="codebox strudel" data-label="Strudel · inversions with rhythm">
+<pre class="code">setcpm(100/4)
+
+// the struct gives the rhythm, the anchor picks the inversion for each bar:
+// Am (root) · Dm/A (2nd inv) · G/B (1st inv) · C (root)
+// "triads" only has three-note chords, so use Am, Dm… not Am7, Dm7…
+$: chord("&lt;Am Dm G C&gt;").dict("triads").mode("above")
+  .anchor("&lt;a3 a3 b3 c4&gt;")
+  .struct("x ~ x ~ ~ x ~ x")
+  .voicing().s("gm_epiano1").room(.4)
+$: note("&lt;a2 d2 g2 c2&gt;").s("gm_acoustic_bass")
+$: s("bd ~ sd ~, hh*8").bank("RolandTR909").gain(.6)</pre>
+      </div>
+
+    </section>
+
+<section id="chord-notes">
+      <h2><span class="num">3.4</span>Chords from notes</h2>
+      <p>In lesson 3.3, <code>chord("Am7").voicing()</code> picked the notes for you. Here you write <b>every note of the chord yourself</b>. It takes longer, but you decide exactly which keys sound: the octave, the order, extra notes. That's how the <a href="tracks.html#track-bach">Bach prelude (11.5)</a> is written.</p>
+
+      <h3>The one rule: commas mean "at the same time"</h3>
+      <div class="table-wrap">
+        <table class="mini">
+          <thead><tr><th>Write</th><th>You hear</th></tr></thead>
+          <tbody>
+            <tr><td><code>"c4 e4 g4"</code></td><td>Three notes <b>one after another</b>: a melody</td></tr>
+            <tr><td><code>"[c4,e4,g4]"</code></td><td>Three notes <b>at once</b>: a chord</td></tr>
+            <tr><td><code>"&lt;[c4,e4,g4] [a3,c4,e4]&gt;"</code></td><td>One chord per bar: a progression</td></tr>
+            <tr><td><code>"[c4,e4,g4]*4"</code></td><td>The same chord 4 times per bar</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="codebox strudel" data-label="Strudel · spaces vs commas">
+<pre class="code">setcpm(80/4)
+
+// bar 1: spaces = one after another · bar 2: commas = all at once
+note("&lt;[c4 e4 g4] [c4,e4,g4]&gt;").s("piano")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>note("&lt;[c4 e4 g4] [c4,e4,g4]&gt;")</code></td><td>Two bars, alternating (<code>&lt; &gt;</code>). In bar 1, <code>[c4 e4 g4]</code> has spaces, so the three notes share the bar one after another. In bar 2, <code>[c4,e4,g4]</code> has commas, so they sound together.</td></tr>
+            <tr><td><code>.s("piano")</code></td><td>Plays them on the piano.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>How a chord is built: counting semitones</h3>
+      <p>Every key on the piano, black or white, is one <b>semitone</b> away from the next. A chord is a <b>root note plus a recipe</b>: how many semitones up the other notes are. Count from the root and you can build any chord on any note.</p>
+
+      <figure class="grid-fig chordfig" style="margin:0">
+        <div class="kbd-row">
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="C major chord: C, E and G lit. E is 4 semitones above C, G is 7." data-notes="60 64 67"><text class="ktitle" x="4" y="15">C major = 0 + 4 + 7</text><rect class="wk chord" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk chord" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk chord" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="6" y="91" width="26" height="16" rx="8"/><text x="19" y="103" text-anchor="middle">0</text></g><g class="ctag"><rect x="66" y="91" width="26" height="16" rx="8"/><text x="79" y="103" text-anchor="middle">+4</text></g><g class="ctag"><rect x="126" y="91" width="26" height="16" rx="8"/><text x="139" y="103" text-anchor="middle">+7</text></g></svg>
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="C minor chord: C, E flat and G lit. E flat is 3 semitones above C, G is 7." data-notes="60 63 67"><text class="ktitle" x="4" y="15">C minor = 0 + 3 + 7</text><rect class="wk chord" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk chord" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk chord" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="6" y="91" width="26" height="16" rx="8"/><text x="19" y="103" text-anchor="middle">0</text></g><g class="ctag ctag-b"><rect x="51" y="65" width="26" height="16" rx="8"/><text x="64" y="77" text-anchor="middle">+3</text></g><g class="ctag"><rect x="126" y="91" width="26" height="16" rx="8"/><text x="139" y="103" text-anchor="middle">+7</text></g></svg>
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="C seventh chord: C, E, G and B flat lit, at 0, 4, 7 and 10 semitones." data-notes="60 64 67 70"><text class="ktitle" x="4" y="15">C7 = 0 + 4 + 7 + 10</text><rect class="wk chord" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk chord" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk chord" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk chord" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="6" y="91" width="26" height="16" rx="8"/><text x="19" y="103" text-anchor="middle">0</text></g><g class="ctag"><rect x="66" y="91" width="26" height="16" rx="8"/><text x="79" y="103" text-anchor="middle">+4</text></g><g class="ctag"><rect x="126" y="91" width="26" height="16" rx="8"/><text x="139" y="103" text-anchor="middle">+7</text></g><g class="ctag ctag-b"><rect x="171" y="65" width="26" height="16" rx="8"/><text x="184" y="77" text-anchor="middle">+10</text></g></svg>
+        </div>
+        <figcaption>Click a keyboard to hear its chord. The numbers count <b>semitones</b> (every key, black and white) up from the root. Major and minor differ by just one key: the middle note is 4 semitones up for major and 3 for minor.</figcaption>
+      </figure>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Chord</th><th>Recipe (semitones)</th><th>On C</th><th>Sound</th></tr></thead>
+          <tbody>
+            <tr><td><b>Major</b></td><td><code>0 4 7</code></td><td>C E G</td><td>bright, happy</td></tr>
+            <tr><td><b>Minor</b></td><td><code>0 3 7</code></td><td>C E♭ G</td><td>sad, dark</td></tr>
+            <tr><td><b>Diminished</b></td><td><code>0 3 6</code></td><td>C E♭ G♭</td><td>tense, unstable</td></tr>
+            <tr><td><b>Augmented</b></td><td><code>0 4 8</code></td><td>C E G♯</td><td>floating, strange</td></tr>
+            <tr><td><b>Sus2</b></td><td><code>0 2 7</code></td><td>C D G</td><td>open, neither major nor minor</td></tr>
+            <tr><td><b>Sus4</b></td><td><code>0 5 7</code></td><td>C F G</td><td>open, wants to move to major</td></tr>
+            <tr><td><b>7 (dominant)</b></td><td><code>0 4 7 10</code></td><td>C E G B♭</td><td>bluesy, wants to resolve</td></tr>
+            <tr><td><b>Maj7</b></td><td><code>0 4 7 11</code></td><td>C E G B</td><td>soft, jazzy, dreamy</td></tr>
+            <tr><td><b>Minor 7</b></td><td><code>0 3 7 10</code></td><td>C E♭ G B♭</td><td>mellow: house, soul</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">Example on another root: A minor = A + 3 + 7 → A, C, E. Count on the keyboard: A → A♯ → B → C (3 up), then on to E (7 up).</p>
+
+      <h3 id="chord-explorer">Try it: every chord type on the keyboard, with sound</h3>
+      <p>Pick a <b>chord type</b> and a <b>root</b>. The keyboard lights the chord's keys and tags each one with its distance from the root in semitones; then you hear it. Below the keyboard is the code that plays the same chord in Strudel (with your own notes, and by chord name). You can click any key to hear a single note.</p>
+      <figure class="arpfig chordx" id="chord-explorer-fig" style="margin:0">
+        <div class="arpstage">
+          <p class="arplabel"><span class="arpnum">1</span>Chord type (the numbers are the recipe in semitones):</p>
+          <p class="cx-group">Basic shapes (2–3 notes)</p>
+          <div class="catrow cx-types"><button type="button" class="catchip cx-type on" data-i="0" aria-pressed="true"><span class="cbar">Major</span><code>0 4 7</code></button><button type="button" class="catchip cx-type" data-i="1" aria-pressed="false"><span class="cbar">Minor</span><code>0 3 7</code></button><button type="button" class="catchip cx-type" data-i="2" aria-pressed="false"><span class="cbar">Diminished</span><code>0 3 6</code></button><button type="button" class="catchip cx-type" data-i="3" aria-pressed="false"><span class="cbar">Augmented</span><code>0 4 8</code></button><button type="button" class="catchip cx-type" data-i="4" aria-pressed="false"><span class="cbar">Sus2</span><code>0 2 7</code></button><button type="button" class="catchip cx-type" data-i="5" aria-pressed="false"><span class="cbar">Sus4</span><code>0 5 7</code></button><button type="button" class="catchip cx-type" data-i="6" aria-pressed="false"><span class="cbar">Power chord</span><code>0 7</code></button></div>
+          <p class="cx-group">Four notes: sevenths, sixths, add9</p>
+          <div class="catrow cx-types"><button type="button" class="catchip cx-type" data-i="7" aria-pressed="false"><span class="cbar">Dominant 7</span><code>0 4 7 10</code></button><button type="button" class="catchip cx-type" data-i="8" aria-pressed="false"><span class="cbar">Maj7</span><code>0 4 7 11</code></button><button type="button" class="catchip cx-type" data-i="9" aria-pressed="false"><span class="cbar">Minor 7</span><code>0 3 7 10</code></button><button type="button" class="catchip cx-type" data-i="10" aria-pressed="false"><span class="cbar">Half-diminished</span><code>0 3 6 10</code></button><button type="button" class="catchip cx-type" data-i="11" aria-pressed="false"><span class="cbar">Dim7</span><code>0 3 6 9</code></button><button type="button" class="catchip cx-type" data-i="12" aria-pressed="false"><span class="cbar">7sus4</span><code>0 5 7 10</code></button><button type="button" class="catchip cx-type" data-i="13" aria-pressed="false"><span class="cbar">Sixth</span><code>0 4 7 9</code></button><button type="button" class="catchip cx-type" data-i="14" aria-pressed="false"><span class="cbar">Minor 6</span><code>0 3 7 9</code></button><button type="button" class="catchip cx-type" data-i="15" aria-pressed="false"><span class="cbar">Add9</span><code>0 4 7 14</code></button></div>
+          <p class="cx-group">Five notes: ninths</p>
+          <div class="catrow cx-types"><button type="button" class="catchip cx-type" data-i="16" aria-pressed="false"><span class="cbar">Ninth</span><code>0 4 7 10 14</code></button><button type="button" class="catchip cx-type" data-i="17" aria-pressed="false"><span class="cbar">Minor 9</span><code>0 3 7 10 14</code></button><button type="button" class="catchip cx-type" data-i="18" aria-pressed="false"><span class="cbar">Maj9</span><code>0 4 7 11 14</code></button></div>
+        </div>
+        <div class="arpstage">
+          <p class="arplabel"><span class="arpnum">2</span>Root note (the chord is built up from here):</p>
+          <div class="cx-roots"><button type="button" class="cx-root on" data-i="0" aria-pressed="true">C</button><button type="button" class="cx-root" data-i="1" aria-pressed="false">D♭</button><button type="button" class="cx-root" data-i="2" aria-pressed="false">D</button><button type="button" class="cx-root" data-i="3" aria-pressed="false">E♭</button><button type="button" class="cx-root" data-i="4" aria-pressed="false">E</button><button type="button" class="cx-root" data-i="5" aria-pressed="false">F</button><button type="button" class="cx-root" data-i="6" aria-pressed="false">F♯</button><button type="button" class="cx-root" data-i="7" aria-pressed="false">G</button><button type="button" class="cx-root" data-i="8" aria-pressed="false">A♭</button><button type="button" class="cx-root" data-i="9" aria-pressed="false">A</button><button type="button" class="cx-root" data-i="10" aria-pressed="false">B♭</button><button type="button" class="cx-root" data-i="11" aria-pressed="false">B</button></div>
+        </div>
+        <div class="arpstage">
+          <p class="arplabel"><span class="arpnum">3</span><b id="cx-title">C (major)</b> <span id="cx-mood" class="cx-mood">bright, happy</span></p>
+          <div class="kbd-wrap"><svg class="kbd-svg cx-kbd" viewBox="0 0 590 152" role="img" aria-label="Piano keyboard from C4 to E6. The keys of the chosen chord are lit and tagged with their distance from the root in semitones. Click any key to hear it."><rect id="cx-60" class="wk" data-midi="60" x="6" y="6" width="34" height="140" rx="3"/><text class="kl" x="23" y="137" text-anchor="middle">C4</text><rect id="cx-62" class="wk" data-midi="62" x="40" y="6" width="34" height="140" rx="3"/><text class="kl" x="57" y="137" text-anchor="middle">D4</text><rect id="cx-64" class="wk" data-midi="64" x="74" y="6" width="34" height="140" rx="3"/><text class="kl" x="91" y="137" text-anchor="middle">E4</text><rect id="cx-65" class="wk" data-midi="65" x="108" y="6" width="34" height="140" rx="3"/><text class="kl" x="125" y="137" text-anchor="middle">F4</text><rect id="cx-67" class="wk" data-midi="67" x="142" y="6" width="34" height="140" rx="3"/><text class="kl" x="159" y="137" text-anchor="middle">G4</text><rect id="cx-69" class="wk" data-midi="69" x="176" y="6" width="34" height="140" rx="3"/><text class="kl" x="193" y="137" text-anchor="middle">A4</text><rect id="cx-71" class="wk" data-midi="71" x="210" y="6" width="34" height="140" rx="3"/><text class="kl" x="227" y="137" text-anchor="middle">B4</text><rect id="cx-72" class="wk" data-midi="72" x="244" y="6" width="34" height="140" rx="3"/><text class="kl" x="261" y="137" text-anchor="middle">C5</text><rect id="cx-74" class="wk" data-midi="74" x="278" y="6" width="34" height="140" rx="3"/><text class="kl" x="295" y="137" text-anchor="middle">D5</text><rect id="cx-76" class="wk" data-midi="76" x="312" y="6" width="34" height="140" rx="3"/><text class="kl" x="329" y="137" text-anchor="middle">E5</text><rect id="cx-77" class="wk" data-midi="77" x="346" y="6" width="34" height="140" rx="3"/><text class="kl" x="363" y="137" text-anchor="middle">F5</text><rect id="cx-79" class="wk" data-midi="79" x="380" y="6" width="34" height="140" rx="3"/><text class="kl" x="397" y="137" text-anchor="middle">G5</text><rect id="cx-81" class="wk" data-midi="81" x="414" y="6" width="34" height="140" rx="3"/><text class="kl" x="431" y="137" text-anchor="middle">A5</text><rect id="cx-83" class="wk" data-midi="83" x="448" y="6" width="34" height="140" rx="3"/><text class="kl" x="465" y="137" text-anchor="middle">B5</text><rect id="cx-84" class="wk" data-midi="84" x="482" y="6" width="34" height="140" rx="3"/><text class="kl" x="499" y="137" text-anchor="middle">C6</text><rect id="cx-86" class="wk" data-midi="86" x="516" y="6" width="34" height="140" rx="3"/><text class="kl" x="533" y="137" text-anchor="middle">D6</text><rect id="cx-88" class="wk" data-midi="88" x="550" y="6" width="34" height="140" rx="3"/><text class="kl" x="567" y="137" text-anchor="middle">E6</text><rect id="cx-61" class="bk" data-midi="61" x="30" y="6" width="20" height="86" rx="2"/><rect id="cx-63" class="bk" data-midi="63" x="64" y="6" width="20" height="86" rx="2"/><rect id="cx-66" class="bk" data-midi="66" x="132" y="6" width="20" height="86" rx="2"/><rect id="cx-68" class="bk" data-midi="68" x="166" y="6" width="20" height="86" rx="2"/><rect id="cx-70" class="bk" data-midi="70" x="200" y="6" width="20" height="86" rx="2"/><rect id="cx-73" class="bk" data-midi="73" x="268" y="6" width="20" height="86" rx="2"/><rect id="cx-75" class="bk" data-midi="75" x="302" y="6" width="20" height="86" rx="2"/><rect id="cx-78" class="bk" data-midi="78" x="370" y="6" width="20" height="86" rx="2"/><rect id="cx-80" class="bk" data-midi="80" x="404" y="6" width="20" height="86" rx="2"/><rect id="cx-82" class="bk" data-midi="82" x="438" y="6" width="20" height="86" rx="2"/><rect id="cx-85" class="bk" data-midi="85" x="506" y="6" width="20" height="86" rx="2"/><rect id="cx-87" class="bk" data-midi="87" x="540" y="6" width="20" height="86" rx="2"/><g class="ctag" id="cxt-60" hidden><rect x="9" y="102" width="28" height="17" rx="8"/><text x="23" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-62" hidden><rect x="43" y="102" width="28" height="17" rx="8"/><text x="57" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-64" hidden><rect x="77" y="102" width="28" height="17" rx="8"/><text x="91" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-65" hidden><rect x="111" y="102" width="28" height="17" rx="8"/><text x="125" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-67" hidden><rect x="145" y="102" width="28" height="17" rx="8"/><text x="159" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-69" hidden><rect x="179" y="102" width="28" height="17" rx="8"/><text x="193" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-71" hidden><rect x="213" y="102" width="28" height="17" rx="8"/><text x="227" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-72" hidden><rect x="247" y="102" width="28" height="17" rx="8"/><text x="261" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-74" hidden><rect x="281" y="102" width="28" height="17" rx="8"/><text x="295" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-76" hidden><rect x="315" y="102" width="28" height="17" rx="8"/><text x="329" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-77" hidden><rect x="349" y="102" width="28" height="17" rx="8"/><text x="363" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-79" hidden><rect x="383" y="102" width="28" height="17" rx="8"/><text x="397" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-81" hidden><rect x="417" y="102" width="28" height="17" rx="8"/><text x="431" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-83" hidden><rect x="451" y="102" width="28" height="17" rx="8"/><text x="465" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-84" hidden><rect x="485" y="102" width="28" height="17" rx="8"/><text x="499" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-86" hidden><rect x="519" y="102" width="28" height="17" rx="8"/><text x="533" y="114.5" text-anchor="middle">0</text></g><g class="ctag" id="cxt-88" hidden><rect x="553" y="102" width="28" height="17" rx="8"/><text x="567" y="114.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-61" hidden><rect x="26" y="70" width="28" height="17" rx="8"/><text x="40" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-63" hidden><rect x="60" y="70" width="28" height="17" rx="8"/><text x="74" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-66" hidden><rect x="128" y="70" width="28" height="17" rx="8"/><text x="142" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-68" hidden><rect x="162" y="70" width="28" height="17" rx="8"/><text x="176" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-70" hidden><rect x="196" y="70" width="28" height="17" rx="8"/><text x="210" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-73" hidden><rect x="264" y="70" width="28" height="17" rx="8"/><text x="278" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-75" hidden><rect x="298" y="70" width="28" height="17" rx="8"/><text x="312" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-78" hidden><rect x="366" y="70" width="28" height="17" rx="8"/><text x="380" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-80" hidden><rect x="400" y="70" width="28" height="17" rx="8"/><text x="414" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-82" hidden><rect x="434" y="70" width="28" height="17" rx="8"/><text x="448" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-85" hidden><rect x="502" y="70" width="28" height="17" rx="8"/><text x="516" y="82.5" text-anchor="middle">0</text></g><g class="ctag ctag-b" id="cxt-87" hidden><rect x="536" y="70" width="28" height="17" rx="8"/><text x="550" y="82.5" text-anchor="middle">0</text></g></svg></div>
+          <div class="cx-out">
+            <div><span class="cx-k">Notes</span> <span id="cx-notes">C4 · E4 · G4</span></div>
+            <div><span class="cx-k s">Strudel</span> <code id="cx-strudel">note("[c4,e4,g4]").s("piano")</code></div>
+            <div><span class="cx-k s">By name</span> <code id="cx-chord">chord("C").voicing().s("piano")</code></div>
+          </div>
+          <div class="arpctl">
+            <button type="button" class="btn play" id="cx-play">▶ Play chord</button>
+            <button type="button" class="btn" id="cx-arp">▶ Note by note</button>
+            <button type="button" class="btn" id="cx-tour">▶ All 19 types on this root</button>
+            <label class="arpsound"><input type="checkbox" id="cx-sound" checked> Sound</label>
+          </div>
+        </div>
+        <figcaption>The sound is Strudel's own piano, the same recordings as <code>.s("piano")</code>, played straight by your browser without starting Strudel. They start loading when you point at the explorer; until they arrive (or if they can't load), you hear a simple piano-like tone instead. Change only the type and the bottom key stays put: you can see and hear which keys move. Change only the root and the whole shape slides along the keyboard while the semitone tags stay the same. Some notes get unusual names, like F♭ (the same key as E) or B♯ (the same key as C): music theory names each chord note by its letter (a third is always two letters above the root). Strudel understands these names too. The <b>By name</b> line uses <code>chord()</code>, which picks its own octave and note order (lesson 3.3), so it sounds the same chord in a different layout.</figcaption>
+      </figure>
+
+      <div class="codebox strudel" data-label="Strudel · chord types">
+<pre class="code">setcpm(70/4)
+
+// one root (C), a different recipe each bar:
+// major · minor · diminished · sus4 · 7 · maj7
+note("&lt;[c4,e4,g4] [c4,eb4,g4] [c4,eb4,gb4] [c4,f4,g4] [c4,e4,g4,bb4] [c4,e4,g4,b4]&gt;")
+  .s("piano")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>[c4,e4,g4]</code></td><td>Bar 1, major: C + 4 = E, C + 7 = G.</td></tr>
+            <tr><td><code>[c4,eb4,g4]</code></td><td>Bar 2, minor: only the middle note changes (E → E♭, 3 semitones up).</td></tr>
+            <tr><td><code>[c4,eb4,gb4]</code></td><td>Bar 3, diminished: the top note also drops (G → G♭).</td></tr>
+            <tr><td><code>[c4,f4,g4]</code></td><td>Bar 4, sus4: the middle note goes up to F (5 semitones).</td></tr>
+            <tr><td><code>[c4,e4,g4,bb4]</code></td><td>Bar 5, 7th: a fourth note, B♭ (10 semitones).</td></tr>
+            <tr><td><code>[c4,e4,g4,b4]</code></td><td>Bar 6, maj7: B instead of B♭ (11 semitones).</td></tr>
+            <tr><td><code>eb4, gb4, bb4</code></td><td>Flats are written with <code>b</code> (E♭ = <code>eb4</code>) and sharps with <code>#</code> (F♯ = <code>f#4</code>).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <h3 id="sus-chords">Sus chords: Dsus2, Fsus2, Asus4…</h3>
+      <p>In a major or minor chord, the <b>middle note</b> sets the mood. 4 semitones above the root sounds major (happy) and 3 sounds minor (sad). Musicians call this note the <b>3rd</b>. A <b>sus</b> chord (short for <i>suspended</i>) leaves the 3rd out and plays another note in its place:</p>
+      <ul>
+        <li><b>sus2</b>: the middle note moves <b>down</b> to 2 semitones above the root. Recipe <code>0 2 7</code>.</li>
+        <li><b>sus4</b>: the middle note moves <b>up</b> to 5 semitones above the root. Recipe <code>0 5 7</code>.</li>
+      </ul>
+      <p>The root (bottom) and the top note, 7 semitones up (the <b>5th</b>), stay where they are. Without the 3rd, the chord is neither major nor minor. It sounds open and unfinished, as if it's waiting to move on. That's why a sus chord is often followed by the plain chord on the same root, for example Dsus4 → D.</p>
+      <figure class="grid-fig chordfig" style="margin:0">
+        <div class="kbd-row">
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="D major: D, F sharp and A lit. F sharp is 4 semitones above D, A is 7." data-notes="62 66 69"><text class="ktitle" x="4" y="15">D = 0 + 4 + 7</text><rect class="wk" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk chord" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk chord" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk chord" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="36" y="91" width="26" height="16" rx="8"/><text x="49" y="103" text-anchor="middle">0</text></g><g class="ctag"><rect x="156" y="91" width="26" height="16" rx="8"/><text x="169" y="103" text-anchor="middle">+7</text></g><g class="ctag ctag-b"><rect x="111" y="65" width="26" height="16" rx="8"/><text x="124" y="77" text-anchor="middle">+4</text></g></svg>
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="D sus 2: D, E and A lit. E is 2 semitones above D, A is 7." data-notes="62 64 69"><text class="ktitle" x="4" y="15">Dsus2 = 0 + 2 + 7</text><rect class="wk" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk chord" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk chord" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk chord" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="36" y="91" width="26" height="16" rx="8"/><text x="49" y="103" text-anchor="middle">0</text></g><g class="ctag"><rect x="66" y="91" width="26" height="16" rx="8"/><text x="79" y="103" text-anchor="middle">+2</text></g><g class="ctag"><rect x="156" y="91" width="26" height="16" rx="8"/><text x="169" y="103" text-anchor="middle">+7</text></g></svg>
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="D sus 4: D, G and A lit. G is 5 semitones above D, A is 7." data-notes="62 67 69"><text class="ktitle" x="4" y="15">Dsus4 = 0 + 5 + 7</text><rect class="wk" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk chord" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk chord" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk chord" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="36" y="91" width="26" height="16" rx="8"/><text x="49" y="103" text-anchor="middle">0</text></g><g class="ctag"><rect x="126" y="91" width="26" height="16" rx="8"/><text x="139" y="103" text-anchor="middle">+5</text></g><g class="ctag"><rect x="156" y="91" width="26" height="16" rx="8"/><text x="169" y="103" text-anchor="middle">+7</text></g></svg>
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="F sus 2: F, G and the next C lit. G is 2 semitones above F, C is 7." data-notes="65 67 72"><text class="ktitle" x="4" y="15">Fsus2 = 0 + 2 + 7</text><rect class="wk" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk chord" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk chord" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk chord" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="96" y="91" width="26" height="16" rx="8"/><text x="109" y="103" text-anchor="middle">0</text></g><g class="ctag"><rect x="126" y="91" width="26" height="16" rx="8"/><text x="139" y="103" text-anchor="middle">+2</text></g><g class="ctag"><rect x="216" y="91" width="26" height="16" rx="8"/><text x="229" y="103" text-anchor="middle">+7</text></g></svg>
+        </div>
+        <figcaption>Click a keyboard to hear its chord. From D to Dsus2 or Dsus4, only the middle key moves: F♯ (+4) steps down to E (+2) or up to G (+5). D and A stay. Fsus2 is the Dsus2 shape slid up to F: F, then G (+2), then C (+7).</figcaption>
+      </figure>
+      <p>Any sus chord works the same way. Start on the root and count: sus2 is <b>root, +2, +7</b> and sus4 is <b>root, +5, +7</b>. Here are all 12 of each, with the notes to write in Strudel. In the explorer above, pick <b>Sus2</b> or <b>Sus4</b> and click a root to see and hear any of them.</p>
+      <div class="table-wrap">
+        <table class="sus-all">
+          <thead><tr><th>Root</th><th>sus2 (0 2 7)</th><th>Strudel notes</th><th>sus4 (0 5 7)</th><th>Strudel notes</th></tr></thead>
+          <tbody>
+            <tr><td><b>C</b></td><td>Csus2: C D G</td><td><code>[c4,d4,g4]</code></td><td>Csus4: C F G</td><td><code>[c4,f4,g4]</code></td></tr>
+            <tr><td><b>D♭</b></td><td>D♭sus2: D♭ E♭ A♭</td><td><code>[db4,eb4,ab4]</code></td><td>D♭sus4: D♭ G♭ A♭</td><td><code>[db4,gb4,ab4]</code></td></tr>
+            <tr class="hl"><td><b>D</b></td><td>Dsus2: D E A</td><td><code>[d4,e4,a4]</code></td><td>Dsus4: D G A</td><td><code>[d4,g4,a4]</code></td></tr>
+            <tr><td><b>E♭</b></td><td>E♭sus2: E♭ F B♭</td><td><code>[eb4,f4,bb4]</code></td><td>E♭sus4: E♭ A♭ B♭</td><td><code>[eb4,ab4,bb4]</code></td></tr>
+            <tr><td><b>E</b></td><td>Esus2: E F♯ B</td><td><code>[e4,f#4,b4]</code></td><td>Esus4: E A B</td><td><code>[e4,a4,b4]</code></td></tr>
+            <tr class="hl"><td><b>F</b></td><td>Fsus2: F G C</td><td><code>[f4,g4,c5]</code></td><td>Fsus4: F B♭ C</td><td><code>[f4,bb4,c5]</code></td></tr>
+            <tr><td><b>F♯</b></td><td>F♯sus2: F♯ G♯ C♯</td><td><code>[f#4,g#4,c#5]</code></td><td>F♯sus4: F♯ B C♯</td><td><code>[f#4,b4,c#5]</code></td></tr>
+            <tr><td><b>G</b></td><td>Gsus2: G A D</td><td><code>[g4,a4,d5]</code></td><td>Gsus4: G C D</td><td><code>[g4,c5,d5]</code></td></tr>
+            <tr><td><b>A♭</b></td><td>A♭sus2: A♭ B♭ E♭</td><td><code>[ab4,bb4,eb5]</code></td><td>A♭sus4: A♭ D♭ E♭</td><td><code>[ab4,db5,eb5]</code></td></tr>
+            <tr><td><b>A</b></td><td>Asus2: A B E</td><td><code>[a4,b4,e5]</code></td><td>Asus4: A D E</td><td><code>[a4,d5,e5]</code></td></tr>
+            <tr><td><b>B♭</b></td><td>B♭sus2: B♭ C F</td><td><code>[bb4,c5,f5]</code></td><td>B♭sus4: B♭ E♭ F</td><td><code>[bb4,eb5,f5]</code></td></tr>
+            <tr><td><b>B</b></td><td>Bsus2: B C♯ F♯</td><td><code>[b4,c#5,f#5]</code></td><td>Bsus4: B E F♯</td><td><code>[b4,e5,f#5]</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">The octave number goes up at every C. That's why, from Fsus2 on, the top note is in octave 5: Fsus2 = <code>f4</code>, <code>g4</code>, <code>c5</code>. Each black key has two names (D♭ = C♯), so C♯sus2 is the same chord as D♭sus2.</p>
+      <p><b>Same keys, two names.</b> Dsus2 (D E A) and Asus4 (A D E) use the same three notes. The name depends on which note is at the bottom. With D at the bottom it's Dsus2, and with A at the bottom it's Asus4. In the same way, Csus2 = Gsus4 and Fsus2 = Csus4.</p>
+      <p>To hear sus chords in a whole song, with all of these ideas, play <a href="tracks.html#track-sus">11.9 Open Road</a>.</p>
+
+      <h3>Writing sus chords in code</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Chord</th><th>Your own notes</th><th>Strudel chord name</th></tr></thead>
+          <tbody>
+            <tr><td><b>Dsus2</b></td><td><code>note("[d4,e4,a4]")</code></td><td><code>chord("D2").voicing()</code></td></tr>
+            <tr><td><b>Dsus4</b></td><td><code>note("[d4,g4,a4]")</code></td><td><code>chord("Dsus").voicing()</code></td></tr>
+            <tr><td><b>D7sus4</b></td><td><code>note("[d4,g4,a4,c5]")</code></td><td><code>chord("D7sus").voicing()</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend"><b>Careful:</b> in Strudel, <code>chord("Dsus2")</code> and <code>chord("Dsus4")</code> play <b>nothing</b>, and the Console tab shows <code>[voicing]: unknown chord "Dsus2"</code>. Strudel takes its chord names from the jazz app iReal Pro, which writes sus2 as <code>2</code> and sus4 as plain <code>sus</code>.</p>
+      <div class="codebox strudel" data-label="Strudel · sus chords from notes">
+<pre class="code">setcpm(80/4)
+
+// D · Dsus4 · D · Dsus2, then F · Fsus2 · Fsus4 · F (one chord per bar)
+note("&lt;[d4,f#4,a4] [d4,g4,a4] [d4,f#4,a4] [d4,e4,a4] [f4,a4,c5] [f4,g4,c5] [f4,bb4,c5] [f4,a4,c5]&gt;")
+  .s("piano")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>&lt; … &gt;</code></td><td>One chord per bar: 8 bars, then it starts again.</td></tr>
+            <tr><td><code>[d4,f#4,a4]</code></td><td>Bars 1 and 3, D major: the middle note F♯ is 4 semitones above D.</td></tr>
+            <tr><td><code>[d4,g4,a4]</code></td><td>Bar 2, Dsus4: F♯ goes up to G (+5). D and A don't change.</td></tr>
+            <tr><td><code>[d4,e4,a4]</code></td><td>Bar 4, Dsus2: F♯ goes down to E (+2).</td></tr>
+            <tr><td><code>[f4,a4,c5]</code></td><td>Bars 5 and 8, F major: A is 4 semitones above F. C comes after B, so it's <code>c5</code>.</td></tr>
+            <tr><td><code>[f4,g4,c5]</code></td><td>Bar 6, Fsus2: A goes down to G (+2).</td></tr>
+            <tr><td><code>[f4,bb4,c5]</code></td><td>Bar 7, Fsus4: A goes up to B♭ (+5).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="codebox strudel" data-label="Strudel · sus chords by name">
+<pre class="code">setcpm(84/4)
+
+// Dsus2 · Bm7 · Gsus2 · Asus4, with a bass line on the roots
+const prog = chord("&lt;D2 Bm7 G2 Asus&gt;")
+$: prog.voicing().s("gm_epiano1").room(.3)
+$: prog.rootNotes(2).s("gm_acoustic_bass").gain(.8)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>chord("&lt;D2 Bm7 G2 Asus&gt;")</code></td><td>Four chords, one per bar: Dsus2, Bm7, Gsus2, Asus4. Inside <code>chord()</code>, <code>2</code> means sus2 and <code>sus</code> means sus4. <code>G2</code> here is the chord Gsus2, not the note G in octave 2.</td></tr>
+            <tr><td><code>const prog =</code></td><td>Stores the progression, so both layers below play the same chords.</td></tr>
+            <tr><td><code>.voicing()</code></td><td>Picks the notes and octaves of each chord, as in lesson 3.3.</td></tr>
+            <tr><td><code>.s("gm_epiano1").room(.3)</code></td><td>Electric piano with a little reverb.</td></tr>
+            <tr><td><code>.rootNotes(2)</code></td><td>Plays only the root of each chord, in octave 2: a bass line D, B, G, A.</td></tr>
+            <tr><td><code>.s("gm_acoustic_bass").gain(.8)</code></td><td>Upright bass, a little quieter.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="chord-names">Other chord names you'll meet</h3>
+      <p>Songbooks and chord websites use many more names. Each one is still a root plus a recipe. The explorer above plays all of them on any root. Here they are on D, with the name to write in Strudel.</p>
+      <div class="table-wrap">
+        <table class="chordnames">
+          <thead><tr><th>Chord</th><th>Recipe</th><th>Notes on D</th><th>Strudel</th><th>Sound</th></tr></thead>
+          <tbody>
+            <tr><td><b>D5 (power chord)</b></td><td><code>0 7</code></td><td>D A</td><td><code>chord("D5")</code></td><td>hard and plain, neither major nor minor: rock guitar</td></tr>
+            <tr><td><b>Dadd9</b></td><td><code>0 4 7 14</code></td><td>D F♯ A E</td><td><code>chord("Dadd9")</code></td><td>major with a sparkle: pop, ballads</td></tr>
+            <tr><td><b>D6</b></td><td><code>0 4 7 9</code></td><td>D F♯ A B</td><td><code>chord("D6")</code></td><td>sweet, old-fashioned: swing, surf</td></tr>
+            <tr><td><b>Dm6</b></td><td><code>0 3 7 9</code></td><td>D F A B</td><td><code>chord("Dm6")</code></td><td>mysterious: spy films</td></tr>
+            <tr><td><b>D7sus4</b></td><td><code>0 5 7 10</code></td><td>D G A C</td><td><code>chord("D7sus")</code></td><td>soft tension: gospel, neo-soul</td></tr>
+            <tr><td><b>Dmaj7</b></td><td><code>0 4 7 11</code></td><td>D F♯ A C♯</td><td><code>chord("D^7")</code></td><td>soft, jazzy, dreamy</td></tr>
+            <tr><td><b>D9</b></td><td><code>0 4 7 10 14</code></td><td>D F♯ A C E</td><td><code>chord("D9")</code></td><td>funky, bluesy</td></tr>
+            <tr><td><b>Dm9</b></td><td><code>0 3 7 10 14</code></td><td>D F A C E</td><td><code>chord("Dm9")</code></td><td>lush minor: lo-fi, neo-soul</td></tr>
+            <tr><td><b>Dmaj9</b></td><td><code>0 4 7 11 14</code></td><td>D F♯ A C♯ E</td><td><code>chord("D^9")</code></td><td>dreamy, floating</td></tr>
+            <tr><td><b>Ddim (D°)</b></td><td><code>0 3 6</code></td><td>D F A♭</td><td><code>chord("Do")</code></td><td>tense, unstable</td></tr>
+            <tr><td><b>Ddim7 (D°7)</b></td><td><code>0 3 6 9</code></td><td>D F A♭ C♭ <span class="muted">(C♭ is the key B)</span></td><td><code>chord("Do7")</code></td><td>spooky, very tense: old horror films</td></tr>
+            <tr><td><b>Dm7♭5 (Dø)</b></td><td><code>0 3 6 10</code></td><td>D F A♭ C</td><td><code>chord("Dm7b5")</code></td><td>dark, jazzy: often leads to a minor chord</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend"><b>Numbers above 12</b> reach into the next octave: 14 = 12 + 2, so the 9th is the 2nd one octave higher. Dadd9 and Dsus2 both contain E, but add9 <b>keeps</b> the 3rd (F♯) and adds E on top, while sus2 <b>replaces</b> the 3rd with E. <b>Slash chords</b> like D/F♯ mean "D with F♯ as the lowest note". Write those notes yourself: <code>note("[f#3,d4,f#4,a4]")</code>.</p>
+      <div class="table-wrap">
+        <table class="mini">
+          <thead><tr><th>Songbook writes</th><th>Write in Strudel's <code>chord()</code></th></tr></thead>
+          <tbody>
+            <tr><td>sus2</td><td><code>2</code> (Dsus2 → <code>D2</code>)</td></tr>
+            <tr><td>sus4, sus</td><td><code>sus</code> (Dsus4 → <code>Dsus</code>)</td></tr>
+            <tr><td>7sus4</td><td><code>7sus</code></td></tr>
+            <tr><td>maj7, Δ7</td><td><code>^7</code> or <code>M7</code></td></tr>
+            <tr><td>maj9</td><td><code>^9</code></td></tr>
+            <tr><td>dim, °</td><td><code>o</code></td></tr>
+            <tr><td>dim7, °7</td><td><code>o7</code></td></tr>
+            <tr><td>m7♭5, ø</td><td><code>m7b5</code> or <code>h7</code></td></tr>
+            <tr><td>aug, +</td><td><code>aug</code> or <code>+</code></td></tr>
+            <tr><td>m, 7, m7, 6, m6, 9, m9, add9, 5</td><td>the same as the songbook</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>A progression written as notes</h3>
+      <div class="codebox strudel" data-label="Strudel · progression as notes">
+<pre class="code">setcpm(80/4)
+
+// C – Am – F – G, one chord per bar, every chord written note by note
+note("&lt;[c4,e4,g4] [a3,c4,e4] [f3,a3,c4] [g3,b3,d4]&gt;").s("piano")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>"&lt;[c4,e4,g4] [a3,c4,e4] [f3,a3,c4] [g3,b3,d4]&gt;"</code></td><td>Four chords, one per bar (<code>&lt; &gt;</code>): C, Am, F, G. Each chord is in root position, with its root as the lowest note.</td></tr>
+            <tr><td><code>.s("piano")</code></td><td>Played on the piano.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>That works, but every chord jumps to a new place. Writing the notes yourself lets you choose positions that sit close together:</p>
+
+      <figure class="grid-fig chordfig" style="margin:0">
+        <div class="kbd-row">
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="C chord as E4, G4, C5" data-notes="64 67 72"><text class="ktitle" x="4" y="15">C (E G C)</text><rect class="wk" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk chord" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk chord" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk chord" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="66" y="91" width="26" height="16" rx="8"/><text x="79" y="103" text-anchor="middle">E</text></g><g class="ctag"><rect x="126" y="91" width="26" height="16" rx="8"/><text x="139" y="103" text-anchor="middle">G</text></g><g class="ctag"><rect x="216" y="91" width="26" height="16" rx="8"/><text x="229" y="103" text-anchor="middle">C</text></g></svg>
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="A minor chord as E4, A4, C5" data-notes="64 69 72"><text class="ktitle" x="4" y="15">Am (E A C)</text><rect class="wk" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk chord" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk chord" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk chord" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="66" y="91" width="26" height="16" rx="8"/><text x="79" y="103" text-anchor="middle">E</text></g><g class="ctag"><rect x="156" y="91" width="26" height="16" rx="8"/><text x="169" y="103" text-anchor="middle">A</text></g><g class="ctag"><rect x="216" y="91" width="26" height="16" rx="8"/><text x="229" y="103" text-anchor="middle">C</text></g></svg>
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="F chord as F4, A4, C5" data-notes="65 69 72"><text class="ktitle" x="4" y="15">F (F A C)</text><rect class="wk" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk chord" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk chord" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk chord" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="96" y="91" width="26" height="16" rx="8"/><text x="109" y="103" text-anchor="middle">F</text></g><g class="ctag"><rect x="156" y="91" width="26" height="16" rx="8"/><text x="169" y="103" text-anchor="middle">A</text></g><g class="ctag"><rect x="216" y="91" width="26" height="16" rx="8"/><text x="229" y="103" text-anchor="middle">C</text></g></svg>
+          <svg class="kbd-svg kbd-mini" viewBox="0 0 308 130" role="img" aria-label="G chord as D4, G4, B4" data-notes="62 67 71"><text class="ktitle" x="4" y="15">G (D G B)</text><rect class="wk" x="4" y="22" width="30" height="104" rx="2"/><text class="kl" x="19" y="119" text-anchor="middle">C</text><rect class="wk chord" x="34" y="22" width="30" height="104" rx="2"/><text class="kl" x="49" y="119" text-anchor="middle">D</text><rect class="wk" x="64" y="22" width="30" height="104" rx="2"/><text class="kl" x="79" y="119" text-anchor="middle">E</text><rect class="wk" x="94" y="22" width="30" height="104" rx="2"/><text class="kl" x="109" y="119" text-anchor="middle">F</text><rect class="wk chord" x="124" y="22" width="30" height="104" rx="2"/><text class="kl" x="139" y="119" text-anchor="middle">G</text><rect class="wk" x="154" y="22" width="30" height="104" rx="2"/><text class="kl" x="169" y="119" text-anchor="middle">A</text><rect class="wk chord" x="184" y="22" width="30" height="104" rx="2"/><text class="kl" x="199" y="119" text-anchor="middle">B</text><rect class="wk" x="214" y="22" width="30" height="104" rx="2"/><text class="kl" x="229" y="119" text-anchor="middle">C</text><rect class="wk" x="244" y="22" width="30" height="104" rx="2"/><text class="kl" x="259" y="119" text-anchor="middle">D</text><rect class="wk" x="274" y="22" width="30" height="104" rx="2"/><text class="kl" x="289" y="119" text-anchor="middle">E</text><rect class="bk" x="25" y="22" width="18" height="64" rx="2"/><rect class="bk" x="55" y="22" width="18" height="64" rx="2"/><rect class="bk" x="115" y="22" width="18" height="64" rx="2"/><rect class="bk" x="145" y="22" width="18" height="64" rx="2"/><rect class="bk" x="175" y="22" width="18" height="64" rx="2"/><rect class="bk" x="235" y="22" width="18" height="64" rx="2"/><rect class="bk" x="265" y="22" width="18" height="64" rx="2"/><g class="ctag"><rect x="36" y="91" width="26" height="16" rx="8"/><text x="49" y="103" text-anchor="middle">D</text></g><g class="ctag"><rect x="126" y="91" width="26" height="16" rx="8"/><text x="139" y="103" text-anchor="middle">G</text></g><g class="ctag"><rect x="186" y="91" width="26" height="16" rx="8"/><text x="199" y="103" text-anchor="middle">B</text></g></svg>
+        </div>
+        <figcaption>Click a keyboard to hear its chord. The same four chords (C, Am, F, G) as in the code below, voiced so the hand barely moves: C stays on top for three chords, and each change moves only one or two keys a small step. This is the voice-leading idea from lesson 3.3, written as notes.</figcaption>
+      </figure>
+
+      <h3>Chords with rhythm and a bass line</h3>
+      <p>A chord doesn't have to last the whole bar. Give it a rhythm with <code>.struct</code>, make it short with <code>.clip</code>, and put the root in a separate low bass. Now the chords sound like an accompaniment.</p>
+      <div class="codebox strudel" data-label="Strudel · chords, rhythm &amp; bass">
+<pre class="code">setcpm(100/4)
+
+// voice-led chords (see the keyboards above) with a rhythm
+$: note("&lt;[e4,g4,c5] [e4,a4,c5] [f4,a4,c5] [d4,g4,b4]&gt;")
+  .struct("x ~ x x ~ x ~ x")
+  .s("gm_epiano1").clip(.6)
+// the bass plays each chord's root, low
+$: note("&lt;c2 a1 f1 g1&gt;").s("gm_acoustic_bass")
+// drums
+$: s("bd ~ sd ~, hh*8").bank("RolandTR909").gain(.6)</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>note("&lt;[e4,g4,c5] [e4,a4,c5] [f4,a4,c5] [d4,g4,b4]&gt;")</code></td><td>C, Am, F, G in close positions (the keyboards above). The hand barely moves.</td></tr>
+            <tr><td><code>.struct("x ~ x x ~ x ~ x")</code></td><td>Rhythm: the chord plays on every <code>x</code> of 8 steps and rests on <code>~</code>.</td></tr>
+            <tr><td><code>.s("gm_epiano1").clip(.6)</code></td><td>Electric piano. Each hit lasts 60% of its step, which gives a short, bouncy feel.</td></tr>
+            <tr><td><code>note("&lt;c2 a1 f1 g1&gt;")</code></td><td>A separate bass with each chord's root in a low octave. The chords above don't need their roots at the bottom.</td></tr>
+            <tr><td><code>.s("gm_acoustic_bass")</code></td><td>Played on an acoustic bass.</td></tr>
+            <tr><td><code>s("bd ~ sd ~, hh*8")</code></td><td>A simple beat: kick, snare and 8th-note hi-hats.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Shortcut 1: chords from numbers</h3>
+      <p>Instead of naming every note, give a <b>root</b> and a <b>recipe</b>. Notes as numbers (MIDI) can be added: 60 is middle C (C4), and each +1 is one semitone up.</p>
+      <div class="codebox strudel" data-label="Strudel · chords from numbers">
+<pre class="code">setcpm(80/4)
+
+// roots as MIDI numbers: 60 = C4, 57 = A3, 53 = F3, 55 = G3
+// recipes in semitones: [0,4,7] = major, [0,3,7] = minor
+note("&lt;60 57 53 55&gt;".add("&lt;[0,4,7] [0,3,7] [0,4,7] [0,4,7]&gt;"))
+  .s("piano")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>"&lt;60 57 53 55&gt;"</code></td><td>The roots as numbers, one per bar: 60 = C4, 57 = A3, 53 = F3, 55 = G3.</td></tr>
+            <tr><td><code>.add("&lt;[0,4,7] [0,3,7] [0,4,7] [0,4,7]&gt;")</code></td><td>Adds a recipe to each root. The commas turn one root into three notes: <code>[0,4,7]</code> = major, <code>[0,3,7]</code> = minor (bar 2, Am).</td></tr>
+            <tr><td><code>note(…)</code></td><td>Plays the resulting numbers as notes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Shortcut 2: chords from a scale</h3>
+      <p>With <code>n()</code> and <code>.scale()</code> (lesson 3.5), the numbers are <b>scale steps</b>, not semitones. Steps <code>[0,2,4]</code> are the 1st, 3rd and 5th notes of the scale: a triad. Because it uses only scale notes, the chord is <b>always in key</b>, and it comes out major or minor by itself.</p>
+      <div class="codebox strudel" data-label="Strudel · chords from a scale">
+<pre class="code">setcpm(80/4)
+
+// [0,2,4] = scale steps 1, 3 and 5 = a triad that always fits the key
+// .add moves the triad to another step: 0 = C, -2 = A, -4 = F, -3 = G
+n("[0,2,4]".add("&lt;0 -2 -4 -3&gt;")).scale("C4:major").s("piano")</pre>
+      </div>
+      <div class="table-wrap cmd">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>"[0,2,4]"</code></td><td>Scale steps 0, 2 and 4 together: in C major that is C, E, G.</td></tr>
+            <tr><td><code>.add("&lt;0 -2 -4 -3&gt;")</code></td><td>Moves the triad each bar: start on step 0 (C), −2 (A), −4 (F), −3 (G). That gives C, Am, F, G.</td></tr>
+            <tr><td><code>.scale("C4:major")</code></td><td>Turns the steps into C major notes, counting from C4.</td></tr>
+            <tr><td><code>n(…)</code></td><td><code>n</code> means "these are scale steps" (with <code>.scale</code>), not notes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Way to write a chord</th><th>Example</th><th>Use it when…</th></tr></thead>
+          <tbody>
+            <tr><td>Chord symbol</td><td><code>chord("Am").voicing()</code></td><td>you think in chord names and want Strudel to choose the notes</td></tr>
+            <tr><td>Notes</td><td><code>note("[a3,c4,e4]")</code></td><td>you want exact control of every key</td></tr>
+            <tr><td>Root + recipe</td><td><code>note("57".add("[0,3,7]"))</code></td><td>you think in intervals, or want to change chord type quickly</td></tr>
+            <tr><td>Scale steps</td><td><code>n("[0,2,4]").scale("C4:major")</code></td><td>you want chords that always fit the key</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Practice</h3>
+      <ul class="plain">
+        <li>Write <b>G – D – Em – C</b> as notes. Use the recipe table: G major = G + 4 + 7 → G, B, D.</li>
+        <li>Change the progression example so every chord is a 7th chord (add a fourth note, 10 or 11 semitones up).</li>
+        <li>In the scale shortcut, change <code>"C4:major"</code> to <code>"A3:minor"</code> and listen: the same steps make different chords.</li>
+      </ul>
+    </section>
+
+<section id="l6" data-nav="Melody">
+      <h2><span class="num">3.5</span>Melody from scale degrees</h2>
+      <p>With <code>n()</code> plus <code>.scale()</code>, numbers are steps in a scale, not pitches. In A minor, <code>0</code> is A, <code>2</code> is C and <code>4</code> is E. That means a melody can't play a wrong note. <code>.add("&lt;0 -2 2 -1&gt;")</code> shifts the whole motif each bar so it follows the chords: A, then F (two steps down), C (two up) and G (one down). The <code>triangle</code> synth is soft, and <code>.delay(.4)</code> adds echoes.</p>
+      <div class="codebox strudel" data-label="Strudel · lesson 3.5">
+<pre class="code">setcpm(124/4)
+
+$: s("bd*4").bank("RolandTR909")
+$: s("~ cp ~ cp").bank("RolandTR909")
+$: s("[~ oh]*4").bank("RolandTR909").gain(.4)
+$: s("hh*16").bank("RolandTR909")
+  .gain("[.25 .5]*8")
+  .sometimesBy(.2, x =&gt; x.ply(2))
+
+$: note("&lt;a1 f1 c2 g1&gt;")
+  .struct("x ~ x x ~ x x ~")
+  .s("sawtooth")
+  .lpf(500)
+  .decay(.15).sustain(0)
+
+$: chord("&lt;Am7 F^7 C^7 G7&gt;")
+  .struct("[~ x]*2")
+  .voicing()
+  .s("gm_epiano1")
+  .room(.5).gain(.6)
+
++ $: n("0 [~ 2] 4 [3 2]".add("&lt;0 -2 2 -1&gt;"))
++   .scale("A4:minor")
++   .s("triangle")
++   .delay(.4).gain(.5)</pre>
+      </div>
+      <div class="notes">
+        <div><h4>Listen for</h4><p>The same four-note shape at a different height each bar.</p></div>
+        <div><h4>Try changing</h4><ul><li><code>.scale("A4:dorian")</code></li><li><code>"0 2 4 7"</code> as the motif</li><li><code>.s("gm_vibraphone")</code></li></ul></div>
+      </div>
+    </section>
+
+<section id="scales" data-nav="Scales &amp; arpeggios">
+      <h2><span class="num">3.6</span>Scales &amp; arpeggios</h2>
+      <p>A <b>scale</b> is the set of notes a piece uses, like the white keys from C to C for C major. An <b>arpeggio</b> plays the notes of a chord one after another instead of all at once. Both are the main source of melodies, basslines and synth patterns.</p>
+
+      <h3>Scales: numbers instead of note names</h3>
+      <p>With <code>n("…").scale("C4:major")</code>, each number is a step in the scale, counted from the root (<code>0</code>). In a 7-note scale, <code>7</code> is the root an octave up. Negative numbers go below the root. In a 5-note (pentatonic) scale, <code>5</code> is already the octave.</p>
+      <div class="codebox strudel" data-label="Strudel · up and down a scale">
+<pre class="code">setcpm(100/4)
+
+// bar 1 up, bar 2 down: the C major scale over one octave
+n("&lt;[0 1 2 3 4 5 6 7] [7 6 5 4 3 2 1 0]&gt;").scale("C4:major").s("gm_piano")</pre>
+      </div>
+
+      <p>Every scale has its own mood. This example plays the same melody each bar while the scale changes:</p>
+      <div class="codebox strudel" data-label="Strudel · hear the modes">
+<pre class="code">setcpm(100/4)
+
+// major, minor, dorian, lydian, mixolydian, phrygian
+n("0 2 4 [6 5] 4 2 1 0")
+  .scale("&lt;C4:major C4:minor C4:dorian C4:lydian C4:mixolydian C4:phrygian&gt;")
+  .s("gm_vibraphone")</pre>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th class="s">Strudel name</th><th>Notes from C</th><th>Sound</th></tr></thead>
+          <tbody>
+            <tr><td class="s"><code>major</code></td><td>C D E F G A B</td><td>Bright, happy</td></tr>
+            <tr><td class="s"><code>minor</code></td><td>C D E♭ F G A♭ B♭</td><td>Sad, dark</td></tr>
+            <tr><td class="s"><code>dorian</code></td><td>C D E♭ F G A B♭</td><td>Minor, but warmer: funk, jazz, house</td></tr>
+            <tr><td class="s"><code>phrygian</code></td><td>C D♭ E♭ F G A♭ B♭</td><td>Dark, Spanish, metal</td></tr>
+            <tr><td class="s"><code>lydian</code></td><td>C D E F♯ G A B</td><td>Dreamy, floating: film music</td></tr>
+            <tr><td class="s"><code>mixolydian</code></td><td>C D E F G A B♭</td><td>Major with a bluesy edge: rock</td></tr>
+            <tr><td class="s"><code>locrian</code></td><td>C D♭ E♭ F G♭ A♭ B♭</td><td>Unstable, tense</td></tr>
+            <tr><td class="s"><code>harmonic minor</code></td><td>C D E♭ F G A♭ B</td><td>Exotic, classical</td></tr>
+            <tr><td class="s"><code>melodic minor</code></td><td>C D E♭ F G A B</td><td>Jazz</td></tr>
+            <tr><td class="s"><code>major pentatonic</code></td><td>C D E G A</td><td>Folk, pop. Hard to play a wrong note</td></tr>
+            <tr><td class="s"><code>minor pentatonic</code></td><td>C E♭ F G B♭</td><td>Rock and blues solos</td></tr>
+            <tr><td class="s"><code>blues</code></td><td>C E♭ F G♭ G B♭</td><td>Blues</td></tr>
+            <tr><td class="s"><code>whole tone</code></td><td>C D E F♯ G♯ A♯</td><td>Dreamlike, no clear home</td></tr>
+            <tr><td class="s"><code>hirajoshi</code></td><td>C D E♭ G A♭</td><td>Japanese</td></tr>
+            <tr><td class="s"><code>chromatic</code></td><td>All 12 notes</td><td>Every note</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">In Strudel, put the key and octave first: <code>"A4:minor"</code>, <code>"D3:dorian"</code>, <code>"F#4:major pentatonic"</code>.</p>
+
+      <p><b>Random notes that always fit.</b> <code>irand(8)</code> picks random numbers from 0 to 7. Because they go through a scale, every note is in key, and the melody never repeats exactly.</p>
+      <div class="codebox strudel" data-label="Strudel · generative melody">
+<pre class="code">setcpm(90/4)
+
+// 8 random scale steps per bar, about 30% of them left out
+$: n(irand(8).segment(8)).scale("A4:minor pentatonic")
+  .s("gm_kalimba").degradeBy(.3).room(.5)
+$: note("&lt;a2 a2 e2 g2&gt;").s("gm_acoustic_bass")</pre>
+      </div>
+
+      <h3>Arpeggios</h3>
+      <p><b>Write the notes.</b> The simplest arpeggio is a chord's notes in order. The four bars below play C major up, down, up-and-down, and "broken" (skipping around).</p>
+      <div class="codebox strudel" data-label="Strudel · written arpeggios">
+<pre class="code">setcpm(100/4)
+
+note("&lt;[c4 e4 g4 c5] [c5 g4 e4 c4] [c4 e4 g4 e4] [c4 g4 e4 g4]&gt;")
+  .s("gm_orchestral_harp")</pre>
+      </div>
+
+      <p><b>Arpeggiate chord symbols.</b> Add <code>n()</code> to <code>chord().voicing()</code>, and each number picks a note of the chord from the bottom: <code>0</code> is the lowest. Numbers bigger than the chord continue into the next octave. You write the shape once, and it follows every chord.</p>
+      <div class="codebox strudel" data-label="Strudel · arpeggio from chords">
+<pre class="code">setcpm(110/4)
+
+// up and back down through each chord
+$: n("0 1 2 3 4 3 2 1").chord("&lt;Am F C G&gt;").voicing()
+  .s("gm_epiano1")
+// bass on each chord's root (after chord(), rootNotes already gives notes, so no .note())
+$: chord("&lt;Am F C G&gt;").rootNotes(2).s("gm_acoustic_bass")</pre>
+      </div>
+      <div class="table-wrap">
+        <table class="mini">
+          <thead><tr><th>Shape</th><th>Pattern for <code>n()</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>up</code></td><td><code>"0 1 2 3"</code></td></tr>
+            <tr><td><code>down</code></td><td><code>"3 2 1 0"</code></td></tr>
+            <tr><td><code>up-down</code></td><td><code>"0 1 2 3 2 1"</code></td></tr>
+            <tr><td><code>broken</code></td><td><code>"0 2 1 3"</code> or <code>"0 2 1 2"</code> (the classical "Alberti bass")</td></tr>
+            <tr><td><code>two octaves</code></td><td><code>"0 1 2 3 4 5 6 7"</code></td></tr>
+            <tr><td><code>faster</code></td><td><code>"[0 1 2 3]*4"</code> (sixteenth notes)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><b>A classic synth arpeggio.</b> Sixteenth notes on a short, filtered sawtooth with an echo, the sound of trance and synth-pop:</p>
+      <div class="codebox strudel" data-label="Strudel · synth arp">
+<pre class="code">setcpm(124/4)
+
+$: n("[0 1 2 3]*4").chord("&lt;Am F C G&gt;").voicing()
+  .s("sawtooth").lpf(1800).clip(.5).delay(.3).gain(.5)
+$: s("bd*4, [~ hh]*4").bank("RolandTR909")</pre>
+      </div>
+
+      <p><b>Pick notes from a stacked chord.</b> (To see this on a piano keyboard, step by step, go to <a href="tracks.html#arp-explained">How cat and .arp work together</a> in 11.5.) <code>.arp()</code> takes notes from a chord you wrote with commas, by position (<code>0</code> is the first note written). <code>[0,2]</code> plays two of them together.</p>
+      <div class="codebox strudel" data-label="Strudel · arp()">
+<pre class="code">setcpm(100/4)
+
+note("&lt;[c4,e4,g4,b4] [a3,c4,e4,g4]&gt;")
+  .arp("0 1 2 3 2 1 [0,2] ~")
+  .s("gm_vibraphone")</pre>
+      </div>
+    </section>
+
+    <nav class="pager" aria-label="Previous and next part">
+      <a class="prev" href="rhythm.html"><span>← Part 2</span><b>Rhythm and drums</b></a>
+      <a class="next" href="sound.html"><span>Part 4 →</span><b>Sound and effects</b></a>
+    </nav>
+
+    <footer>
+      <p>Written for the setup in <code>E:\Tindal</code>: Strudel running locally on port 4321.</p>
+      <p>Every code block can be copied. The Strudel blocks also open directly in the editor.</p>
+    </footer>
+  </main>
+</div>
+
+<script src="course.js"></script>
+</body>
+</html>

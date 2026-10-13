@@ -1,0 +1,52 @@
+{
+  "id": "drum-kit",
+  "lesson": "02-rhythm-and-drums",
+  "anchor": "l2",
+  "title": "The drum kit",
+  "stepWord": "Layer",
+  "nextLabel": "Add the next layer →",
+  "steps": [
+    {
+      "title": "The pulse",
+      "html": "<p>Everything loops in cycles. <code>s(\"bd*4\")</code> plays the bass drum four times per cycle: a four-on-the-floor kick. <code>setcpm(124/4)</code> gives 31 bars a minute, which is 124 BPM.</p>",
+      "listen": "A steady kick on every beat. The word <code>bd</code> lights up each time it plays.",
+      "code": "+ setcpm(124/4)\n+ $: s(\"bd*4\").bank(\"RolandTR909\")",
+      "grid": ["bd"]
+    },
+    {
+      "title": "Claps on 2 and 4",
+      "html": "<p>Each line that starts with <code>$:</code> is a separate layer, and all layers play together. <code>~</code> is a rest, so <code>\"~ cp ~ cp\"</code> puts a clap on beats 2 and 4.</p>",
+      "listen": "The clap answering the kick, the backbone of almost every dance track.",
+      "code": "setcpm(124/4)\n$: s(\"bd*4\").bank(\"RolandTR909\")\n+ $: s(\"~ cp ~ cp\").bank(\"RolandTR909\")",
+      "grid": ["bd", "cp"]
+    },
+    {
+      "title": "Open hats on the off-beat",
+      "html": "<p><code>\"[~ oh]*4\"</code> repeats \"rest, open hat\" four times, which puts the open hat on every off-beat. <code>.gain(.4)</code> keeps it quieter than the drums.</p>",
+      "listen": "The hat between every kick. This is where house gets its bounce.",
+      "code": "setcpm(124/4)\n$: s(\"bd*4\").bank(\"RolandTR909\")\n$: s(\"~ cp ~ cp\").bank(\"RolandTR909\")\n+ $: s(\"[~ oh]*4\").bank(\"RolandTR909\").gain(.4)",
+      "grid": ["bd", "cp", "oh"]
+    },
+    {
+      "title": "Human feel",
+      "html": "<p>A drum machine hits every note at the same volume. <code>rand.range(.25, .7)</code> gives each hat a random volume, and <code>.degradeBy(.15)</code> randomly drops 15% of the hits.</p>",
+      "listen": "Sixteen hats that never repeat exactly. Delete <code>.degradeBy</code> to hear the difference.",
+      "code": "setcpm(124/4)\n$: s(\"bd*4\").bank(\"RolandTR909\")\n$: s(\"~ cp ~ cp\").bank(\"RolandTR909\")\n$: s(\"[~ oh]*4\").bank(\"RolandTR909\").gain(.4)\n+ $: s(\"hh*16\").bank(\"RolandTR909\")\n+   .gain(rand.range(.25, .7))\n+   .degradeBy(.15)",
+      "grid": ["bd", "cp", "oh", "hh"]
+    },
+    {
+      "title": "A fill every 4th bar",
+      "html": "<p><code>&lt; &gt;</code> picks a different item each bar. In bar 4 the kick stops halfway while the toms roll down, and a crash marks the start of each new phrase.</p>",
+      "listen": "Every fourth bar, the drop-out and the tom roll that tells you a new phrase is coming.",
+      "code": "setcpm(124/4)\n+ $: s(\"<bd*4 bd*4 bd*4 [bd bd ~ ~]>\").bank(\"RolandTR909\")\n$: s(\"~ cp ~ cp\").bank(\"RolandTR909\")\n$: s(\"[~ oh]*4\").bank(\"RolandTR909\").gain(.4)\n$: s(\"hh*16\").bank(\"RolandTR909\")\n  .gain(rand.range(.25, .7)).degradeBy(.15)\n+ $: s(\"<~ ~ ~ [~ ~ [ht mt] [lt lt]]>\").bank(\"RolandTR909\")\n+ $: s(\"<cr ~ ~ ~>\").bank(\"RolandTR909\").gain(.5)",
+      "grid": ["bd", "cp", "oh", "hh", "toms"]
+    }
+  ],
+  "rows": {
+    "bd": { "label": "bd", "color": "#ECEEE8", "pattern": "x...x...x...x..." },
+    "cp": { "label": "cp", "color": "#F0562A", "pattern": "....x.......x..." },
+    "oh": { "label": "oh", "color": "#7FD3B0", "pattern": "..x...x...x...x." },
+    "hh": { "label": "hh", "color": "#F2C94C", "pattern": "xx.xxxx.xxx.xx.x" },
+    "toms": { "label": "toms", "color": "#C9B8F0", "pattern": "............x.xx" }
+  }
+}

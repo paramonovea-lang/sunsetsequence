@@ -1,0 +1,158 @@
+---
+// The catalog on ink: Covers | Tracklist switch and style filters (docs/03 home §3).
+// Without JS both views are shown; the script picks one and remembers it.
+import Cover from './Cover.astro';
+import PlayButton from './PlayButton.astro';
+import { coverInput, facts, meta, type Track } from '../lib/tracks';
+
+interface Props {
+  tracks: Track[];
+  heading?: string;
+  headingLevel?: 'h1' | 'h2';
+}
+const { tracks, heading = 'The catalog', headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+const styles = [...new Set(tracks.map((t) => t.data.style))];
+const styleKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+<section id="catalog" class="catalog on-ink" data-catalog>
+  <div class="container section">
+    <div class="head">
+      <H class="title">{heading}</H>
+      <div class="controls">
+        <div role="tablist" aria-label="View" class="views">
+          <button type="button" role="tab" aria-selected="true" data-view="covers">Covers</button>
+          <button type="button" role="tab" aria-selected="false" data-view="list">Tracklist</button>
+        </div>
+        <div role="group" aria-label="Filter by style" class="chips">
+          <button type="button" aria-pressed="true" data-filter="all">All</button>
+          {styles.map((s) => <button type="button" aria-pressed="false" data-filter={`style:${styleKey(s)}`}>{s}</button>)}
+          <button type="button" aria-pressed="false" data-filter="lesson">With lesson</button>
+        </div>
+      </div>
+    </div>
+
+    <ul class="grid" data-panel="covers">
+      {tracks.map((t) => (
+        <li data-style={styleKey(t.data.style)} data-lesson={t.data.lessons.length > 0 ? '1' : undefined}>
+          <a href={`/tracks/${t.data.slug}/`} class="card">
+            <span class="art">
+              <Cover {...coverInput(t)} />
+              <span class="badge id">{t.data.id}</span>
+              {t.data.hasLinerNotes && <span class="badge notes">+ liner notes</span>}
+            </span>
+            <span class="info">
+              <span>
+                <span class="t">{t.data.title}</span>
+                <span class="m">{meta(t)}</span>
+              </span>
+              <span class="m">{facts(t).length}</span>
+            </span>
+          </a>
+          <PlayButton id={t.data.id} title={t.data.title} class="hover-play" />
+        </li>
+      ))}
+    </ul>
+
+    <div class="list-wrap" data-panel="list">
+      <table>
+        <thead>
+          <tr><th>No.</th><th>Title</th><th>Style</th><th>Tempo</th><th>Key</th><th>Length</th><th><span class="visually-hidden">Actions</span></th></tr>
+        </thead>
+        <tbody>
+          {tracks.map((t) => {
+            const f = facts(t);
+            return (
+              <tr data-style={styleKey(t.data.style)} data-lesson={t.data.lessons.length > 0 ? '1' : undefined}>
+                <td class="mono dim">{t.data.id}</td>
+                <td><span class="tt"><Cover {...coverInput(t)} size={48} /><strong>{t.data.title}</strong></span></td>
+                <td class="dim">{t.data.style}</td>
+                <td>{f.bpm}</td>
+                <td>{f.key}</td>
+                <td class="mono">{f.length}</td>
+                <td class="act"><PlayButton id={t.data.id} title={t.data.title} /><a href={`/tracks/${t.data.slug}/`}>Sheet</a></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  const KEY = 'sq.catalog.view';
+  function bindCatalog() {
+    document.querySelectorAll<HTMLElement>('[data-catalog]').forEach((root) => {
+      if (root.dataset.bound) return;
+      root.dataset.bound = '1';
+      const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      const setView = (v: string) => {
+        root.dataset.mode = v;
+        tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.view === v)));
+        try { localStorage.setItem(KEY, v); } catch {}
+      };
+      let saved = 'covers';
+      try { saved = localStorage.getItem(KEY) ?? 'covers'; } catch {}
+      setView(saved === 'list' ? 'list' : 'covers');
+      tabs.forEach((t) => t.addEventListener('click', () => setView(t.dataset.view!)));
+
+      const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+      const items = [...root.querySelectorAll<HTMLElement>('[data-style]')];
+      chips.forEach((c) =>
+        c.addEventListener('click', () => {
+          const f = c.dataset.filter!;
+          chips.forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+          items.forEach((el) => {
+            const show = f === 'all' || (f === 'lesson' ? el.dataset.lesson === '1' : `style:${el.dataset.style}` === f);
+            el.hidden = !show;
+          });
+        }),
+      );
+    });
+  }
+  document.addEventListener('astro:page-load', bindCatalog);
+</script>
+
+<style>
+  .catalog { background: var(--ink); color: var(--ground); }
+  .catalog a { color: var(--ground); }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 36px; }
+  .title { font-size: var(--fs-h2); letter-spacing: var(--tracking-h2); font-weight: 800; line-height: 1; }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .views { display: inline-flex; border: 1px solid var(--border-on-ink); }
+  .views button, .chips button { min-height: var(--tap); padding: 0 16px; border: none; background: transparent; color: var(--ground); font: 600 14px var(--font-sans); cursor: pointer; }
+  .views button[aria-selected='true'] { background: var(--ground); color: var(--ink); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { border: 1px solid var(--border-on-ink); font-weight: 500; }
+  .chips button[aria-pressed='true'] { background: var(--ground); color: var(--ink); border-color: var(--ground); font-weight: 600; }
+
+  [data-mode='covers'] [data-panel='list'], [data-mode='list'] [data-panel='covers'] { display: none; }
+  .list-wrap { margin-top: 48px; }
+  [data-mode] .list-wrap { margin-top: 0; }
+
+  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 32px 20px; }
+  .grid li { position: relative; }
+  .card { display: flex; flex-direction: column; gap: 14px; text-decoration: none; }
+  .art { position: relative; display: block; }
+  .badge { position: absolute; top: 12px; padding: 3px 7px; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; }
+  .badge.id { left: 14px; background: var(--paper); color: var(--ink); }
+  .badge.notes { right: 14px; background: var(--ink); color: var(--sand); }
+  .info { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .t { display: block; font-size: 21px; font-weight: 700; letter-spacing: -0.02em; }
+  .m { display: block; font-family: var(--font-mono); font-size: 13px; color: var(--muted-on-ink); }
+  .grid :global(.hover-play) { position: absolute; right: 14px; bottom: 90px; width: 56px !important; height: 56px !important; opacity: 0; transition: opacity 150ms; }
+  .grid li:hover :global(.hover-play), .grid li:focus-within :global(.hover-play) { opacity: 1; }
+  @media (hover: none) { .grid :global(.hover-play) { opacity: 1; } }
+
+  .list-wrap { overflow-x: auto; }
+  table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 16px; }
+  th { text-align: left; padding: 10px 12px; font: 400 12px var(--font-mono); text-transform: uppercase; color: var(--muted-on-ink); }
+  td { padding: 10px 12px; border-top: 1px solid var(--line-on-ink); }
+  .dim { color: var(--muted-on-ink); }
+  .mono { font-family: var(--font-mono); font-size: 13px; }
+  .tt { display: flex; align-items: center; gap: 14px; }
+  .act { text-align: right; white-space: nowrap; }
+  .act a { margin-left: 14px; font-weight: 600; padding: 10px 0; }
+  .act :global(.play-circle) { display: inline-flex; vertical-align: middle; }
+</style>

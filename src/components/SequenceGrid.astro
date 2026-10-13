@@ -1,0 +1,50 @@
+---
+// Rows × 16 steps: filled cell = instrument colour, empty = --cell-off (docs/02).
+interface Row { label: string; color: string; pattern: string }
+interface Props {
+  rows: Row[];
+  size?: 'mini' | 'full';
+  numbers?: boolean;
+  label: string; // describes the pattern for screen readers
+  playId?: string; // catalogue number: the docked player lights the current step while it plays
+}
+const { rows, size = 'full', numbers = false, label, playId } = Astro.props;
+---
+<div class:list={['seq', size]} role="img" aria-label={label} data-seq-for={playId}>
+  {numbers && (
+    <div class="row nums" aria-hidden="true">
+      <span />
+      <div class="cells">{Array.from({ length: 16 }, (_, i) => <span>{i + 1}</span>)}</div>
+    </div>
+  )}
+  {rows.map((r) => (
+    <div class="row" aria-hidden="true">
+      <span class="label">{r.label}</span>
+      <div class="cells">
+        {[...r.pattern].map((c, n) => <i data-col={n} style={c === 'x' ? `background:${r.color}` : undefined} />)}
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .seq { display: flex; flex-direction: column; }
+  .row { display: grid; align-items: center; }
+  .cells { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); }
+  .cells i { display: block; background: var(--cell-off); }
+  .cells i.now { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .label { font-family: var(--font-mono); }
+
+  .mini { gap: 4px; }
+  .mini .row { grid-template-columns: 40px minmax(0, 1fr); gap: 8px; }
+  .mini .label { font-size: 11px; color: var(--muted); }
+  .mini .cells { gap: 2px; }
+  .mini .cells i { height: 18px; }
+
+  .full { gap: 6px; min-width: 760px; }
+  .full .row { grid-template-columns: 110px minmax(0, 1fr); gap: 10px; }
+  .full .label { font-size: 13px; }
+  .full .cells { gap: 4px; }
+  .full .cells i { height: 36px; }
+  .nums .cells { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+</style>

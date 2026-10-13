@@ -1,0 +1,83 @@
+---
+# Example lesson file (partial) → src/content/lessons/02-rhythm-and-drums.mdx
+# Text comes from content/course-source/rhythm.html; the guided steps below are the approved "Split REPL" sequence.
+part: 2
+title: Rhythm and drums
+summary: The pulse, meter and note lengths, the drum kit, the beat lab and hi-hats.
+kind: mixed
+skills: [mini-notation, drum banks, euclid]
+guided:
+  - id: drum-kit
+    title: The drum kit
+    steps:
+      - title: The pulse
+        text: Everything loops in cycles. s("bd*4") plays the bass drum four times per cycle, a four-on-the-floor kick. setcpm(124/4) gives 31 bars a minute, which is 124 BPM.
+        listen: A steady kick on every beat. The word bd lights up each time it plays.
+        code: |
+          + setcpm(124/4)
+          + $: s("bd*4").bank("RolandTR909")
+      - title: Claps on 2 and 4
+        text: Each line that starts with $: is a separate layer, and all layers play together. ~ is a rest, so "~ cp ~ cp" puts a clap on beats 2 and 4.
+        listen: The clap answering the kick, the backbone of almost every dance track.
+        code: |
+          setcpm(124/4)
+          $: s("bd*4").bank("RolandTR909")
+          + $: s("~ cp ~ cp").bank("RolandTR909")
+      - title: Open hats on the off-beat
+        text: '"[~ oh]*4" repeats "rest, open hat" four times, which puts the open hat on every off-beat. .gain(.4) keeps it quieter than the drums.'
+        listen: The hat between every kick. This is where house gets its bounce.
+        code: |
+          setcpm(124/4)
+          $: s("bd*4").bank("RolandTR909")
+          $: s("~ cp ~ cp").bank("RolandTR909")
+          + $: s("[~ oh]*4").bank("RolandTR909").gain(.4)
+      - title: Human feel
+        text: A drum machine hits every note at the same volume. rand.range(.25, .7) gives each hat a random volume, and .degradeBy(.15) randomly drops 15% of the hits.
+        listen: Sixteen hats that never repeat exactly. Delete .degradeBy to hear the difference.
+        code: |
+          setcpm(124/4)
+          $: s("bd*4").bank("RolandTR909")
+          $: s("~ cp ~ cp").bank("RolandTR909")
+          $: s("[~ oh]*4").bank("RolandTR909").gain(.4)
+          + $: s("hh*16").bank("RolandTR909")
+          +   .gain(rand.range(.25, .7))
+          +   .degradeBy(.15)
+      - title: A fill every 4th bar
+        text: < > picks a different item each bar. In bar 4 the kick stops halfway while the toms roll down, and a crash marks the start of each new phrase.
+        listen: Every fourth bar, the drop-out and the tom roll that tells you a new phrase is coming.
+        code: |
+          setcpm(124/4)
+          + $: s("<bd*4 bd*4 bd*4 [bd bd ~ ~]>").bank("RolandTR909")
+          $: s("~ cp ~ cp").bank("RolandTR909")
+          $: s("[~ oh]*4").bank("RolandTR909").gain(.4)
+          $: s("hh*16").bank("RolandTR909")
+            .gain(rand.range(.25, .7)).degradeBy(.15)
+          + $: s("<~ ~ ~ [~ ~ [ht mt] [lt lt]]>").bank("RolandTR909")
+          + $: s("<cr ~ ~ ~>").bank("RolandTR909").gain(.5)
+---
+
+import SequenceGrid from '../../components/SequenceGrid.astro';
+import GuidedSteps from '../../islands/GuidedSteps.tsx';
+
+## 01 · The pulse
+
+Everything loops in cycles. `s("bd*4")` plays the sample **bd** (bass drum) four times per cycle: a four-on-the-floor kick. `setcpm` sets cycles per minute, so `124/4` gives 31 bars a minute, which is 124 BPM.
+
+```strudel title="The pulse"
+setcpm(124/4)
+s("bd*4")
+```
+
+<aside class="listen">A steady kick on every beat. The word <b>bd</b> lights up each time it plays.</aside>
+
+## 02 · The drum kit — build it step by step
+
+<GuidedSteps id="drum-kit" />
+
+<SequenceGrid rows={[
+  { label: 'bd', on: 'x...x...x...x...' },
+  { label: 'cp', on: '....x.......x...' },
+  { label: 'oh', on: '..x...x...x...x.' },
+]} />
+
+{/* …the rest of rhythm.html: meter & note length, beat lab (9 grooves), hi-hats, common mistakes… */}

@@ -1,0 +1,301 @@
+{
+  "01-start-here": {
+    "lede": "One track, built one layer at a time: a deep-house loop called <strong>Night Bus</strong>. Hear the finished track in <a href=\"#track\">1.3</a>, then write it yourself in Strudel, one layer per lesson, in parts 2 to 5.",
+    "onpage": [
+      {
+        "id": "compare",
+        "label": "1.1 What Strudel is"
+      },
+      {
+        "id": "run",
+        "label": "1.2 Start the software"
+      },
+      {
+        "id": "track",
+        "label": "1.3 Night Bus"
+      }
+    ]
+  },
+  "02-rhythm-and-drums": {
+    "lede": "The pulse, meter and note lengths, the drum kit, the beat lab and hi-hats.",
+    "onpage": [
+      {
+        "id": "l1",
+        "label": "2.1 The pulse"
+      },
+      {
+        "id": "meter",
+        "label": "2.2 Meter &amp; note length"
+      },
+      {
+        "id": "l2",
+        "label": "2.3 The drum kit"
+      },
+      {
+        "id": "beats",
+        "label": "2.4 Beat lab"
+      },
+      {
+        "id": "l3",
+        "label": "2.5 Hi-hats"
+      }
+    ]
+  },
+  "03-notes-and-chords": {
+    "lede": "Octaves, basslines, chords and inversions, chords from notes (with the keyboard explorer), melody, scales and arpeggios.",
+    "onpage": [
+      {
+        "id": "octaves",
+        "label": "3.1 Notes and octaves"
+      },
+      {
+        "id": "l4",
+        "label": "3.2 Bassline"
+      },
+      {
+        "id": "l5",
+        "label": "3.3 Chords"
+      },
+      {
+        "id": "chord-notes",
+        "label": "3.4 Chords from notes"
+      },
+      {
+        "id": "l6",
+        "label": "3.5 Melody"
+      },
+      {
+        "id": "scales",
+        "label": "3.6 Scales &amp; arpeggios"
+      }
+    ]
+  },
+  "04-sound-and-effects": {
+    "lede": "Movement, effects and what their numbers mean, effects per instrument, several sounds in one layer, and a sound effect.",
+    "onpage": [
+      {
+        "id": "l7",
+        "label": "4.1 Movement"
+      },
+      {
+        "id": "effects",
+        "label": "4.2 Effects"
+      },
+      {
+        "id": "layering",
+        "label": "4.3 Several sounds in one layer"
+      },
+      {
+        "id": "sfx",
+        "label": "4.4 A sound effect"
+      }
+    ]
+  },
+  "05-song-structure": {
+    "lede": "The finished arrangement of Night Bus, and longer songs built from blocks.",
+    "onpage": [
+      {
+        "id": "l8",
+        "label": "5.1 Arrangement"
+      },
+      {
+        "id": "song",
+        "label": "5.2 Song from blocks"
+      }
+    ]
+  },
+  "06-visuals": {
+    "lede": "Piano rolls, scopes and colours that draw your music while it plays.",
+    "onpage": [
+      {
+        "id": "visuals",
+        "label": "6.1 What you can see"
+      },
+      {
+        "id": "inline",
+        "label": "6.2 Inline visuals"
+      },
+      {
+        "id": "pianoroll",
+        "label": "6.3 Full-screen piano roll"
+      },
+      {
+        "id": "scope",
+        "label": "6.4 Full-screen oscilloscope"
+      },
+      {
+        "id": "options",
+        "label": "6.5 Options and tips"
+      }
+    ]
+  },
+  "07-save-export-practice": {
+    "lede": "Keep your code, export a WAV file, and practice tasks to make the track your own.",
+    "onpage": [
+      {
+        "id": "export",
+        "label": "7.1 Export a WAV file"
+      },
+      {
+        "id": "save",
+        "label": "7.2 Save the code"
+      },
+      {
+        "id": "record",
+        "label": "7.3 Record the speakers"
+      },
+      {
+        "id": "practice",
+        "label": "7.4 Practice"
+      }
+    ]
+  },
+  "08-command-reference": {
+    "lede": "Every command in the course: what it does, what its numbers mean, with an example.",
+    "onpage": [
+      {
+        "id": "cmd-intro",
+        "label": "8.1 How to read it"
+      },
+      {
+        "id": "cmd-play",
+        "label": "8.2 Tempo and playing"
+      },
+      {
+        "id": "cmd-mini",
+        "label": "8.3 Mini-notation"
+      },
+      {
+        "id": "cmd-sound",
+        "label": "8.4 Sounds and notes"
+      },
+      {
+        "id": "cmd-chords",
+        "label": "8.5 Chords"
+      },
+      {
+        "id": "cmd-time",
+        "label": "8.6 Rhythm and time"
+      },
+      {
+        "id": "cmd-copies",
+        "label": "8.7 Copies and layers"
+      },
+      {
+        "id": "cmd-env",
+        "label": "8.8 Note shape (envelope)"
+      },
+      {
+        "id": "cmd-fx",
+        "label": "8.9 Effects"
+      },
+      {
+        "id": "cmd-signals",
+        "label": "8.10 Signals"
+      },
+      {
+        "id": "cmd-struct",
+        "label": "8.11 Building songs"
+      },
+      {
+        "id": "cmd-visual",
+        "label": "8.12 Visuals"
+      }
+    ]
+  },
+  "09-sound-bank": {
+    "lede": "Every sound you can use: drum machines, synths, instruments and sample sets.",
+    "onpage": [
+      {
+        "id": "appendix",
+        "label": "9.1 What's in the bank"
+      },
+      {
+        "id": "banks",
+        "label": "9.2 Drum machines"
+      },
+      {
+        "id": "drum-names",
+        "label": "9.3 Drum sound names"
+      },
+      {
+        "id": "synths",
+        "label": "9.4 Built-in synths"
+      },
+      {
+        "id": "gm",
+        "label": "9.5 Instruments (General MIDI)"
+      },
+      {
+        "id": "vcsl",
+        "label": "9.6 Acoustic instruments"
+      },
+      {
+        "id": "more-samples",
+        "label": "9.7 Other sample sets"
+      }
+    ]
+  },
+  "10-error-messages": {
+    "lede": "What Strudel's messages mean, how to fix them, and what to check when there is no sound.",
+    "onpage": [
+      {
+        "id": "errors",
+        "label": "10.1 How errors work"
+      },
+      {
+        "id": "not-defined",
+        "label": "10.2 Not defined"
+      },
+      {
+        "id": "messages",
+        "label": "10.3 Other messages"
+      },
+      {
+        "id": "no-sound",
+        "label": "10.4 No sound, no error"
+      }
+    ]
+  },
+  "11-example-tracks": {
+    "lede": "Complete tracks in different styles, each with a step-by-step \"how it was made\".",
+    "onpage": [
+      {
+        "id": "tracks",
+        "label": "11.1 All tracks"
+      },
+      {
+        "id": "track-hardcore",
+        "label": "11.2 Hardcore"
+      },
+      {
+        "id": "track-risefall",
+        "label": "11.3 Rise &amp; Fall"
+      },
+      {
+        "id": "track-classical",
+        "label": "11.4 Classical"
+      },
+      {
+        "id": "track-bach",
+        "label": "11.5 Bach: Prelude in C"
+      },
+      {
+        "id": "track-canon",
+        "label": "11.6 Pachelbel: Canon in D"
+      },
+      {
+        "id": "track-colours",
+        "label": "11.7 Chord Colours"
+      },
+      {
+        "id": "track-etude",
+        "label": "11.8 Extensions Étude"
+      },
+      {
+        "id": "track-sus",
+        "label": "11.9 Open Road"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+---
+// "Written by …" under the course index and at the end of every lesson (design/avatar/HANDOFF.md).
+import Avatar from './Avatar.astro';
+import { SITE } from '../site';
+---
+<p class="sq-byline">
+  <Avatar size={48} />
+  <span>Written by <a href="/about/">{SITE.artist}</a>: {SITE.byline}</span>
+</p>
+
+<style>
+  .sq-byline { display: flex; align-items: center; gap: 14px; margin: 0; font-size: var(--fs-small); color: var(--ink-2); }
+  .sq-byline a { font-weight: 600; }
+</style>

@@ -1,0 +1,148 @@
+---
+// Long-form lesson page (docs/03 "Long-form mode", reference: design/reference/LessonDocs.dc.html).
+import Base from '../../layouts/Base.astro';
+import Byline from '../../components/Byline.astro';
+import Cover from '../../components/Cover.astro';
+import { PARTS, stepLabel, sunBpm } from '../../lib/course';
+import { lessonHtml, lessonMeta } from '../../lib/lessons';
+import { SITE } from '../../site';
+import '../../styles/lesson-content.css';
+import '../../styles/lesson-theme.css';
+
+export function getStaticPaths() {
+  return PARTS.map((p) => ({ params: { slug: p.slug }, props: { part: p } }));
+}
+const { part } = Astro.props;
+const meta = lessonMeta(part.slug);
+const html = lessonHtml(part.slug);
+const prev = PARTS.find((p) => p.n === part.n - 1);
+const next = PARTS.find((p) => p.n === part.n + 1);
+const searchable = part.slug === '08-command-reference';
+---
+<Base title={`Step ${stepLabel(part.n)} · ${part.title}`} description={part.desc}>
+  <div class="container lesson-grid">
+    <nav class="course-menu" aria-label="Course">
+      <p class="menu-label">THE COURSE · FREE</p>
+      <ol>
+        {PARTS.map((p) => (
+          <li>
+            <a href={`/course/${p.slug}/`} aria-current={p.n === part.n ? 'page' : undefined} data-menu-part={p.n}>
+              <span class="mark" aria-hidden="true">{stepLabel(p.n)}</span><span class="t">{p.title}</span><span class="seen"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" /></svg><span class="visually-hidden">(visited)</span></span>
+            </a>
+            {p.n === part.n && meta.onpage.length > 0 && (
+              <ol class="sub">
+                {meta.onpage.map((o) => <li><a href={`#${o.id}`} set:html={o.label} /></li>)}
+              </ol>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <article class="lesson-main" data-lesson-part={part.n}>
+      <header class="lesson-head">
+        <Cover kick="x...x...x...x..." bpm={sunBpm(part.n)} key="C major" size={150} class="sunrise" />
+        <div class="head-text">
+          <p class="eyebrow">Step {stepLabel(part.n)} of {stepLabel(PARTS.length)}</p>
+          <h1>{part.title}</h1>
+          {meta.lede && <p class="lede" set:html={meta.lede} />}
+          <div class="progress" aria-hidden="true" style={`--parts: ${PARTS.length}`}>
+            {PARTS.map((p) => <i data-progress-part={p.n} class:list={{ current: p.n === part.n }} />)}
+          </div>
+        </div>
+      </header>
+
+      {meta.onpage.length > 0 && (
+        <ul class="onpage" aria-label="On this page">
+          {meta.onpage.map((o) => <li><a href={`#${o.id}`} set:html={o.label} /></li>)}
+        </ul>
+      )}
+
+      {searchable && (
+        <div class="filter">
+          <label for="cmd-filter">Find a command</label>
+          <input id="cmd-filter" type="search" placeholder="e.g. lpf, chord, every" autocomplete="off" />
+          <p class="filter-count mono" role="status" aria-live="polite"></p>
+        </div>
+      )}
+
+      <div class="lesson-body" set:html={html} />
+
+      <nav class="pager" aria-label="Previous and next step">
+        {prev ? (
+          <a href={`/course/${prev.slug}/`}><span>← STEP {stepLabel(prev.n)}</span><b>{prev.title}</b></a>
+        ) : (
+          <a href="/course/"><span>← ALL STEPS</span><b>The course</b></a>
+        )}
+        {next && <a href={`/course/${next.slug}/`} class="next"><span>STEP {stepLabel(next.n)} →</span><b>{next.title}</b></a>}
+      </nav>
+
+      <Byline />
+      <p class="tested mono">Tested with Strudel 1.3. Course text: {SITE.licenses.course}, code: {SITE.licenses.courseCode} (<a href="/licences/">licences</a>).</p>
+    </article>
+  </div>
+</Base>
+
+<script>
+  import '../../scripts/course-widgets';
+  import '../../scripts/command-filter';
+</script>
+
+<style>
+  .mono { font-family: var(--font-mono); }
+  .lesson-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 56px; }
+  @media (min-width: 1040px) { .lesson-grid { grid-template-columns: 250px minmax(0, 820px); } }
+
+  .course-menu { padding: 36px 0 0; font-size: 15px; }
+  @media (min-width: 1040px) { .course-menu { position: sticky; top: 0; align-self: start; max-height: 100vh; overflow-y: auto; padding-bottom: 36px; } }
+  .menu-label { margin-bottom: 12px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .course-menu ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .course-menu a { display: flex; gap: 10px; padding: 10px 8px; color: var(--ink-2); text-decoration: none; }
+  .course-menu a:hover { color: var(--ink); background: var(--paper); }
+  .course-menu .mark { min-width: 1.6em; font-family: var(--font-mono); color: var(--muted); }
+  .course-menu a[data-visited] .mark { color: var(--teal); }
+  .course-menu .t { flex: 1; }
+  .course-menu .seen { display: none; align-self: center; color: var(--teal); }
+  .course-menu a[data-visited]:not([aria-current]) .seen { display: inline-flex; }
+  .course-menu a[aria-current='page'] { background: var(--ink); color: var(--ground); font-weight: 600; }
+  .course-menu a[aria-current='page'] .mark { color: var(--accent); }
+  .course-menu .sub { margin: 4px 0 8px 30px; padding-left: 12px; border-left: var(--rule); gap: 0; }
+  .course-menu .sub a { display: block; padding: 7px 8px; font-size: 14px; }
+  @media (max-width: 1039px) {
+    .course-menu ol { flex-direction: row; flex-wrap: wrap; }
+    .course-menu .sub { display: none; }
+    .course-menu a { padding: 8px 10px; border: 1px solid var(--line); min-height: var(--tap); align-items: center; }
+  }
+  @media (max-width: 600px) {
+    .course-menu > ol > li:not(:has(a[aria-current])) { display: none; }
+    .course-menu > ol > li a { border: none; padding-left: 0; }
+    .course-menu > ol > li a[aria-current='page'] { padding-left: 10px; }
+  }
+
+  .lesson-main { min-width: 0; padding: 36px 0 72px; display: flex; flex-direction: column; gap: 32px; }
+  .lesson-head { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-end; padding-bottom: 32px; border-bottom: var(--rule); }
+  .lesson-head :global(.sunrise) { border: var(--rule); }
+  .head-text { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  .head-text h1 { font-size: clamp(44px, 5vw, 72px); line-height: 0.95; }
+  .head-text .lede { font-size: 18px; max-width: 62ch; }
+  .progress { display: grid; grid-template-columns: repeat(var(--parts), minmax(0, 1fr)); gap: 3px; max-width: 320px; margin-top: 6px; }
+  .progress i { height: 8px; background: var(--line); }
+  .progress i[data-visited] { background: var(--ink); }
+  .progress i.current { background: var(--accent); }
+
+  .onpage { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .onpage a { display: inline-flex; align-items: center; min-height: var(--tap); padding: 0 12px; border: 1px solid var(--ink); background: var(--paper); text-decoration: none; font-size: 14px; }
+  .onpage a:hover { background: var(--ink); color: var(--ground); }
+
+  .filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 16px; border: var(--rule); background: var(--paper); }
+  .filter label { font-weight: 700; }
+  .filter input { flex: 1 1 220px; min-width: 0; min-height: var(--tap); padding: 0 12px; border: var(--rule); border-radius: 0; font: 16px var(--font-mono); background: #fff; }
+  .filter-count { flex-basis: 100%; font-size: 13px; color: var(--muted); }
+
+  .pager { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .pager a { flex: 1 1 240px; display: flex; flex-direction: column; gap: 4px; padding: 18px; border: var(--rule); text-decoration: none; }
+  .pager a span { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .pager a.next { background: var(--ink); color: var(--ground); text-align: right; }
+  .pager a.next span { color: var(--accent); }
+  .tested { font-size: 12px; color: var(--muted); }
+</style>

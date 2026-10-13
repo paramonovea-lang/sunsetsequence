@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Avatar from '../components/Avatar.astro';
+import Email from '../components/Email.astro';
+import ExtLink from '../components/ExtLink.astro';
+import { SITE } from '../site';
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.artist,
+  description: SITE.about,
+  image: `https://${SITE.domain}/avatar/avatar-1024.png`,
+  url: `https://${SITE.domain}/about/`,
+  sameAs: SITE.links.map((l) => l.href).filter(Boolean),
+};
+---
+<Base title="About">
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(person).replace(/</g, '\\u003c')} />
+  <section class="container section wrap">
+    <article class="card">
+      <div class="photo"><Avatar size={160} /></div>
+      <div class="text">
+        <p class="eyebrow">Producer · author of the course</p>
+        <h1>{SITE.artist}</h1>
+        <p class="lede">{SITE.about}</p>
+        <p><Email /></p>
+        <p class="links">{SITE.links.map((l) => <ExtLink href={l.href}>{l.label}</ExtLink>)}</p>
+      </div>
+    </article>
+  </section>
+</Base>
+
+<style>
+  .card { display: flex; flex-wrap: wrap; background: var(--paper); border: var(--rule); }
+  .photo { flex: 1 1 280px; min-height: 280px; display: flex; align-items: center; justify-content: center; background: var(--sand); border-right: var(--rule); }
+  .text { flex: 2 1 400px; min-width: 0; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+  h1 { font-size: var(--fs-h2); letter-spacing: var(--tracking-h2); }
+  .mono { font-family: var(--font-mono); }
+  .text :global(.sq-email) { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; }
+  .links { display: flex; flex-wrap: wrap; gap: 20px; }
+  .links > :global(*) { padding: 10px 0; }
+  @media (max-width: 760px) { .photo { border-right: none; border-bottom: var(--rule); } }
+</style>

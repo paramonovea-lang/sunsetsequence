@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lesson — Split REPL</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;family=DM+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#ECEEE8}
+a{color:#13201B}a:hover{color:#0E6B5B}
+</style>
+</helmet>
+<div style="background: #ECEEE8; color: #13201B; font-family: 'Schibsted Grotesk', system-ui, sans-serif; font-size: 17px; line-height: 1.6">
+
+<header style="border-bottom: 2px solid #13201B">
+<div style="padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px">
+<a href="Home.dc.html" style="font-weight: 800; font-size: 18px; letter-spacing: 0.06em; text-decoration: none; padding: 8px 0">SUNSET SEQUENCE</a>
+<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #4E5A54">Step 02 · Rhythm and drums · The drum kit</span>
+</div>
+<div style="display: flex; gap: 8px">
+<a href="LessonDocs.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border: 2px solid #13201B; text-decoration: none; font-weight: 600; font-size: 14px">All steps</a>
+</div>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap">
+<main style="flex: 1 1 440px; min-width: 0; padding: 36px 32px 48px; display: flex; flex-direction: column; gap: 28px; border-right: 2px solid #13201B">
+<div role="tablist" aria-label="Lesson steps" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
+<sc-if value="{{s.current}}" hint-placeholder-val="{{false}}">
+<button type="button" role="tab" aria-selected="true" onClick="{{s.pick}}" style="min-height: 52px; border: 2px solid #13201B; background: #13201B; color: #ECEEE8; font: 600 15px 'DM Mono', monospace; cursor: pointer">{{s.n}}</button>
+</sc-if>
+<sc-if value="{{s.done}}" hint-placeholder-val="{{false}}">
+<button type="button" role="tab" aria-selected="false" onClick="{{s.pick}}" style="min-height: 52px; border: 2px solid #13201B; background: {{accent}}; color: #13201B; font: 600 15px 'DM Mono', monospace; cursor: pointer">{{s.n}}</button>
+</sc-if>
+<sc-if value="{{s.ahead}}" hint-placeholder-val="{{true}}">
+<button type="button" role="tab" aria-selected="false" onClick="{{s.pick}}" style="min-height: 52px; border: 2px solid #C9CFC7; background: #F8F9F5; color: #4E5A54; font: 500 15px 'DM Mono', monospace; cursor: pointer">{{s.n}}</button>
+</sc-if>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px; min-height: 300px">
+<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; color: #B23A16">LAYER {{cur.n}} OF 5</p>
+<h1 style="margin: 0; font-size: clamp(36px, 3.6vw, 52px); line-height: 1; letter-spacing: -0.04em; font-weight: 800">{{cur.title}}</h1>
+<p style="margin: 0; color: #33403A">{{cur.text}}</p>
+<div style="padding: 16px 18px; background: #F1E7D4; border: 2px solid #13201B">
+<p style="margin: 0 0 4px; font-family: 'DM Mono', monospace; font-size: 12px; color: #B23A16">LISTEN FOR</p>
+<p style="margin: 0; font-size: 16px">{{cur.listen}}</p>
+</div>
+</div>
+
+<div style="display: flex; gap: 10px; margin-top: auto">
+<button type="button" onClick="{{prev}}" style="flex: 1; min-height: 52px; border: 2px solid #13201B; background: transparent; color: #13201B; font: 700 15px 'Schibsted Grotesk', sans-serif; cursor: pointer">← Back</button>
+<button type="button" onClick="{{next}}" style="flex: 2; min-height: 52px; border: none; background: #13201B; color: #ECEEE8; font: 700 15px 'Schibsted Grotesk', sans-serif; cursor: pointer">{{nextLabel}}</button>
+</div>
+</main>
+
+<section aria-label="Strudel editor" style="flex: 1.3 1 560px; min-width: 0; background: #0C1612; color: #ECEEE8; display: flex; flex-direction: column">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 8px 20px; border-bottom: 1px solid #33403A; font-family: 'DM Mono', monospace; font-size: 13px; color: #B5BDB7">
+<span>strudel · runs in your browser</span>
+<div style="display: flex; gap: 6px">
+<button type="button" style="min-height: 44px; padding: 0 14px; border: 1px solid #33403A; background: transparent; color: #ECEEE8; font: 500 13px 'DM Mono', monospace; cursor: pointer">stop</button>
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: none; background: {{accent}}; color: #13201B; font: 600 13px 'DM Mono', monospace; cursor: pointer"><svg width="10" height="10" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 1l11 6-11 6z" fill="currentColor"></path></svg>run · Ctrl+Enter</button>
+</div>
+</div>
+<pre style="margin: 0; padding: 20px 0; min-height: 340px; font-family: 'DM Mono', monospace; font-size: 15px; line-height: 1.8; overflow-x: auto"><sc-for list="{{cur.code}}" as="l" hint-placeholder-count="4"><sc-if value="{{l.isNew}}" hint-placeholder-val="{{false}}"><span style="display: block; padding: 0 20px; background: #1E3A2F; border-left: 3px solid {{accent}}">{{l.t}}</span></sc-if><sc-if value="{{l.old}}" hint-placeholder-val="{{true}}"><span style="display: block; padding: 0 20px; border-left: 3px solid transparent; color: #B5BDB7">{{l.t}}</span></sc-if></sc-for></pre>
+<div role="img" aria-label="Step grid of the layers playing so far" style="margin-top: auto; padding: 20px; border-top: 1px solid #33403A; display: flex; flex-direction: column; gap: 5px">
+<sc-for list="{{cur.grid}}" as="r" hint-placeholder-count="2">
+<div style="display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; align-items: center">
+<span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #B5BDB7">{{r.label}}</span>
+<div style="display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 3px">
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="16">
+<sc-if value="{{c.on}}" hint-placeholder-val="{{true}}"><div style="height: 20px; background: {{r.color}}"></div></sc-if>
+<sc-if value="{{c.off}}" hint-placeholder-val="{{false}}"><div style="height: 20px; background: #1C2A24"></div></sc-if>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F0562A","options":["#F0562A","#F2C94C","#7FD3B0"]},"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 1 };
+  }
+  renderVals() {
+    const step = this.state.step;
+    const cells = (pat) => pat.split('').map((ch) => ({ on: ch === 'x', off: ch !== 'x' }));
+    const L = (t, isNew) => ({ t, isNew, old: !isNew });
+    const rows = {
+      bd: { label: 'bd', color: '#ECEEE8', cells: cells('x...x...x...x...') },
+      cp: { label: 'cp', color: '#F0562A', cells: cells('....x.......x...') },
+      oh: { label: 'oh', color: '#7FD3B0', cells: cells('..x...x...x...x.') },
+      hh: { label: 'hh', color: '#F2C94C', cells: cells('xx.xxxx.xxx.xx.x') },
+      tom: { label: 'toms', color: '#C9B8F0', cells: cells('............x.xx') }
+    };
+    const kick = '$: s("bd*4").bank("RolandTR909")';
+    const clap = '$: s("~ cp ~ cp").bank("RolandTR909")';
+    const oh = '$: s("[~ oh]*4").bank("RolandTR909").gain(.4)';
+    const D = [
+      { n: '1', title: 'The pulse', text: 'Everything loops in cycles. s("bd*4") plays the bass drum four times per cycle: a four-on-the-floor kick. setcpm(124/4) gives 31 bars a minute, which is 124 BPM.', listen: 'A steady kick on every beat. The word bd lights up each time it plays.',
+        code: [L('setcpm(124/4)', true), L(kick, true)], grid: [rows.bd] },
+      { n: '2', title: 'Claps on 2 and 4', text: 'Each line that starts with $: is a separate layer, and all layers play together. ~ is a rest, so "~ cp ~ cp" puts a clap on beats 2 and 4.', listen: 'The clap answering the kick, the backbone of almost every dance track.',
+        code: [L('setcpm(124/4)', false), L(kick, false), L(clap, true)], grid: [rows.bd, rows.cp] },
+      { n: '3', title: 'Open hats on the off-beat', text: '"[~ oh]*4" repeats "rest, open hat" four times, which puts the open hat on every off-beat. .gain(.4) keeps it quieter than the drums.', listen: 'The tss between every kick. This is where house gets its bounce.',
+        code: [L('setcpm(124/4)', false), L(kick, false), L(clap, false), L(oh, true)], grid: [rows.bd, rows.cp, rows.oh] },
+      { n: '4', title: 'Human feel', text: 'A drum machine hits every note at the same volume. rand.range(.25, .7) gives each hat a random volume, and .degradeBy(.15) randomly drops 15% of the hits.', listen: 'Sixteen hats that never repeat exactly. Delete .degradeBy to hear the difference.',
+        code: [L('setcpm(124/4)', false), L(kick, false), L(clap, false), L(oh, false), L('$: s("hh*16").bank("RolandTR909")', true), L('  .gain(rand.range(.25, .7))', true), L('  .degradeBy(.15)', true)], grid: [rows.bd, rows.cp, rows.oh, rows.hh] },
+      { n: '5', title: 'A fill every 4th bar', text: '< > picks a different item each bar. In bar 4 the kick stops halfway while the toms roll down, and a crash marks the start of each new phrase.', listen: 'Every fourth bar, the drop-out and the tom roll that tells you a new phrase is coming.',
+        code: [L('setcpm(124/4)', false), L('$: s("<bd*4 bd*4 bd*4 [bd bd ~ ~]>").bank("RolandTR909")', true), L(clap, false), L(oh, false), L('$: s("hh*16").bank("RolandTR909")', false), L('  .gain(rand.range(.25, .7)).degradeBy(.15)', false), L('$: s("<~ ~ ~ [~ ~ [ht mt] [lt lt]]>").bank("RolandTR909")', true), L('$: s("<cr ~ ~ ~>").bank("RolandTR909").gain(.5)', true)], grid: [rows.bd, rows.cp, rows.oh, rows.hh, rows.tom] }
+    ];
+    const cur = D[step - 1];
+    return {
+      accent: this.props.accent ?? '#F0562A',
+      cur,
+      steps: D.map((d, i) => ({ n: d.n, current: i + 1 === step, done: i + 1 < step, ahead: i + 1 > step, pick: () => this.setState({ step: i + 1 }) })),
+      prev: () => this.setState({ step: Math.max(1, step - 1) }),
+      next: () => this.setState({ step: Math.min(5, step + 1) }),
+      nextLabel: step < 5 ? 'Add the next layer →' : 'Done. On to Hi-hats →'
+    };
+  }
+}
+</script>
+</body>
+</html>
