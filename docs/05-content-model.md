@@ -46,7 +46,7 @@ const tracks = defineCollection({
     audio: z.object({ mp3: z.string(), peaks: z.string(), stems: z.string().optional() }),
     credits: z.object({ producer: z.string(), mastering: z.string().optional() }),
     licenses: z.object({ audio: z.string(), code: z.string() }),
-    links: z.object({ bandcamp: z.string().url().optional(), spotify: z.string().url().optional(), soundcloud: z.string().url().optional() }).default({}),
+    links: z.object({ bandcamp: httpsUrl.optional(), spotify: httpsUrl.optional(), soundcloud: httpsUrl.optional() }).default({}), // httpsUrl = https:// links only
     lessons: z.array(z.string()).default([]),      // related lesson slugs
     coverPalette: z.enum(['dusk', 'lagoon', 'reef', 'ember', 'mist', 'noon']).optional(),
     hasLinerNotes: z.boolean().default(true),

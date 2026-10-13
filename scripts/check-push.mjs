@@ -4,6 +4,8 @@
 // Exit 1 blocks the push. Findings name the commit, file and line, never the matched secret.
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
+import path from 'node:path';
 import {
   addedLines, checkFile, checkIdentity, checkText, contactFrom, HOSTS_EXEMPT, passwordFrom,
 } from './lib/push-check.mjs';
@@ -24,7 +26,7 @@ const commits = [...new Set(tips.flatMap((tip) => git('rev-list', '--reverse', t
 
 // Exact strings that must never be pushed.
 const secrets = [];
-const loginFile = process.env.SQ_LOGIN_FILE || 'C:\\Users\\param\\sunsetsequence-preview-login.txt';
+const loginFile = process.env.SQ_LOGIN_FILE || path.join(homedir(), 'sunsetsequence-preview-login.txt');
 if (existsSync(loginFile)) secrets.push({ label: 'the preview password', value: passwordFrom(readFileSync(loginFile, 'utf8')) });
 else console.log(`check-push: no login file (${loginFile}), password check skipped`);
 if (existsSync('src/site.ts')) secrets.push({ label: 'the contact address written in full', value: contactFrom(readFileSync('src/site.ts', 'utf8')) });

@@ -12,7 +12,7 @@ As built (phases 0–5, Oct 2026). Where this differs from the original plan, th
 | Islands | **Preact**: `DockedPlayer`, `Waveform`, `GuidedSteps` | Play buttons, code-block Run/Copy, catalog switch, widgets are plain scripts with delegated listeners (less JS than one island each). |
 | Shared client state | `nanostores` | `stores/player.ts` (music player), `stores/strudel.ts` (who owns the Strudel instance). |
 | Content | Tracks: content collection (`src/content.config.ts`, Zod). Lessons: HTML generated from the original course (`scripts/migrate-course.mjs`). | Planned as MDX; HTML keeps the course's own authoring format and avoids escaping 400 KB of HTML (docs/08). |
-| Live coding | Own runtime from `@strudel/core`/`mini`/`tonal`/`transpiler`/`webaudio`/`soundfonts` + `@strudel/codemirror` for the guided editor, lazy-loaded | `@strudel/web` bundles its own core, which breaks the `gm_*` soundfonts (docs/07). |
+| Live coding | Own runtime from `@strudel/core`/`mini`/`tonal`/`transpiler`/`webaudio` + `@strudel/codemirror` for the guided editor, lazy-loaded; the `gm_*` list from `@strudel/soundfonts`, loaded by `src/lib/soundfont-loader.mjs` (parses the sound files with `soundfont-data.ts`, never `eval`) | `@strudel/web` bundles its own core, which breaks the `gm_*` soundfonts (docs/07). |
 | Waveforms | Peaks precomputed (`node scripts/wav-peaks.mjs` for WAVs rendered in Strudel; `npm run peaks` with audiowaveform for MP3s) → inlined, ≈160 bars | |
 | Images | Covers (SVG inline, PNG `/covers/sq-001.png`) and social images (`/og/sq-001.png`) rendered at build with `@resvg/resvg-js` | docs/04. |
 | Feeds/SEO | `@astrojs/rss` (`/rss.xml`), `@astrojs/sitemap`, `robots.txt`, Open Graph tags in `Base.astro` | |
@@ -30,7 +30,8 @@ As built (phases 0–5, Oct 2026). Where this differs from the original plan, th
 │  ├─ course-overrides/          # replacement sections for the public site (01-run.html)
 │  ├─ guided/drum-kit.json       # hand-written guided sequence
 │  └─ examples/                  # spec examples (not built)
-├─ deploy/                       # Caddyfile, headers.json, server-setup.sh
+├─ .githooks/pre-push            # runs scripts/check-push.mjs before every push
+├─ deploy/                       # Caddyfile, headers.json, server-setup.sh, sudoers-claude
 ├─ public/                       # favicons, manifest, og-default.png, logo-mark.svg, avatar/, robots.txt
 ├─ scripts/
 │  ├─ migrate-course.mjs         # course-source → src/content/lessons + lesson-content.css
@@ -39,21 +40,23 @@ As built (phases 0–5, Oct 2026). Where this differs from the original plan, th
 │  ├─ peaks.mjs                  # audiowaveform over media/audio/*.mp3
 │  ├─ serve.mjs (+ lib/)         # serves dist/ + media/ with the production headers (tests)
 │  ├─ deploy.sh                  # build + tar over SSH + atomic swap
+│  ├─ check-push.mjs (+ lib/push-check.mjs) # pre-push check: secrets, emails, hosts, audio, big files
 │  └─ lighthouse.mjs             # mobile Lighthouse on key pages
 ├─ src/
 │  ├─ content.config.ts  content/tracks/*.md (+ code/*.strudel)  content/lessons/*.html (generated)
 │  ├─ lib/        cover, og, tracks, peaks, highlight, codeblock-html, strudel-hash,
-│  │              lessons, lesson-source, guided, course, strudel-runtime, strudel-editor
+│  │              lessons, lesson-source, guided, course, strudel-runtime, strudel-editor,
+│  │              soundfont-loader.mjs + soundfont-data (gm_* sounds read as data, no eval)
 │  ├─ stores/     player.ts, strudel.ts
 │  ├─ islands/    DockedPlayer, Waveform, GuidedSteps (.tsx + .css)
 │  ├─ scripts/    codeblocks, course-widgets (port of course.js; keyboards play Strudel's piano samples), course-progress,
 │  │              command-filter, scrollable
 │  ├─ components/ Header, Footer, Cover, Catalog, SequenceGrid, StepCards, PlayButton, CodeBlock, Avatar, Byline, Email, …
 │  ├─ layouts/Base.astro          # head (icons, OG, fonts), header, footer, persisted player
-│  ├─ pages/      index, about, 404, rss.xml, tracks/, course/[slug], course/[slug]/[guide],
+│  ├─ pages/      index, about, licences, 404, rss.xml, tracks/, course/[slug], course/[slug]/[guide],
 │  │              covers/[file].png, og/[file].png
 │  └─ styles/     global, codeblock, lesson-content (generated), lesson-theme
-├─ tests/e2e/     smoke, player, course, guided, a11y
+├─ tests/e2e/     smoke, player, course, guided, sound, a11y
 └─ media/                        # gitignored: audio, peaks, stems (synced to the VPS)
 ```
 
@@ -72,9 +75,9 @@ As built (phases 0–5, Oct 2026). Where this differs from the original plan, th
 3. `code/*.strudel` → highlighted code + strudel.cc share hash (same format as the course's `toHash`).
 4. Lessons: `src/content/lessons/*.html` → codeboxes become code blocks, "build it step by step" cards are inserted, h4 labels fixed (`lib/lessons.ts`); guided sequences from `content/guided/` and part 11 (Example tracks) (`lib/guided.ts`).
 
-## Performance budget (measured on the live site, 12 Oct 2026)
+## Performance budget (measured on the live site, 13 Oct 2026)
 
-- Home ≈ 19 KB JS gzip before interaction (budget 60 KB). Lighthouse mobile: performance 97–100 on home, track, lesson, guided page.
+- Home ≈ 19 KB JS gzip before interaction (budget 60 KB). Lighthouse mobile: performance 99–100 on home, track, lesson, guided page (13 Oct, Astro 7).
 - Strudel (~600 KB) loads only on the first Run, on hover/focus of a Run button, or on first use of the guided editor.
 - Fonts: WOFF2, `font-display: swap`, Schibsted Grotesk + DM Mono 400 preloaded.
 - Audio: `preload="none"`, range requests (Caddy; `scripts/serve.mjs` locally).
@@ -87,8 +90,9 @@ Landmarks; player `role="region" aria-label="Player"`; tablists for Covers/Track
 
 ```
 npm run check                 # types
-npm test                      # unit: cover, og, highlighter, peaks, Caddyfile ↔ headers.json
+npm test                      # unit: cover, og, highlighter, peaks, Caddyfile ↔ headers.json, push-check, soundfont-data
 npx playwright test           # browser tests, desktop 1440 + phone 360, production headers
-LH_LOGIN_FILE=… npm run lighthouse   # live site, mobile
+npm run lighthouse            # live site, mobile (LH_LOGIN_FILE only if a password is put back)
+npm run check-push            # before a push: what the pre-push hook checks
 ```
-The course box test (`tests/e2e/course.spec.ts`) needs internet: samples load from Strudel's CDN.
+The course box test (`tests/e2e/course.spec.ts`) and `tests/e2e/sound.spec.ts` (really plays effects and `gm_*` sounds) need internet: samples load from Strudel's hosts.

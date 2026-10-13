@@ -1,9 +1,9 @@
-# sunsetsequence.com — Caddy config (docs/09). Installed to /etc/caddy/Caddyfile by deploy/server-setup.sh.
-# Headers must match deploy/headers.json (tests/unit checks it).
+# sunsetsequence.com — Caddy config (docs/09). Copied to /etc/caddy/Caddyfile (command in docs/09 "Access").
+# Headers must match deploy/headers.json (src/lib/deploy-config.test.ts checks it).
 
 sunsetsequence.com {
-	# Password until launch: /etc/caddy/auth.caddy holds a basic_auth block (not in git).
-	# At launch it is emptied (see docs/09 "Launch").
+	# Optional password: /etc/caddy/auth.caddy holds a basic_auth block (not in git). Empty since the
+	# launch on 13 Oct 2026 (see docs/09 "Preview password").
 	import /etc/caddy/auth.caddy
 
 	encode zstd gzip

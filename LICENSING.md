@@ -6,8 +6,8 @@ line wins.
 
 | Folder or file | What it is | Licence |
 |---|---|---|
-| `src/`, `scripts/`, `tests/`, `deploy/`, `design/tokens.css`, `design/tokens.json`, `public/robots.txt`, `public/site.webmanifest`, config files in the root (`package.json`, `astro.config.mjs`, …), `docs/`, `prompts/`, `content/examples/sq-001.example.*` (the template for a new release), `README.md`, `CLAUDE.md`, `LICENSING.md` | The site's code, build and deploy scripts, tests and documentation | [GNU AGPL-3.0-or-later](LICENSE) |
-| `content/course-source/`, `content/course-overrides/`, `content/guided/`, `src/content/lessons/`, `content/examples/02-rhythm-and-drums.example.mdx` | The free course. **Text** (explanations, tables, pictures) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| `src/`, `scripts/`, `tests/`, `deploy/`, `design/tokens.css`, `design/tokens.json`, `public/robots.txt`, `public/site.webmanifest`, config files in the root (`package.json`, `astro.config.mjs`, …), `docs/`, `prompts/`, `.githooks/`, `content/examples/sq-001.example.*` (the template for a new release), `README.md`, `CLAUDE.md`, `LICENSING.md` | The site's code, build and deploy scripts, tests and documentation | [GNU AGPL-3.0-or-later](LICENSE) |
+| `content/course-source/`, `content/course-overrides/`, `content/guided/`, `src/content/lessons/`, `content/examples/02-rhythm-and-drums.example.mdx` | The free course. **Text** (explanations, tables, pictures), and the course's own page scripts and styles (`course.js`, `course.css`, `build-nav.js` in `content/course-source/`) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | the same folders | The free course. **Code**: every code box, the code in the guided steps, and the course's own example tracks (including Night Bus) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) (public domain dedication) |
 | `src/content/tracks/` (including `code/`) | The releases: their code and notes | **All rights reserved** |
 | Release audio (`media/`, not in this repository) | The recordings of the releases | All rights reserved |
@@ -45,6 +45,8 @@ above with your own and change the name in `src/site.ts` before you publish your
 
 ## The course examples run on Strudel
 
-The course and its examples are written for [Strudel](https://strudel.cc/) (AGPL-3.0). The site
-loads Strudel and its sounds from their public hosts; they are not part of this repository. The
-sample packs used by the examples have their own licences (see `docs/07-strudel-integration.md`).
+The course and its examples are written for [Strudel](https://strudel.cc/) (AGPL-3.0-or-later). The
+site bundles Strudel's packages from npm; they are not stored in this repository, except
+`src/lib/soundfont-loader.mjs`, an AGPL copy of Strudel's soundfont loader changed to read the sound
+files as data. Strudel's sounds load from its public hosts; the sample packs have their own licences
+(see `docs/07-strudel-integration.md`).

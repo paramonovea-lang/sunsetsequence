@@ -6,11 +6,12 @@ Strudel is a JavaScript port of TidalCycles that runs entirely in the browser (W
 
 ## Licence (decided, Q4)
 
-Strudel is **AGPL-3.0-or-later**, and the site bundles `@strudel/*`, so the site's source is offered under **AGPL-3.0-or-later**: public repo, "Source" link in the footer (`SITE.sourceRepo` in `src/site.ts`, = https://github.com/paramonovea-lang/sunsetsequence; private during development, public again at launch (Q17); push only when the owner asks, docs/12).
+Strudel is **AGPL-3.0-or-later**, and the site bundles `@strudel/*`, so the site's source is offered under **AGPL-3.0-or-later**: public repo, "Source" link in the footer (`SITE.sourceRepo` in `src/site.ts`, = https://github.com/paramonovea-lang/sunsetsequence; public since the launch on 13 Oct 2026 and must stay public while the site is live; push only when the owner asks, docs/12).
 
 ## The runtime (`src/lib/strudel-runtime.ts`)
 
 - Built from the separate packages `@strudel/core`, `mini`, `tonal`, `transpiler`, `webaudio`, `soundfonts` (one shared `@strudel/core`). It mirrors `@strudel/web`'s `initStrudel()` and strudel.cc's prebake (`website/src/repl/prebake.mjs`: piano, VCSL, tidal-drum-machines + aliases, uzu kits, mridangam, a Dirt-Samples subset, GM soundfonts, ZZFX). **`@strudel/web` is not used**: its published bundle carries its own copy of core, so the `gm_*` soundfonts would register into a copy it never reads.
+- The `gm_*` soundfonts are loaded by `src/lib/soundfont-loader.mjs`, a copy of `@strudel/soundfonts` 1.3.0's `fontloader.mjs` that reads the preset files with `src/lib/soundfont-data.ts` instead of `eval` (the files come from a third-party host). Checked against all 866 files on 13 Oct 2026. Re-copy it when `@strudel/soundfonts` is updated. `tests/e2e/sound.spec.ts` checks that effects and `gm_*` sounds really play.
 - Loaded with `import()` on the first Run (or hover/focus of a Run button, or first use of the guided editor). `initAudio()` is called on the first Run, so a keyboard Ctrl+Enter works too (`initAudioOnFirstClick` waits for a later mouse press).
 - Visual functions (`.pianoroll()`, `._scope()`, …) are no-ops inline (they need the full editor or draw over the whole page); blocks that use them say so and link to strudel.cc.
 - Evaluation errors come back from `run()`; missing samples and unknown chord names are only logged by Strudel (`strudel.log` events) and are shown as a warning under the block.
@@ -29,7 +30,7 @@ The course uses `.bank("RolandTR909")`/`"RolandTR808"`, `gm_*` instruments, synt
 
 ## Security headers
 
-One Content-Security-Policy for every page (`deploy/headers.json` = `deploy/Caddyfile`, also sent by `scripts/serve.mjs` so the browser tests run under it). Per-page policies don't work here: the site navigates without reloads, so the first page's policy stays for the whole visit. Strudel needs `'unsafe-eval'`, `'wasm-unsafe-eval'`, `worker-src blob:`, `connect-src https:`; Astro inlines small scripts (`'unsafe-inline'`). Fonts and styles are self-hosted (`font-src 'self'`).
+One Content-Security-Policy for every page (`deploy/headers.json` = `deploy/Caddyfile`, also sent by `scripts/serve.mjs` so the browser tests run under it). Per-page policies don't work here: the site navigates without reloads, so the first page's policy stays for the whole visit. Strudel needs `'unsafe-eval'`, `'wasm-unsafe-eval'`, `data:` in `script-src` (its effects AudioWorklet is a `data:` URL; without it notes using coarse, crush, shape, distort, supersaw … don't play), `worker-src blob:`, `connect-src https:`; Astro inlines small scripts (`'unsafe-inline'`). Fonts and styles are self-hosted (`font-src 'self'`). Also sent: HSTS, nosniff, Referrer-Policy, Permissions-Policy, Cross-Origin-Opener-Policy `same-origin`.
 
 ## Behaviour rules
 

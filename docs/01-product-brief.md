@@ -41,6 +41,7 @@ A home for Egor P.'s music written in code, where every track can be heard, read
 /course/[slug]/         Lesson pages (long-form, Run on every example)
 /course/[slug]/[guide]/ Guided "Split REPL" pages (drum kit, part 11 "how it was made")
 /about/                 Artist, contact, links
+/licences/              Licence policy for visitors
 /rss.xml                Releases feed
 /sitemap-index.xml      Sitemap (+ robots.txt)
 /covers/sq-xxx.png      1000×1000 covers;  /og/sq-xxx.png  1200×630 social images

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# One-time setup of the site VPS (Ubuntu 22.04 or 24.04 LTS), run as the `claude` user with sudo:
-#   ssh sunsetsequence 'sudo bash -s' < deploy/server-setup.sh
-# Then install the Caddyfile and the launch password (see docs/09). Safe to run again.
+# One-time setup of the site VPS (Ubuntu 22.04 or 24.04 LTS). Run as root by the owner (the deploy
+# user's sudo is narrowed, deploy/sudoers-claude): bash -s < server-setup.sh
+# Then install the Caddyfile (see docs/09). Safe to run again.
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 

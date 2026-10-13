@@ -2,7 +2,7 @@
 
 > Status 12 Oct 2026: done. Name = Egor P. (Q1); no newsletter (Q8); files are in `design/avatar/` and `public/avatar/`.
 
-Add-on for the **sunsetsequence.com** build (main handoff: `sunsetsequence-handoff.zip`). Chosen avatar: **A · "The path"**.
+Add-on for the **sunsetsequence.com** build (main docs: `README.md`, `docs/`). Chosen avatar: **A · "The path"**.
 
 ## The avatar
 
@@ -24,14 +24,14 @@ All files are square, full-bleed, and designed for a **circle crop** (most platf
 
 ### Where it goes in the site
 
-1. Copy `files/avatar.svg` and `files/avatar-dark.svg` to `design/avatar/` and `public/avatar/`; copy the PNGs to `public/avatar/` too.
+1. Done: SVG masters in `design/avatar/`; SVGs and PNGs in `public/avatar/`.
 2. **About page `/about/`** — top card: avatar 160 px circle (`border-radius: 50%`), name (Egor P., `SITE.artist`), role line, bio (below), links.
 3. **Home "About" section (RSS link, no newsletter)** — avatar 96 px circle next to the name.
 4. **Course** — author byline on `/course/` and at the end of each lesson: avatar 48 px circle + "Written by Egor P.: music in code, and the course to write your own." (`components/Byline.astro`).
 5. Alt text: `alt="Egor P."` (the image represents the person); `alt=""` when the name is printed right next to it.
 6. Structured data: on `/about/`, add `Person` JSON-LD with `image: https://sunsetsequence.com/avatar/avatar-1024.png`.
 
-Update `docs/03-pages-and-components.md` (About section, home section 6) and the README file table accordingly.
+`docs/03-pages-and-components.md` (About section, home section 6) and the README file table were updated (12 Oct 2026).
 
 ## Bio text
 
@@ -43,7 +43,7 @@ Update `docs/03-pages-and-components.md` (About section, home section 6) and the
 
 Why: "Modern technologies like…" and "realize … previously difficult to achieve" are long and abstract; the shorter first sentence says the same thing in plain words and keeps the three-beat rhythm (what's possible → what it means for you → the invitation). "Your" is kept: it speaks directly to the visitor.
 
-**Variants (owner picks; until then use the suggested text above):**
+**Variants for off-site profiles (the site uses `SITE.about`, Q14):**
 
 | Where | Text | Length |
 |---|---|---|
@@ -51,5 +51,3 @@ Why: "Modern technologies like…" and "realize … previously difficult to achi
 | Social bio (≤ 160) | Music written in code. Ideas that used to be out of reach, now playable. Let's walk this path together — free course at sunsetsequence.com | ~140 |
 | Short bio (≤ 80) | Music written in code · a free course · sunsetsequence.com | 58 |
 | Course byline | Written by Egor P.: music in code, and the course to write your own. | ~75 |
-
-Q1 answered 12 Oct 2026: Egor P.

@@ -2,7 +2,7 @@
 
 Build in this order. Each phase ends with its checks passing and a short summary to the owner.
 
-## Status (12 Oct 2026)
+## Status (13 Oct 2026)
 
 | Phase | Status |
 |---|---|
@@ -14,13 +14,13 @@ Build in this order. Each phase ends with its checks passing and a short summary
 | 5 Polish | Done except optional self-hosted samples (no newsletter: Q8) |
 | 6 Launch | **Launched 13 Oct 2026**: https://sunsetsequence.com is public (password removed), the GitHub repo is public. Security audit before launch (owner's local notes). Left: Firefox/Safari/phone check. Astro 7 + Vitest 5 upgrade done 13 Oct (npm audit: 0 vulnerabilities; all 23 pages render the same text and tags as before) |
 
-Checks: `npm run check`, `npm test`, `npx playwright test` (Chrome, 1440 + 360 px, production headers), `npm run lighthouse` (live site).
+Checks: `npm run check`, `npm test`, `npx playwright test` (Chrome, 1440 + 360 px, production headers), `npm run lighthouse` (live site), `npm run check-push` (before a push).
 
 ## Phase 0 — Scaffold
 - Astro + TS strict + Preact + nanostores; `design/tokens.css` imported globally; fonts.
 - `Base.astro` with header, footer, horizon stripes, `<ClientRouter />`, empty persisted player slot.
 - Vitest + Playwright set up; `npm run check` clean.
-- Git repo, `.gitignore` (dist, media, public/covers, public/og).
+- Git repo, `.gitignore` (dist, media, public/og, …).
 
 **Done when:** `npm run dev` shows an empty styled shell at 360px and 1440px; lint/type/test pass.
 
@@ -58,8 +58,8 @@ Checks: `npm run check`, `npm test`, `npx playwright test` (Chrome, 1440 + 360 p
 - Lighthouse mobile ≥ 95 performance / 100 accessibility on home, a track page, a lesson page.
 
 ## Phase 6 — Launch
-- VPS set up per `09`; deploy script; staging = the real domain behind a password (`/etc/caddy/auth.caddy`).
-- Owner content confirmed (Q1–Q3 answered 12 Oct); owner says when to launch (Q17) and says when to launch (Q17).
+- VPS set up per `09`; deploy script; staging was the real domain behind a password (`/etc/caddy/auth.caddy`) until the launch.
+- Owner content confirmed (Q1–Q3 answered 12 Oct); launched 13 Oct 2026 (Q17).
 
 **Done when:** https://sunsetsequence.com serves the site with valid TLS; `www` redirects; one full listen + one lesson Run tested on desktop Chrome/Firefox/Safari and a phone.
 

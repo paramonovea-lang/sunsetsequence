@@ -42,9 +42,9 @@ git config core.hooksPath .githooks
 ```
 
 Every `git push` then runs `scripts/check-push.mjs`, which stops the push if a new commit contains a
-key or token, an email address other than the GitHub noreply one, a host that isn't on the allowlist
-in `scripts/lib/push-check.mjs`, an audio file, or a file over 2 MB. `npm run check-push` runs the same
-check by hand.
+key, a token or the preview password; an author, committer or email address other than the GitHub
+noreply one; a host that isn't on the allowlist in `scripts/lib/push-check.mjs`; an audio file, a git
+bundle, an `.env` or key file; or a file over 2 MB. `npm run check-push` runs the same check by hand.
 
 ## Licences
 
@@ -67,5 +67,6 @@ They are **design references, not runnable code**: they use a canvas runtime (`s
 
 ## Status
 
-Phases 0–5 done and deployed at https://sunsetsequence.com behind a preview password (docs/10 "Status").
-Waiting on the owner: launch decision (Q17); still to do: Firefox/Safari/phone check (docs/11, docs/12).
+Launched on 13 Oct 2026: https://sunsetsequence.com and this repository are public (docs/10 "Status").
+Still to do: Firefox/Safari/phone check. Owner decisions: docs/11 (Ubuntu path before April 2027, Q18;
+GitHub Discussions and About box, Q19).

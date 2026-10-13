@@ -1,5 +1,5 @@
 {
-  "_comment": "Security headers for every page. Used by scripts/serve.mjs (local tests) and repeated in deploy/Caddyfile (tests/unit check they match). One policy for all pages: the site navigates without reloads, so the first page's policy applies to the whole visit, and Strudel needs eval, blob workers and https samples. script-src has data: because Strudel's effects (coarse, crush, shape, distort, supersaw…) are an AudioWorklet module bundled as a data: URL; without it those notes don't play. With 'unsafe-inline' already allowed, data: adds no new way in.",
+  "_comment": "Security headers for every page. Used by scripts/serve.mjs (local tests) and repeated in deploy/Caddyfile (src/lib/deploy-config.test.ts checks they match). One policy for all pages: the site navigates without reloads, so the first page's policy applies to the whole visit, and Strudel needs eval, blob workers and https samples. script-src has data: because Strudel's effects (coarse, crush, shape, distort, supersaw…) are an AudioWorklet module bundled as a data: URL; without it those notes don't play. With 'unsafe-inline' already allowed, data: adds no new way in.",
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
   "X-Content-Type-Options": "nosniff",
   "Referrer-Policy": "strict-origin-when-cross-origin",

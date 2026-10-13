@@ -1,6 +1,6 @@
 # 12 · Owner checklist
 
-What the owner provides or decides, and what runs where. Updated 12 Oct 2026. Details: `09` (server),
+What the owner provides or decides, and what runs where. Updated 13 Oct 2026. Details: `09` (server),
 `10` (status), `11` (questions).
 
 ## What runs where
@@ -14,8 +14,9 @@ What the owner provides or decides, and what runs where. Updated 12 Oct 2026. De
 
 ## Server and domain (done)
 
-VPS and domain at hoster.kz, Ubuntu 22.04, user `claude` (key on the owner's PC), firewall 22/80/443,
-fail2ban, Caddy with automatic HTTPS, preview password until launch. Optional: AAAA records for IPv6.
+VPS and domain at hoster.kz, Ubuntu 22.04, deploy user `claude` (narrowed sudo, `deploy/sudoers-claude`;
+updates and reboots need the owner as root), firewall 22/80/443, fail2ban, Caddy with automatic HTTPS.
+Launched 13 Oct 2026 (preview password removed). Optional: AAAA records for IPv6.
 Before April 2027: Ubuntu upgrade or free Ubuntu Pro (Q18).
 
 ## Owner decisions still open
@@ -23,11 +24,13 @@ Before April 2027: Ubuntu upgrade or free Ubuntu Pro (Q18).
 - **Content:** Q13 credits (the mastering field stays hidden while empty).
 - **Course:** Q7 Night Bus.
 - **Services:** Q9 analytics (none by default) · Q16 extra domains.
-- **Launch:** Q17 remove the preview password · Q18 Ubuntu path.
+- **Server:** Q18 Ubuntu path (before April 2027).
+- **GitHub:** Q19 Discussions and About box (backlog).
+- **Still to test:** Firefox, Safari, a phone.
 
 Answered: Q1 author Egor P., Q2 SQ-001 Hope / SQ-002 Quarrel, Q3 licences, Q4 AGPL + repo, Q5 media on
 the VPS, Q6 VPS/DNS, Q8 no newsletter (RSS), Q10 GitHub only + mailto, Q11 Strudel's own samples,
-Q14 bio + avatar. Q12 withdrawn (no Tidal in the course).
+Q14 bio + avatar, Q17 launched 13 Oct 2026. Q12 withdrawn (no Tidal in the course).
 
 ## The tracks in `E:\Tindal\tracks\`
 

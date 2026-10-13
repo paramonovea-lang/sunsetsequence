@@ -1,34 +1,34 @@
 # 09 · Deployment on the VPS
 
 The site is static files + media, served by Caddy with automatic HTTPS on the owner's VPS
-(Ubuntu 22.04 LTS — the host only offers 20.04 for reinstalls; DNS at the registrar). Nothing music-related runs on the server: Strudel runs in
+(Ubuntu 22.04 LTS, the host offers no newer image; DNS at the registrar). Nothing music-related runs on the server: Strudel runs in
 the visitor's browser, releases are audio files (currently WAVs rendered in Strudel).
 
 ## Ubuntu 22.04: before April 2027
 
 Free security updates for 22.04 end in **April 2027**. Before then either upgrade in place
 (`sudo do-release-upgrade`, ~30 min, one reboot; re-run `deploy/server-setup.sh` after) or attach free
-Ubuntu Pro (`sudo pro attach <token>`, personal use, updates until 2032). Owner decides.
+Ubuntu Pro (`sudo pro attach <token>`, personal use, updates until 2032). Owner decides (Q18); both need root, so the owner runs them.
 
 ## Hard limits
 
 - Only configure the **site VPS**. Any other server, domain or DNS record is out of scope: never change it.
 - The site's domain is **sunsetsequence.com**. Only its `@` and `www` records belong to the site, and the owner changes DNS.
-- Ask the owner before changing DNS, buying anything, publishing (removing the launch password), or opening ports beyond 22/80/443.
-- Don't change how the owner logs in (SSH settings for `root`) without asking. fail2ban limits guessing.
+- Ask the owner before changing DNS, buying anything, putting a password on the site or taking it off, or opening ports beyond 22/80/443.
+- Don't change the server's SSH settings without asking. fail2ban limits guessing.
 
 ## Access
 
-- User `claude` logs in with the key `~/.ssh/sunsetsequence_claude` on the owner's PC; SSH alias `sunsetsequence` in `~/.ssh/config`.
+- User `claude` logs in with its own SSH key from the owner's PC (SSH alias `sunsetsequence`, used by `scripts/deploy.sh`).
 - Created by the owner as root:
   ```bash
   adduser --disabled-password --gecos "" claude
   install -d -m 700 -o claude -g claude /home/claude/.ssh
   echo 'ssh-ed25519 … claude@sunsetsequence' > /home/claude/.ssh/authorized_keys
   chown claude:claude /home/claude/.ssh/authorized_keys && chmod 600 /home/claude/.ssh/authorized_keys
-  echo 'claude ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-claude && chmod 440 /etc/sudoers.d/90-claude
+  visudo -cf sudoers-claude && install -m 440 -o root -g root sudoers-claude /etc/sudoers.d/90-claude   # deploy/sudoers-claude
   ```
-- **Narrowed on 13 Oct 2026** (after the launch): `deploy/sudoers-claude` is installed as `/etc/sudoers.d/90-claude`.
+- Sudo for `claude` (`deploy/sudoers-claude`, since 13 Oct 2026; before that it had full sudo for the setup):
   `claude` may only reload and check Caddy, write `/etc/caddy/Caddyfile` and `/etc/caddy/auth.caddy` (with
   `sudo tee`), validate as `caddy`, and read `ufw`/`fail2ban` status. Deploys need no sudo. Anything else
   (updates, reboots, `server-setup.sh`) is done by the owner as root, or the owner widens sudo for a while.
@@ -37,8 +37,10 @@ Ubuntu Pro (`sudo pro attach <token>`, personal use, updates until 2032). Owner 
 
 ## Server setup (once)
 
+The owner runs it as root (the narrowed sudo doesn't allow it):
+
 ```bash
-ssh sunsetsequence 'sudo bash -s' < deploy/server-setup.sh
+bash -s < deploy/server-setup.sh     # in a root shell on the VPS, with the file copied there
 ```
 
 `deploy/server-setup.sh`: updates, automatic security updates, firewall (22/80/443), fail2ban for SSH,
@@ -47,24 +49,27 @@ Caddy from its official repository, `/srv/sunsetsequence/{site,media}` owned by 
 
 ## Caddy
 
-`deploy/Caddyfile` → `/etc/caddy/Caddyfile`, then `sudo -u caddy caddy validate --config /etc/caddy/Caddyfile` and
-`sudo systemctl reload caddy`. Validate as the `caddy` user: run as root, it creates the log file owned
+`deploy/Caddyfile` → `/etc/caddy/Caddyfile` (the one-line command under Access), then
+`sudo -u caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile` and `sudo systemctl reload caddy`
+(sudo matches these arguments exactly). Validate as the `caddy` user: run as root, it creates the log file owned
 by root and the reload then fails (happened on 12 Oct 2026).
 
 - **One security policy for all pages** (`deploy/headers.json`, checked against the Caddyfile by
   `src/lib/deploy-config.test.ts`, and sent by `scripts/serve.mjs` so the browser tests run under it).
   The original plan had a strict policy on most pages and a relaxed one on lessons, but the site
   navigates without reloads, so the first page's policy stays for the whole visit; Strudel needs
-  `'unsafe-eval'`, blob workers and https samples, and Astro inlines small scripts (`'unsafe-inline'`).
+  `'unsafe-eval'`, blob workers and https samples, and Astro inlines small scripts (`'unsafe-inline'`);
+  `script-src` also allows `data:` for Strudel's effects AudioWorklet. Other headers: HSTS, nosniff,
+  Referrer-Policy, Permissions-Policy, Cross-Origin-Opener-Policy `same-origin`.
 - `/_astro/*` and `/covers/*` are cached for a year (file names change when content changes);
   `/media/*` for a day.
-- 404s show `404.html`; the error handler only catches 404, so the password prompt (401) still works.
+- 404s show `404.html`; the error handler only catches 404, so a password prompt (401) would still work if one is put back.
 - HSTS `includeSubDomains` applies to sunsetsequence.com subdomains (there are none).
 
-## Launch password
+## Preview password (off since the launch)
 
-Until the owner approves the launch, `/etc/caddy/auth.caddy` (root:caddy, 640) holds the user `preview`;
-the password is in a text file on the owner's PC, never in git or chat:
+Before the launch, `/etc/caddy/auth.caddy` (root:caddy, 640) held a `basic_auth` block; the login is in a
+text file on the owner's PC, never in git or chat. Since the launch the file is empty. Its format:
 
 ```
 basic_auth {
@@ -84,8 +89,8 @@ npm run deploy -- --site  # site only
 
 `scripts/deploy.sh` builds, streams `dist/` as a tar archive over SSH into `site.new`, then swaps it for
 `site` in one move (the old version stays as `site.old` until the next deploy). There is no rsync on the
-owner's Windows PC, so tar over SSH is used. `media/` is added on top (never deleted remotely). Everything in `media/` is public at a predictable
-URL (`/media/audio/sq-00n.wav`) as soon as it is uploaded, so put a release's audio there only when the
+owner's Windows PC, so tar over SSH is used. `media/` is added on top (never deleted remotely).
+Everything in `media/` is public at a predictable URL (`/media/audio/sq-00n.wav`) as soon as it is uploaded, so put a release's audio there only when the
 release is ready, and delete withdrawn files on the server by hand.
 
 ## Media
@@ -96,9 +101,9 @@ release is ready, and delete withdrawn files on the server by hand.
 
 ## DNS (owner)
 
-- `@` A → the VPS IPv4, `@` AAAA → the VPS IPv6, `www` A/AAAA (or CNAME to `sunsetsequence.com.`).
+- `@` A → the VPS IPv4, `www` A (or CNAME to `sunsetsequence.com.`). AAAA records for IPv6 are optional, not set yet.
 - Caddy gets certificates automatically once DNS points here and ports 80/443 are open.
-- Check: `https://sunsetsequence.com` asks for the launch password, `www` redirects, a track plays, a lesson Run plays.
+- Check: `https://sunsetsequence.com` loads without a password, `www` redirects, a track plays, a lesson Run plays.
 
 ## Backups
 

@@ -11,7 +11,7 @@ Horizontal logo: mark A (36px, `design/logo/logo-mark.svg`) + "SUNSET SEQUENCE" 
 Sticky bottom bar, ink background, 2px accent top rule. Contents: 46px cover thumbnail · title + `SQ-00x · playing/paused` (mono 12px) · previous / play-pause (48px circle, ground fill) / next · progress (elapsed, 4px bar with accent fill, total; clickable/draggable seek, keyboard ←/→ ±5s) · "Sheet" link · "Code ↗" link. Hidden until the first play. Must survive page navigation (see `06-architecture.md`). Media Session API: title, artist, artwork (cover PNG), next/prev handlers.
 
 ### Footer
-Horizon stripes band → ink footer: `sunsetsequence.com` · links: GitHub (the author's profile) and Source (mono 13px). Owner, 12 Oct 2026: no Bandcamp or SoundCloud.
+Horizon stripes band → ink footer: `sunsetsequence.com` · links: GitHub (the author's profile) and Source (mono 13px). Owner, 12 Oct 2026: no Bandcamp or SoundCloud. Second line (12px): the licence summary from `SITE.licenses` + "Licences →" (`/licences/`), and "Live coding by Strudel and TidalCycles".
 
 ## Home `/`
 
@@ -65,6 +65,9 @@ Only part 2 (drum-kit) and part 11 (hardcore, risefall, colours, sus) have guide
 
 ## About `/about/`
 Paper card: the author's avatar "The path" (160px circle, `design/avatar/HANDOFF.md`), name, role, bio (`SITE.about`), a "Write to me →" mailto link (the address is assembled in the browser and never shown or written out in the page source, `components/Email.astro`) and GitHub. `Person` JSON-LD with the 1024px avatar. The course index and every lesson end with a byline: 48px avatar + "Written by Egor P.: music in code, and the course to write your own." (`components/Byline.astro`).
+
+## Licences `/licences/`
+The licence policy in plain words (`src/pages/licences.astro`): one card per part (releases, course text, course code, site code, name and logo, fonts) with what a visitor may do, why, and links to the official licence texts. Keep it in step with `LICENSING.md` and `SITE.licenses`. Linked from the footer, track pages and lesson pages.
 
 ## 404
 Small sunset with the sun below the horizon, "This specimen isn't in the catalog." + links home and to the course.

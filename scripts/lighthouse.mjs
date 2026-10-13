@@ -1,6 +1,6 @@
 // Lighthouse (mobile) on key pages (docs/10 Phase 5: performance ≥ 95, accessibility 100).
 // Usage: node scripts/lighthouse.mjs [baseUrl]   default https://sunsetsequence.com
-// While the site is behind the launch password, set LH_LOGIN_FILE to the preview-login text file
+// If a preview password is ever put back, set LH_LOGIN_FILE to the preview-login text file
 // (lines "Username: …" / "Password: …"); the login is sent as a header, never printed.
 import { readFileSync } from 'node:fs';
 import lighthouse from 'lighthouse';
