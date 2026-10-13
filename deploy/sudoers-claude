@@ -1,0 +1,11 @@
+# /etc/sudoers.d/90-claude: what the deploy user `claude` may run with sudo (narrowed 13 Oct 2026).
+# Deploys need no sudo (claude owns /srv/sunsetsequence). These cover Caddy config updates, the launch
+# password file and read-only status checks. Everything else needs the owner (root).
+# Install: visudo -cf <file> first, then install -m 440 -o root -g root <file> /etc/sudoers.d/90-claude
+Cmnd_Alias SQ_CADDY = /usr/bin/systemctl reload caddy, /usr/bin/systemctl is-active caddy, \
+                      /usr/bin/tee /etc/caddy/Caddyfile, /usr/bin/tee /etc/caddy/auth.caddy
+Cmnd_Alias SQ_STATUS = /usr/sbin/ufw status, /usr/sbin/ufw status verbose, \
+                       /usr/bin/fail2ban-client status, /usr/bin/fail2ban-client status sshd
+Cmnd_Alias SQ_VALIDATE = /usr/bin/caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+claude ALL=(root) NOPASSWD: SQ_CADDY, SQ_STATUS
+claude ALL=(caddy) NOPASSWD: SQ_VALIDATE

@@ -50,9 +50,9 @@ chord-colours, extensions-etude, open-road are
 
 ## Publishing the repo (AGPL)
 
-- 13 Oct: the repo https://github.com/paramonovea-lang/sunsetsequence was public for a few hours (no forks),
-  then made **private** again while the site is in development (owner). **At launch, make it public first**
-  (AGPL: the footer "Source" link and `/licences` link to it), then remove the password. Issues are on;
+- 13 Oct: the repo https://github.com/paramonovea-lang/sunsetsequence is **public** (launch day; it was
+  public for a few hours earlier, then private until the launch). It must stay public while the site is
+  live (AGPL: the footer "Source" link and `/licences` link to it). Issues are on;
   `origin` points to it and `SITE.sourceRepo` is set (footer "Source" link). Push only when the owner
   asks, in batches (GitHub usage is limited), and add no GitHub Actions.
 - Done: `LICENSING.md` says which folder uses which licence; the logo and icons stay all rights reserved.

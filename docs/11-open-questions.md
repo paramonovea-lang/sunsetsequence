@@ -19,7 +19,7 @@ Until answered, the build uses the placeholder shown. Claude Code: never guess t
 | Q13 | Mastering credit and other credits per track? | Field hidden when empty |
 | Q14 | Bio text and photo for About? | **Answered 12 Oct 2026:** bio = `SITE.about`; avatar "The path" (`design/avatar/`) instead of a photo. |
 | Q16 | Also register sunsetsequence.net / .fm (both free on 12 Oct 2026) as redirects? | Not registered |
-| Q17 | Launch: when to remove the preview password (`/etc/caddy/auth.caddy`, docs/09)? | Password on; launch only when the owner says so. At launch, first make the GitHub repo public again (`gh repo edit paramonovea-lang/sunsetsequence --visibility public --accept-visibility-change-consequences`), then remove the password. |
+| Q17 | Launch: when to remove the preview password (`/etc/caddy/auth.caddy`, docs/09)? | **Answered 13 Oct 2026: launched.** The GitHub repo was made public first, then `/etc/caddy/auth.caddy` was emptied (its preview content is kept on the server as `auth.caddy.preview-backup-2026-10-13`; to protect the site again, copy it back and reload Caddy). |
 | Q18 | Ubuntu 22.04 support ends April 2027: in-place upgrade to 24.04, or free Ubuntu Pro (updates to 2032)? | Decide before early 2027 |
 | Q19 | GitHub repo for visitors: turn on Discussions; fill the About box (description, https://sunsetsequence.com, topics such as strudel, live-coding, music, course)? | Backlog (owner, 13 Oct 2026). Issues are on. |
 

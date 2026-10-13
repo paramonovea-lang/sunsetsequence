@@ -19,7 +19,7 @@ Ubuntu Pro (`sudo pro attach <token>`, personal use, updates until 2032). Owner 
 
 ## Access
 
-- User `claude` (sudo without password, for setup) logs in with the key `~/.ssh/sunsetsequence_claude` on the owner's PC; SSH alias `sunsetsequence` in `~/.ssh/config`.
+- User `claude` logs in with the key `~/.ssh/sunsetsequence_claude` on the owner's PC; SSH alias `sunsetsequence` in `~/.ssh/config`.
 - Created by the owner as root:
   ```bash
   adduser --disabled-password --gecos "" claude
@@ -28,7 +28,12 @@ Ubuntu Pro (`sudo pro attach <token>`, personal use, updates until 2032). Owner 
   chown claude:claude /home/claude/.ssh/authorized_keys && chmod 600 /home/claude/.ssh/authorized_keys
   echo 'claude ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-claude && chmod 440 /etc/sudoers.d/90-claude
   ```
-- After setup, sudo can be narrowed (deploys only need write access to `/srv/sunsetsequence`).
+- **Narrowed on 13 Oct 2026** (after the launch): `deploy/sudoers-claude` is installed as `/etc/sudoers.d/90-claude`.
+  `claude` may only reload and check Caddy, write `/etc/caddy/Caddyfile` and `/etc/caddy/auth.caddy` (with
+  `sudo tee`), validate as `caddy`, and read `ufw`/`fail2ban` status. Deploys need no sudo. Anything else
+  (updates, reboots, `server-setup.sh`) is done by the owner as root, or the owner widens sudo for a while.
+- Updating the Caddyfile under the narrowed rules:
+  `cat deploy/Caddyfile | ssh sunsetsequence 'sudo tee /etc/caddy/Caddyfile >/dev/null && sudo -u caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile && sudo systemctl reload caddy'`
 
 ## Server setup (once)
 
@@ -67,7 +72,8 @@ basic_auth {
 }
 ```
 
-**Launch** (owner says so): empty the file, `systemctl reload caddy`. To protect again, restore it.
+**Launch** (done 13 Oct 2026): the file was emptied and Caddy reloaded; the preview version is kept as
+`/etc/caddy/auth.caddy.preview-backup-2026-10-13`. To protect the site again, the owner copies it back and reloads Caddy.
 
 ## Deploy
 
