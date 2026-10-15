@@ -2,12 +2,12 @@
 
 Build in this order. Each phase ends with its checks passing and a short summary to the owner.
 
-## Status (13 Oct 2026)
+## Status (15 Oct 2026)
 
 | Phase | Status |
 |---|---|
 | 0 Scaffold | Done |
-| 1 Catalog and covers | Done (placeholders replaced 12 Oct by SQ-001 Hope and SQ-002 Quarrel) |
+| 1 Catalog and covers | Done (placeholders replaced 12 Oct by SQ-001 Hope and SQ-002 Quarrel; new mixes of both and "coming soon" cards for upcoming tracks, first SQ-003 Crazy Breeze, 15 Oct) |
 | 2 Player | Done (audio = WAVs rendered in Strudel, Q2) |
 | 3 Course | Done — lessons are generated HTML, not MDX; own Strudel runtime, not `@strudel/web`; widgets as scripts (docs/07, 08) |
 | 4 Guided Split REPL | Done — guided sequences on their own pages: drum-kit + 4 from part 11 |

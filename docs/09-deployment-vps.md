@@ -93,7 +93,7 @@ npm run deploy -- --site  # site only
 `site` in one move (the old version stays as `site.old` until the next deploy). There is no rsync on the
 owner's Windows PC, so tar over SSH is used. `media/` is added on top (never deleted remotely).
 Everything in `media/` is public at a predictable URL (`/media/audio/sq-00n.wav`) as soon as it is uploaded, so put a release's audio there only when the
-release is ready, and delete withdrawn files on the server by hand.
+release is ready, and delete withdrawn files on the server by hand. A new mix of a release keeps its file name: the build gives the link a new `?v=` tag, so visitors get it at once.
 
 ## Media
 

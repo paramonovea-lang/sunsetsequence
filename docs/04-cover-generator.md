@@ -63,7 +63,7 @@ const escapeXml = (s: string) => s.replace(/[<>&"']/g, (c) => ({ '<': '&lt;', '>
 ## Outputs
 
 - `Cover.astro` renders `coverSvg()` inline (decorative: `aria-hidden="true"` when a title is next to it).
-- Build-time endpoints render PNGs with `@resvg/resvg-js`: `/covers/sq-001.png` (1000×1000, Media Session artwork; `src/pages/covers/[file].png.ts`) and `/og/sq-001.png` (1200×630 social image: cover left, `SPECIMEN SQ-001`, title, `[style] · [bpm] BPM · [key]`, wordmark and horizon stripes right; `src/lib/og.ts`, fonts in `src/assets/og-fonts/`: a static ExtraBold cut of Schibsted Grotesk and DM Mono Regular). Other pages use `/og-default.png` (`public/`, copied from `design/icons/`).
+- Build-time endpoints render PNGs with `@resvg/resvg-js`: `/covers/sq-001.png` (1000×1000, Media Session artwork; `src/pages/covers/[file].png.ts`; linked as `…png?v=` + a hash of the SVG, because `/covers/` is cached for a year) and `/og/sq-001.png` (1200×630 social image: cover left, `SPECIMEN SQ-001`, title, `[style] · [bpm] BPM · [key]`, wordmark and horizon stripes right; `src/lib/og.ts`, fonts in `src/assets/og-fonts/`: a static ExtraBold cut of Schibsted Grotesk and DM Mono Regular). Other pages use `/og-default.png` (`public/`, copied from `design/icons/`).
 - Small sizes (46–48px thumbnails) use the same SVG. The logo mark (`design/logo/logo-mark.svg`) is this generator's output for C major, 120 BPM, `x...x...x...x...`.
 
 ## Tests

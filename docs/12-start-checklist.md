@@ -50,6 +50,13 @@ chord-colours, extensions-etude, open-road are
   releases. Their audio is a WAV rendered from the code with Strudel's export tab (cycles 0 to the
   form length, "Multi Channel Orbits" off), copied to `media/audio/sq-00n.wav`, then
   `node scripts/wav-peaks.mjs media/audio/sq-00n.wav`. New code arrives in `MyTracks/` (git-ignored).
+- Before the audio exists, a track can wait as `status: upcoming`: it shows as a "coming soon" card in
+  the catalog only. Set `status: released` once its WAV and peaks are in `media/`.
+- **Updating a release** (new mix or code): the owner drops `<Title>.txt` + `<Title>.wav` in
+  `Track_updates/` (git-ignored). Copy the code to `code/sq-00n.strudel` and the WAV to
+  `media/audio/sq-00n.wav` (same names), run `wav-peaks.mjs`, then re-check the track file against the
+  new code: `formCycles` (sum of `arrange`), `length` (cycles ÷ (BPM/4) minutes, rounded down to the
+  second), `chords`, `drums`, `sequence` and every code fragment quoted in the liner notes.
 
 ## Publishing the repo (AGPL)
 

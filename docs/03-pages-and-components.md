@@ -21,8 +21,8 @@ Horizon stripes band → ink footer: `sunsetsequence.com` · links: GitHub (the 
 2. **Horizon stripes divider.**
 3. **Catalog** (ink section)
    - H2 "The catalog" + **view switch** (tablist: Covers | Tracklist, ground fill = selected) + style filter chips (All, [Style…], With lesson). Filters are client-side.
-   - **Covers view:** grid `repeat(auto-fill, minmax(280px, 1fr))`, gap 32/20. Card = square cover with `SQ-00x` badge (+ "liner notes" badge if the track has them), title (21px/700), meta (mono), length. Whole card links to the track page; a play button appears on hover/focus.
-   - **Tracklist view:** table — No., cover thumb + title, style, tempo, key, length, play button (sends to player), "Sheet" link. Horizontally scrollable under 760px.
+   - **Covers view:** grid `repeat(auto-fill, minmax(280px, 1fr))`, gap 32/20. Card = square cover with `SQ-00x` badge (+ "liner notes" badge if the track has them), title (21px/700), meta (mono), length. Whole card links to the track page; a play button appears on hover/focus. Tracks with `status: upcoming` come first as **coming soon** cards: the same card with a "coming soon" badge instead of "+ liner notes" and "soon" instead of the length, no link, no play button.
+   - **Tracklist view:** table — No., cover thumb + title, style, tempo, key, length, play button (sends to player), "Sheet" link; an upcoming track shows "soon" as its length and "coming soon" in place of play + Sheet. Horizontally scrollable under 760px.
    - The selected view is remembered in `localStorage` (try/catch).
 4. **How the covers work** — H2 "The sunset is the sequence." + 4-cell definition grid: Sun height = tempo · Water stripes = kick pattern · Colours = key · Catalog number = release order.
 5. **Course teaser** (paper section) — eyebrow "The course · free · 11 parts · nothing to install"; H2 "Sequence your first track."; 11 step cards (STEP 0n, small sunrise icon whose sun rises per step, title, one-line description) linking to lessons; CTA "Start step 01, free →".

@@ -65,7 +65,7 @@ As built (phases 0–5, Oct 2026). Where this differs from the original plan, th
 - `Base.astro` renders `<DockedPlayer client:load transition:persist="player" />` once; navigations keep it and its single `<audio>` alive.
 - `stores/player.ts`: `queue` (catalog order), `currentId`, `isPlaying`, `position`, `duration`, and a `command` atom the player executes. Any `[data-play]` button on any page is handled by one delegated listener in the player, which also keeps the buttons' state, the cycle counters and the step strips in sync. An inline script in `Base.astro` keeps a Play click made before the player has loaded.
 - Seeks that arrive before the audio's length is known are queued and applied on `loadedmetadata`.
-- Hidden until the first play. Media Session: title, artist (`SITE.artist`), `/covers/sq-xxx.png`; play/pause/prev/next/seek.
+- Hidden until the first play. Media Session: title, artist (`SITE.artist`), `/covers/sq-xxx.png?v=…`; audio URLs also carry `?v=` (a hash of the file, `mediaUrl()` in `src/lib/tracks.ts`); play/pause/prev/next/seek.
 - **One sound at a time:** Run (code block) or the guided editor pauses the player; playing a track stops Strudel. Code blocks and the guided editor hand the one Strudel instance to each other through `stores/strudel.ts`.
 
 ## Data flow at build
