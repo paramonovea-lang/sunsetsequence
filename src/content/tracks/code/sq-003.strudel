@@ -1,0 +1,87 @@
+setcpm(124/4)
+
+const melody_1 = "<Em G D Am>"
+const melody_2 = "<Em D C D>"
+const melody_3 = "<G Am B Em>"
+
+const bass_1   = stack(note("<[E1 G1] [D1 C1]>").s("piano").release(0.2).gain(.35),
+                       note("<[E2 G2] [D2 C2]>").s("piano").release(0.2).gain(.35))
+
+
+const bass_3   = stack(note("<[G1 A1] [B1 E1]>").s("piano").release(0.2).gain(.35),
+                       note("<[G2 A2] [B2 E2]>").s("piano").release(0.2).gain(.35))
+
+const piano_1 = n("0 <[7  3] [7 4] [7  4] [7  3]>").chord(melody_1)
+  .dict("triads").mode("above")
+  .anchor("<E4 D4 D4 C4>")
+  .voicing()
+  .s("piano")
+  .room(0.4)
+  .gain(.35)
+  .fast(2)
+
+const piano_2 = n("0 <[7, 3] [7, 4] [7, 4] [7, 4]>").chord(melody_2)
+  .dict("triads").mode("above")
+  .anchor("<B3 A3 G3 A3>")
+  .voicing()
+  .s("piano")
+  .room(0.4)
+  .gain(.35)
+  .fast("4")
+
+const piano_3 = n("0 <[7 4] [7 3] [7 4] [7 3]>").chord(melody_3)
+  .dict("triads").mode("above")
+  .anchor("<B3 C4 B4 B4>")
+  .voicing()
+  .s("piano")
+  .room(0.4)
+  .gain(.35)
+  .fast(2)
+
+
+const piano_21 = n("0 <[1 2 3] [1 2 3] [1 2 3] [1 2 3]>").chord(melody_1)
+  .dict("triads").mode("above")
+  .anchor("<E4 D4 D4 C4>")
+  .voicing()
+  .s("piano")
+  .room(0.4)
+  .gain(.35)
+  .fast(4)
+
+const piano_22 = n("0 <[1 2 3] [1 2 3] [1 2 3] [1 2 3]>").chord(melody_2)
+  .dict("triads").mode("above")
+  .anchor("<B3 A3 G3 A3>")
+  .voicing()
+  .s("piano")
+  .room(0.4)
+  .gain(.35)
+  .fast("4")
+
+const piano_23 = n("0 <[1 2 3] [1 2 3] [1 2 3] [1 2 3]>").chord(melody_3)
+  .dict("triads").mode("above")
+  .anchor("<B3 C4 B4 B4>")
+  .voicing()
+  .s("piano")
+  .room(0.4)
+  .gain(.35)
+  .fast(8)
+  .lpf("<5000 2000 800 300>")
+
+
+
+const intro_1 = stack(piano_1, bass_1)
+const outro_1 = stack(piano_3, bass_3)
+const intro_2 = stack(piano_21)
+const outro_2 = stack(piano_23)
+
+
+const song = [
+  [2, intro_1],
+  [1, piano_2],
+  [2, outro_1],
+  [1, intro_2],
+  [1, piano_22],
+  [1, outro_2]
+]
+
+$: arrange(...song, ...song, ...song)   // 3 × 8 = 24 bars
