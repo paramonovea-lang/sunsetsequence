@@ -1,8 +1,8 @@
 setcpm(124/4)
 const prog   = "<C Em Am F>"
 const pad    = chord("<C Em Am F>").voicing().s("gm_pad_warm").gain(.35)
-const bass   = stack(note("<c2 E2 A2 f2>").s("gm_acoustic_bass"),
-                     note("<c1 E1 A1 f1>").s("gm_acoustic_bass"))
+const bass   = stack(note("<C2 E2 A2 F2>").s("gm_acoustic_bass"),
+                     note("<C1 E1 A1 F1>").s("gm_acoustic_bass"))
 const melody = chord(prog)
   .dict("triads")
   .mode("above")
@@ -12,18 +12,17 @@ const melody = chord(prog)
   .s("piano")
   .room(.4)
   .gain(".6 .3")
-.sustain (1)
+  .sustain (1)
 
-const grove = stack(chord(prog).rootNotes(2).struct("[~ x]*4")
+const grove = stack(
+   chord(prog).rootNotes(2).struct("[~ x]*4")
   .s("sawtooth").lpf(500).decay(.15).sustain(0).gain(.7),
-  n("[0 1 2 3]*4").chord(prog).voicing()
-  .s("sawtooth").lpf(2500).clip(.5).delay(.3).delaytime(.35)
-  //.gain(saw.slow(8).range(.1, .7))
-  .gain(.6)
-)
+   
+   n("[0 1 2 3]*4").chord(prog).voicing()
+  .s("sawtooth").lpf(2500).clip(.5).delay(.3).delaytime(.35).gain(.6))
 
-const kiks = s("bd*4").bank("RolandTR909")
-const claps = s("~ cp ~ cp").bank("RolandTR909").gain(.7)
+const kiks = s("bd*4").bank("RolandTR909").gain(.35)
+const claps = s("~ cp ~ cp").bank("RolandTR909").gain(.35)
 
 const hats = s("hh*8").bank("RolandTR909")  
   .gain("[.25 .5]*8")
@@ -34,17 +33,17 @@ const vocal2 = n("[0 1 2 3]*4")
   .chord(prog)
   .voicing()
   .s("piano")
-  .room(.5)
+  .room(.4)
   .gain(.6)
 
 
 const intro1    = stack(kiks,hats, claps).lpf(saw.slow(4).range(0, 5000))
 const intro2    = stack(kiks,hats,claps, pad)
-const main     = stack(kiks,hats, claps, melody,bass)
+const main      = stack(kiks,hats, claps, melody,bass)
 const chorus    = stack(vocal,vocal2,bass, kiks,hats, claps)
 const groove    = stack(vocal,grove,bass)
-const breakdown     =  stack(pad,vocal2, bass,kiks,hats, claps)
-const outro    = stack(kiks,hats,claps).lpf(isaw.slow(4).range(0, 5000))
+const breakdown =  stack(pad,vocal2, bass,kiks,hats, claps)
+const outro     = stack(kiks,hats,claps).lpf(isaw.slow(4).range(0, 5000))
 $: arrange(
   [4, intro1],
   [8, intro2],

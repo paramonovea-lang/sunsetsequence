@@ -1,10 +1,8 @@
 setcpm(84/4)
-//Am, G, F, E, Am, F, Dsus, E
 const prog   = "<Am G F E Am F Dm E>"
 
-const claps = s("~ cp ~ cp").bank("RolandTR909").gain(.7)
-const kiks = s("bd*4").bank("RolandTR909")
-
+const claps = s("~ cp ~ cp").bank("RolandTR909").gain(.35)
+const kiks = s("bd*4").bank("RolandTR909").gain(.4)
 const hats = s("[~ hh]*4, ~ rim ~ rim").bank("RolandTR808").hpf(300).gain(.35)
 
 const piano =  stack(n("[0 2 4 -7]".add("<-2 -3 ~ -5 -2 ~ ~ -5>")).scale("C:major").s("piano").lpf(2200).gain(".8 .8 .8 .8").fast(2),
@@ -16,7 +14,7 @@ const guitar = stack(
  note("[0 2 7 -7]".add("<~ ~ -4 ~ ~ -4 -6 ~>")).scale("C4:major").s("gm_electric_guitar_clean").gain(".6 .6 .6 .6").attack(.1).release(1).shape(.4).fast(2))
 
 
-const pad   = stack(chord(prog).voicing().s("gm_pad_warm").release(0))
+const pad        = stack(chord(prog).voicing().s("gm_pad_warm").release(0)).gain(.6)
 const pad_slow   = stack(chord(prog).voicing().s("gm_pad_warm").gain(isaw.slow(8)).release(2))
 
 
@@ -30,11 +28,11 @@ const shoot        = s("gm_gunshot").n("4").note("c3").gain(.9).room(.4)
 
 $: arrange(
   [2, intro],
-  [2, guitar_enter],
-  [2, piano_enter],
+  [4, guitar_enter],
+  [4, piano_enter],
   [8, synth],
-  [2, guitar_enter],
-  [2, piano_enter],
+  [4, guitar_enter],
+  [4, piano_enter],
   [8, outro],
   [1, intro],
   [1, shoot]
