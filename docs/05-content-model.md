@@ -57,7 +57,7 @@ const tracks = defineCollection({
 
 Files are named by catalogue number (`sq-001.md`); the URL uses `slug`. The catalogue number never changes; if a slug changes, add a redirect (Caddy) from the old URL.
 
-Ordering: catalog shows newest first by `released`; `upcoming` tracks show only in the "next release" slot.
+Ordering: catalog shows newest first by `released`. `upcoming` tracks appear only as "coming soon" cards at the start of the catalog (home and `/tracks/`, both views): cover, title, style, BPM, key; no link, no play button, no track page, player entry, feed item or social image until `status: released`.
 
 ## Lessons and guided sequences
 

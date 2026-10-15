@@ -7,12 +7,14 @@ import { coverInput, facts, meta, type Track } from '../lib/tracks';
 
 interface Props {
   tracks: Track[];
+  /** status: upcoming — shown first as "coming soon" cards: no link, no play button, no length. */
+  upcoming?: Track[];
   heading?: string;
   headingLevel?: 'h1' | 'h2';
 }
-const { tracks, heading = 'The catalog', headingLevel = 'h2' } = Astro.props;
+const { tracks, upcoming = [], heading = 'The catalog', headingLevel = 'h2' } = Astro.props;
 const H = headingLevel;
-const styles = [...new Set(tracks.map((t) => t.data.style))];
+const styles = [...new Set([...upcoming, ...tracks].map((t) => t.data.style))];
 const styleKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 ---
 <section id="catalog" class="catalog on-ink" data-catalog>
@@ -33,6 +35,24 @@ const styleKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     </div>
 
     <ul class="grid" data-panel="covers">
+      {upcoming.map((t) => (
+        <li data-style={styleKey(t.data.style)} data-lesson={t.data.lessons.length > 0 ? '1' : undefined} data-upcoming>
+          <div class="card">
+            <span class="art">
+              <Cover {...coverInput(t)} />
+              <span class="badge id">{t.data.id}</span>
+              <span class="badge notes">coming soon</span>
+            </span>
+            <span class="info">
+              <span>
+                <span class="t">{t.data.title}</span>
+                <span class="m">{meta(t)}</span>
+              </span>
+              <span class="m">soon</span>
+            </span>
+          </div>
+        </li>
+      ))}
       {tracks.map((t) => (
         <li data-style={styleKey(t.data.style)} data-lesson={t.data.lessons.length > 0 ? '1' : undefined}>
           <a href={`/tracks/${t.data.slug}/`} class="card">
@@ -60,6 +80,20 @@ const styleKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
           <tr><th>No.</th><th>Title</th><th>Style</th><th>Tempo</th><th>Key</th><th>Length</th><th><span class="visually-hidden">Actions</span></th></tr>
         </thead>
         <tbody>
+          {upcoming.map((t) => {
+            const f = facts(t);
+            return (
+              <tr data-style={styleKey(t.data.style)} data-lesson={t.data.lessons.length > 0 ? '1' : undefined} data-upcoming>
+                <td class="mono dim">{t.data.id}</td>
+                <td><span class="tt"><Cover {...coverInput(t)} size={48} /><strong>{t.data.title}</strong></span></td>
+                <td class="dim">{t.data.style}</td>
+                <td>{f.bpm}</td>
+                <td>{f.key}</td>
+                <td class="mono dim">soon</td>
+                <td class="act mono dim">coming soon</td>
+              </tr>
+            );
+          })}
           {tracks.map((t) => {
             const f = facts(t);
             return (

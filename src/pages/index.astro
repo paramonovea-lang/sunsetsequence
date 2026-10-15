@@ -8,9 +8,10 @@ import PlayButton from '../components/PlayButton.astro';
 import SequenceGrid from '../components/SequenceGrid.astro';
 import StepCards from '../components/StepCards.astro';
 import { SITE } from '../site';
-import { coverInput, meta, releasedTracks, sequenceRows } from '../lib/tracks';
+import { coverInput, meta, releasedTracks, sequenceRows, upcomingTracks } from '../lib/tracks';
 
 const tracks = await releasedTracks();
+const upcoming = await upcomingTracks();
 const latest = tracks[0];
 import Avatar from '../components/Avatar.astro';
 ---
@@ -62,7 +63,7 @@ import Avatar from '../components/Avatar.astro';
 
   <HorizonStripes />
 
-  <Catalog tracks={tracks} />
+  <Catalog tracks={tracks} upcoming={upcoming} />
 
   <section id="covers" class="container section how">
     <div class="how-text">

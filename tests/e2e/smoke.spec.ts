@@ -81,3 +81,19 @@ test('the author avatar shows on the About page, home and course, and the About 
   await expect(page.locator('.sq-byline')).toContainText('Written by Egor P.');
   for (const src of ['/avatar/avatar.svg', '/avatar/avatar-1024.png']) expect((await page.request.get(src)).status()).toBe(200);
 });
+
+test('coming soon cards: no link, no play button, and no track page', async ({ page, request }) => {
+  await page.goto('/tracks/');
+  for (const card of await page.locator('[data-upcoming]').all()) {
+    await expect(card.locator('a, button')).toHaveCount(0);
+  }
+  const titles = await page.locator('[data-panel="covers"] [data-upcoming] .t').allInnerTexts();
+  const feed = await (await request.get('/rss.xml')).text();
+  for (const t of titles) expect(feed).not.toContain(t);
+});
+
+test('audio and cover artwork links change when the file does (?v= tag)', async ({ request }) => {
+  const html = await (await request.get('/tracks/hope/')).text();
+  expect(html).toMatch(/sq-001\.wav\?v=[0-9a-f]{8}/);
+  expect(html).toMatch(/covers\/sq-001\.png\?v=[0-9a-f]{8}/);
+});

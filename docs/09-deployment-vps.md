@@ -62,7 +62,9 @@ by root and the reload then fails (happened on 12 Oct 2026).
   `script-src` also allows `data:` for Strudel's effects AudioWorklet. Other headers: HSTS, nosniff,
   Referrer-Policy, Permissions-Policy, Cross-Origin-Opener-Policy `same-origin`.
 - `/_astro/*` and `/covers/*` are cached for a year (file names change when content changes);
-  `/media/*` for a day.
+  `/media/*` for a day. The cover PNG and audio links carry `?v=` + 8 hex characters of a hash of the
+  cover SVG / audio file (`src/lib/tracks.ts`), so a new cover or a new mix under the same file name
+  gets a new URL and visitors hear it at once. Pages (HTML) have no Cache-Control header.
 - 404s show `404.html`; the error handler only catches 404, so a password prompt (401) would still work if one is put back.
 - HSTS `includeSubDomains` applies to sunsetsequence.com subdomains (there are none).
 

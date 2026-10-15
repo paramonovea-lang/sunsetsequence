@@ -1,3 +1,6 @@
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { coverSvg } from './cover';
 import type { PlayerTrack } from '../stores/player';
@@ -9,6 +12,12 @@ export async function releasedTracks(): Promise<Track[]> {
   const all = await getCollection('tracks', (t) => t.data.status === 'released');
   // Same day: the higher catalogue number is the newer release.
   return all.sort((a, b) => b.data.released.getTime() - a.data.released.getTime() || b.data.id.localeCompare(a.data.id));
+}
+
+/** Upcoming tracks, next one first: only the catalog's "coming soon" cards show them (no page, player or feed). */
+export async function upcomingTracks(): Promise<Track[]> {
+  const all = await getCollection('tracks', (t) => t.data.status === 'upcoming');
+  return all.sort((a, b) => a.data.id.localeCompare(b.data.id));
 }
 
 const codeFiles = import.meta.glob<string>('../content/tracks/code/*.strudel', { query: '?raw', import: 'default', eager: true });
@@ -47,22 +56,39 @@ export const coverInput = (t: Track) => ({
   palette: t.data.coverPalette,
 });
 
+const short = (data: string | Buffer) => createHash('sha256').update(data).digest('hex').slice(0, 8);
+const fileVersions = new Map<string, string | null>();
+
+/** `?v=` from the file's contents: a new mix under the same name gets a new URL, so browsers
+ *  don't keep playing the old one (media is cached for a day, docs/09). No local file: no tag. */
+function fileVersion(mediaPath: string): string | null {
+  if (!fileVersions.has(mediaPath)) {
+    let v: string | null = null;
+    try { v = short(readFileSync(path.resolve(process.cwd(), mediaPath.replace(/^\//, '')))); } catch {}
+    fileVersions.set(mediaPath, v);
+  }
+  return fileVersions.get(mediaPath)!;
+}
+
 /** Media paths in frontmatter start with /media/; PUBLIC_MEDIA_BASE moves them to a CDN (docs/09, Q5). */
 export function mediaUrl(p: string): string {
   const base = import.meta.env.PUBLIC_MEDIA_BASE as string | undefined;
-  return base ? p.replace(/^\/media/, base.replace(/\/$/, '')) : p;
+  const v = fileVersion(p);
+  return (base ? p.replace(/^\/media/, base.replace(/\/$/, '')) : p) + (v ? `?v=${v}` : '');
 }
 
 /** What the docked player needs to know about every release. */
 export function playerTrack(t: Track): PlayerTrack {
   const d = t.data;
+  const svg = coverSvg(coverInput(t));
   return {
     id: d.id,
     title: d.title,
     slug: d.slug,
     audio: mediaUrl(d.audio.mp3),
-    png: `/covers/${d.id.toLowerCase()}.png`,
-    svg: coverSvg(coverInput(t)),
+    // /covers/ is cached for a year: the tag changes when the cover does (new palette, kick, key, tempo).
+    png: `/covers/${d.id.toLowerCase()}.png?v=${short(svg)}`,
+    svg,
     bpm: d.bpm,
     formCycles: d.formCycles,
     placeholder: d.placeholder,
