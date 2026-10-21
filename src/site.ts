@@ -12,6 +12,9 @@ export const SITE = {
   // Kept in two parts and joined in the browser (components/Email.astro), so the address isn't
   // written out in the page source or the repository for spam bots.
   contact: { user: 'paramonov.e.a', domain: 'gmail.com' },
+  // Google Analytics 4 (Q9, owner 21 Oct 2026; components/Analytics.astro). The ID is public by design:
+  // every page that uses GA shows it in its source.
+  analyticsId: 'G-VD0BHX2GQH',
   sourceRepo: 'https://github.com/paramonovea-lang/sunsetsequence', // Q4: AGPL-3.0 repo (LICENSING.md)
   // The author's profiles (About page, footer). Owner, 12 Oct 2026: GitHub only.
   links: [{ label: 'GitHub', href: 'https://github.com/paramonovea-lang' }],

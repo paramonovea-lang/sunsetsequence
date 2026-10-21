@@ -42,6 +42,7 @@ A home for Egor P.'s music written in code, where every track can be heard, read
 /course/[slug]/[guide]/ Guided "Split REPL" pages (drum kit, part 11 "how it was made")
 /about/                 Artist, contact, links
 /licences/              Licence policy for visitors
+/privacy/               What the site records (Google Analytics, with consent) and the visitor's choice
 /rss.xml                Releases feed
 /sitemap-index.xml      Sitemap (+ robots.txt)
 /covers/sq-xxx.png      1000×1000 covers;  /og/sq-xxx.png  1200×630 social images
@@ -50,6 +51,6 @@ A home for Egor P.'s music written in code, where every track can be heard, read
 
 ## Success measures (owner can check without accounts)
 
-- Plays per visit, course step completion (local, anonymous analytics only if the owner opts in — Q9).
+- Plays per visit, course step completion. Google Analytics 4 since 21 Oct 2026 (Q9), only for visitors who allow it: page views + a `track_play` event.
 - Course: % of visitors who reach Step 03.
 - Lighthouse ≥ 95 performance/accessibility on home and a track page (mobile). Measured 12 Oct 2026 on the live site: performance 97–100, accessibility 100 (`npm run lighthouse`).

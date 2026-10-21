@@ -1,0 +1,74 @@
+---
+// What the site records about visits (docs/11 Q9: Google Analytics 4, components/Analytics.astro).
+import Base from '../layouts/Base.astro';
+import Email from '../components/Email.astro';
+
+const google = {
+  policy: { label: 'Google Privacy Policy', href: 'https://policies.google.com/privacy' },
+  partners: { label: 'How Google uses data from sites', href: 'https://policies.google.com/technologies/partner-sites' },
+  optout: { label: 'Google Analytics opt-out add-on', href: 'https://tools.google.com/dlpage/gaoptout' },
+};
+---
+<Base title="Privacy" description="What sunsetsequence.com records about visits, and how to opt out.">
+  <section class="container section">
+    <p class="eyebrow">Privacy</p>
+    <h1>What this site records</h1>
+    <p class="lede">No accounts, no ads, no newsletter. If you allow it, the site counts visits with Google Analytics so the author can see which tracks and lessons people use.</p>
+
+    <div class="choice" role="region" aria-label="Your choice">
+      <p class="state mono" aria-live="polite">
+        <span data-when="granted">Statistics: allowed</span>
+        <span data-when="denied">Statistics: off</span>
+        <span data-when="ask">Statistics: not chosen yet (off)</span>
+      </p>
+      <span class="actions">
+        <button type="button" class="btn btn-primary" data-stats-choice="granted">Allow statistics</button>
+        <button type="button" class="btn btn-secondary" data-stats-choice="denied">Turn statistics off</button>
+      </span>
+    </div>
+
+    <div class="notes">
+      <h2>Visit statistics</h2>
+      <ul>
+        <li>Nothing is counted until you choose “Allow”. Your choice is kept in your browser; change it here at any time.</li>
+        <li>Google Analytics records the pages you open, the tracks you play, the page that sent you here, your device and browser type and your approximate location (country and city, from your IP address). Google Analytics does not store the IP address itself.</li>
+        <li>It sets cookies named <code>_ga</code> to tell a returning visitor from a new one. They stay for up to two years unless you delete them; turning statistics off here removes them.</li>
+        <li>The data is used only to see how the site is used. It isn't sold, and it isn't used for advertising.</li>
+        <li>Google processes the data for this site: <a href={google.policy.href} rel="noopener">{google.policy.label}</a> · <a href={google.partners.href} rel="noopener">{google.partners.label}</a>.</li>
+      </ul>
+
+      <h2>Opting out</h2>
+      <ul>
+        <li>Choose “No thanks” in the banner or “Turn statistics off” above. You can also block cookies or trackers in your browser, use a content blocker, or install the <a href={google.optout.href} rel="noopener">{google.optout.label}</a>. Everything on the site works the same without it.</li>
+      </ul>
+
+      <h2>Stored in your browser only</h2>
+      <ul>
+        <li>Your course progress, the catalog view you picked and your statistics choice are kept in your browser’s local storage. They never leave your device; clear the site’s data to remove them.</li>
+        <li>The examples load their sounds from Strudel’s sample servers, which see a normal request from your browser.</li>
+      </ul>
+
+      <h2>Questions</h2>
+      <ul>
+        <li><Email text="Write to the author →" /></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 { font-size: var(--fs-h2); letter-spacing: var(--tracking-h2); margin-top: 8px; }
+  .lede { margin-top: 16px; max-width: 680px; }
+  .choice { margin-top: 32px; max-width: 760px; border: var(--rule); background: var(--paper); padding: 20px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+  .state { margin: 0; font-size: var(--fs-label); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .state span { display: none; }
+  :global(html[data-stats='granted']) .state [data-when='granted'],
+  :global(html[data-stats='denied']) .state [data-when='denied'],
+  :global(html[data-stats='ask']) .state [data-when='ask'] { display: inline; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .notes { margin-top: 40px; max-width: 760px; }
+  h2 { font-size: var(--fs-h3); margin-top: 40px; }
+  h2:first-child { margin-top: 0; }
+  .notes ul { margin: 16px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .notes :global(.sq-email) { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; }
+</style>

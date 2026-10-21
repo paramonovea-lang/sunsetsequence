@@ -15,6 +15,8 @@ export const ALLOWED_HOSTS = [
   'creativecommons.org', 'gnu.org', 'fsf.org', 'openfontlicense.org', 'sil.org',
   'googleapis.com', 'gstatic.com', 'w3.org', 'schema.org', 'audacityteam.org',
   'cloudsmith.io', 'npmjs.org', 'hoster.kz', 'claude.ai', 'example.com', 'example.org',
+  // Google Analytics (Q9, 21 Oct 2026): script and hit hosts, analytics.google.com, the /privacy links.
+  'googletagmanager.com', 'google-analytics.com', 'google.com',
   'localhost', '127.0.0.1',
 ];
 

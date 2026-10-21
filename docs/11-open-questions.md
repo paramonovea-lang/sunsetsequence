@@ -12,7 +12,7 @@ Until answered, the build uses the placeholder shown. Claude Code: never guess t
 | Q6 | VPS and DNS | **Answered 12 Oct 2026.** VPS and domain at hoster.kz (DNS there too). Ubuntu 22.04 (the host offers no newer image), deploy user `claude` (docs/09). A records for `@` and `www` set; AAAA (IPv6) optional, not set yet. |
 | Q7 | The course's example track "Night Bus": keep it, rename it, or replace it with another course example (never a release — releases stay out of the course)? | Keep in course text only; never on marketing pages |
 | Q8 | Newsletter provider (Buttondown, self-hosted Listmonk, none for now)? | **Answered 12 Oct 2026:** no newsletter for now; the form is removed. Followers use RSS (`/rss.xml`). |
-| Q9 | Analytics: none, or privacy-friendly (self-hosted Umami/Plausible)? | None |
+| Q9 | Analytics: none, or privacy-friendly (self-hosted Umami/Plausible)? | **Decided 21 Oct 2026 (owner): Google Analytics 4**, ID `G-VD0BHX2GQH` (`SITE.analyticsId`), only after consent (banner + `/privacy/`). Events: `page_view`, `track_play`. |
 | Q10 | Links: Bandcamp, Spotify, SoundCloud, GitHub, contact email, social? | **Answered 12 Oct 2026:** GitHub only (https://github.com/paramonovea-lang) + footer "Source"; contact = "Write to me →" mailto (address assembled in the browser, never shown). No Bandcamp/SoundCloud/Spotify; a release shows Bandcamp only if it has a link. |
 | Q11 | Self-host Strudel sample packs (check each pack's licence) or keep Strudel's default remote samples? | **Answered (default):** Strudel's own remote samples. |
 | Q12 | Tidal install guide: Windows only (your setup) or Windows + macOS + Linux? | **Withdrawn:** the course is Strudel-only (v27+), so there is no Tidal install guide. |

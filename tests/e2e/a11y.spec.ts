@@ -12,6 +12,7 @@ const PAGES = [
   '/course/02-rhythm-and-drums/drum-kit/',
   '/about/',
   '/licences/',
+  '/privacy/',
   '/nope/',
 ];
 

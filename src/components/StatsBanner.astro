@@ -1,0 +1,24 @@
+---
+// "Allow statistics?" (components/Analytics.astro). Shown only while html[data-stats="ask"], which is
+// set before the page paints, so it never shifts the page. In the page flow above the header, not
+// fixed, so it never covers the docked player. Without JavaScript nothing is counted and it stays hidden.
+---
+<div class="sq-stats on-ink" role="region" aria-label="Visit statistics">
+  <div class="container row">
+    <p>May this site count your visit with Google Analytics? It sets cookies and is used only for visit statistics. <a href="/privacy/">Privacy →</a></p>
+    <span class="actions">
+      <button type="button" class="btn btn-primary" data-stats-choice="granted">Allow</button>
+      <button type="button" class="btn btn-secondary" data-stats-choice="denied">No thanks</button>
+    </span>
+  </div>
+</div>
+
+<style>
+  .sq-stats { display: none; background: var(--ink); color: var(--ground); border-bottom: 2px solid var(--accent); }
+  :global(html[data-stats='ask']) .sq-stats { display: block; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-top: 14px; padding-bottom: 14px; }
+  p { flex: 1 1 320px; margin: 0; }
+  a { color: var(--ground); }
+  a:hover { color: var(--sand); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+</style>

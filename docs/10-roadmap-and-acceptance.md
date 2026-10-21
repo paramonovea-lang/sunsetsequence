@@ -2,7 +2,7 @@
 
 Build in this order. Each phase ends with its checks passing and a short summary to the owner.
 
-## Status (15 Oct 2026)
+## Status (21 Oct 2026)
 
 | Phase | Status |
 |---|---|
@@ -12,7 +12,7 @@ Build in this order. Each phase ends with its checks passing and a short summary
 | 3 Course | Done — lessons are generated HTML, not MDX; own Strudel runtime, not `@strudel/web`; widgets as scripts (docs/07, 08) |
 | 4 Guided Split REPL | Done — guided sequences on their own pages: drum-kit + 4 from part 11 |
 | 5 Polish | Done except optional self-hosted samples (no newsletter: Q8) |
-| 6 Launch | **Launched 13 Oct 2026**: https://sunsetsequence.com is public (password removed), the GitHub repo is public. Security audit before launch (owner's local notes). Left: Firefox/Safari/phone check. Astro 7 + Vitest 5 upgrade done 13 Oct (npm audit: 0 vulnerabilities; all 23 pages render the same text and tags as before) |
+| 6 Launch | **Launched 13 Oct 2026**: https://sunsetsequence.com is public (password removed), the GitHub repo is public. Security audit before launch (owner's local notes). Left: Firefox/Safari/phone check. Astro 7 + Vitest 5 upgrade done 13 Oct (npm audit: 0 vulnerabilities; all 23 pages render the same text and tags as before). Visit statistics 21 Oct: Google Analytics 4 behind an Allow / No thanks banner, `/privacy/` page (Q9) |
 
 Checks: `npm run check`, `npm test`, `npx playwright test` (Chrome, 1440 + 360 px, production headers), `npm run lighthouse` (live site), `npm run check-push` (before a push).
 

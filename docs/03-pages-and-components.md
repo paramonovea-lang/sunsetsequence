@@ -69,6 +69,9 @@ Paper card: the author's avatar "The path" (160px circle, `design/avatar/HANDOFF
 ## Licences `/licences/`
 The licence policy in plain words (`src/pages/licences.astro`): one card per part (releases, course text, course code, site code, name and logo, fonts) with what a visitor may do, why, and links to the official licence texts. Keep it in step with `LICENSING.md` and `SITE.licenses`. Linked from the footer, track pages and lesson pages.
 
+## Privacy `/privacy/` and the statistics banner
+Google Analytics 4 (Q9) runs only after the visitor clicks Allow (`components/Analytics.astro`). Until a choice is stored (`localStorage` `sq.stats.v1`), an ink bar above the header asks "May this site count your visit with Google Analytics?" with Allow / No thanks (`components/StatsBanner.astro`; in the page flow, so it never covers the player, and shown before paint, so no layout shift). `src/pages/privacy.astro` says what is recorded, shows the current choice and can change it (turning off removes the `_ga` cookies). Linked from the banner and the footer.
+
 ## 404
 Small sunset with the sun below the horizon, "This specimen isn't in the catalog." + links home and to the course.
 

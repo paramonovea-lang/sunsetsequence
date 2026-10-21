@@ -1,0 +1,61 @@
+---
+// Google Analytics 4, only with the visitor's consent (docs/11 Q9; what it records: /privacy).
+// The choice ("granted" / "denied") is kept in localStorage; until there is one, html[data-stats="ask"]
+// shows the banner (components/StatsBanner.astro). Set here in <head>, before the page paints, so the
+// banner doesn't shift the page; ClientRouter replaces the <html> attributes on navigation, so it is set
+// again on astro:after-swap. Any [data-stats-choice] button (banner, /privacy) records a choice.
+// Google loads only on the live domain, so dev, `npm run serve` and the browser tests never contact it.
+// The site navigates without reloads, so page views are sent on astro:page-load (first load and every
+// navigation). In GA, "Page changes based on browser history events" must stay off (docs/12), or each
+// navigation counts twice.
+import { SITE } from '../site';
+const id = SITE.analyticsId;
+const host = SITE.domain;
+---
+<script is:inline define:vars={{ id, host }}>
+  (function () {
+    if (window.sqStats) return;
+    var KEY = 'sq.stats.v1';
+    var off = 'ga-disable-' + id; // Google's own switch: gtag sends nothing while it is true
+    var choice = null;
+    try { choice = localStorage.getItem(KEY); } catch (e) { /* blocked storage: ask on every page */ }
+    function mark() { document.documentElement.dataset.stats = choice || 'ask'; }
+    function load() {
+      if (location.hostname !== host || window.gtag) return false;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', id, { send_page_view: false });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+      document.head.appendChild(s);
+      return true;
+    }
+    function pageView() {
+      if (window.gtag && !window[off]) window.gtag('event', 'page_view', { page_location: location.href, page_title: document.title });
+    }
+    window.sqStats = {
+      choose: function (v) {
+        choice = v;
+        try { localStorage.setItem(KEY, v); } catch (e) { /* kept for this visit only */ }
+        mark();
+        window[off] = v !== 'granted';
+        if (v === 'granted') { if (load()) pageView(); return; }
+        // Turned off: remove the cookies Google set (_ga, _ga_<stream>) on this domain.
+        document.cookie.split(';').forEach(function (c) {
+          var name = c.split('=')[0].trim();
+          if (name.indexOf('_ga') === 0) document.cookie = name + '=; Max-Age=0; path=/; domain=.' + location.hostname;
+        });
+      },
+    };
+    mark();
+    if (choice === 'granted') load();
+    document.addEventListener('astro:after-swap', mark);
+    document.addEventListener('astro:page-load', pageView);
+    document.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest && e.target.closest('[data-stats-choice]');
+      if (b) window.sqStats.choose(b.dataset.statsChoice);
+    });
+  })();
+</script>

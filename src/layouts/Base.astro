@@ -2,6 +2,8 @@
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import StatsBanner from '../components/StatsBanner.astro';
 import DockedPlayer from '../islands/DockedPlayer';
 import { playerTrack, releasedTracks } from '../lib/tracks';
 import { SITE } from '../site';
@@ -50,6 +52,7 @@ const ogImage = new URL(image, Astro.site);
     <link rel="preload" href={fontSans} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={fontMono} as="font" type="font/woff2" crossorigin />
     <ClientRouter />
+    <Analytics />
     <script is:inline>
       // Play clicks that happen before the docked player has loaded are kept, not lost
       // (the player takes the last one when it starts; see islands/DockedPlayer.tsx).
@@ -62,6 +65,7 @@ const ogImage = new URL(image, Astro.site);
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+    <StatsBanner />
     <Header />
     <main id="main">
       <slot />

@@ -59,7 +59,9 @@ by root and the reload then fails (happened on 12 Oct 2026).
   The original plan had a strict policy on most pages and a relaxed one on lessons, but the site
   navigates without reloads, so the first page's policy stays for the whole visit; Strudel needs
   `'unsafe-eval'`, blob workers and https samples, and Astro inlines small scripts (`'unsafe-inline'`);
-  `script-src` also allows `data:` for Strudel's effects AudioWorklet. Other headers: HSTS, nosniff,
+  `script-src` also allows `data:` for Strudel's effects AudioWorklet. Google Analytics (only after the
+  visitor allows it, `components/Analytics.astro`): `https://www.googletagmanager.com` in `script-src`,
+  `https://*.google-analytics.com https://*.googletagmanager.com` in `img-src`. Other headers: HSTS, nosniff,
   Referrer-Policy, Permissions-Policy, Cross-Origin-Opener-Policy `same-origin`.
 - `/_astro/*` and `/covers/*` are cached for a year (file names change when content changes);
   `/media/*` for a day. The cover PNG and audio links carry `?v=` + 8 hex characters of a hash of the

@@ -19,11 +19,19 @@ updates and reboots need the owner as root), firewall 22/80/443, fail2ban, Caddy
 Launched 13 Oct 2026 (preview password removed). Optional: AAAA records for IPv6.
 Before April 2027: Ubuntu upgrade or free Ubuntu Pro (Q18).
 
+## Visit statistics (Google Analytics 4, 21 Oct 2026)
+
+Reports: https://analytics.google.com (property with stream ID `G-VD0BHX2GQH`). Counts only visitors who
+click Allow in the banner (`/privacy/`). One setting the owner keeps: Admin → Data streams → the web
+stream → Enhanced measurement ⚙ → Page views → Show advanced settings → **"Page changes based on
+browser history events" off**. The site sends its own page view on every navigation; with that option
+on, each one counts twice. Plays show up as the event `track_play` (parameters `track_id`, `track_title`).
+
 ## Owner decisions still open
 
 - **Content:** Q13 credits (the mastering field stays hidden while empty).
 - **Course:** Q7 Night Bus.
-- **Services:** Q9 analytics (none by default) · Q16 extra domains.
+- **Services:** Q16 extra domains. (Q9 decided: Google Analytics 4 with a consent banner, 21 Oct 2026.)
 - **Server:** Q18 Ubuntu path (before April 2027).
 - **GitHub:** Q19 Discussions and About box (backlog).
 - **Still to test:** Firefox, Safari, a phone.

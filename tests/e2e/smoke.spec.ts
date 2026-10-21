@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { SITE } from '../../src/site';
 
-const pages = ['/', '/tracks/', '/tracks/hope/', '/course/', '/course/01-start-here/', '/course/03-notes-and-chords/', '/course/11-example-tracks/', '/about/', '/licences/'];
+const pages = ['/', '/tracks/', '/tracks/hope/', '/course/', '/course/01-start-here/', '/course/03-notes-and-chords/', '/course/11-example-tracks/', '/about/', '/licences/', '/privacy/'];
 
 for (const url of pages) {
   test(`${url} renders without sideways scroll or console errors`, async ({ page }) => {

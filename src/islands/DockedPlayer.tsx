@@ -42,6 +42,8 @@ export default function DockedPlayer({ tracks, artist }: Props) {
             $duration.set(0);
             pendingSeek.current = c.at != null ? { frac: c.at } : null;
             a.src = t.audio;
+            // Counted once per track start (components/Analytics.astro; gtag exists only on the live site).
+            window.gtag?.('event', 'track_play', { track_id: t.id, track_title: t.title });
           } else if (c.at != null) {
             // Same track: seek now, or once the length is known (the first click can come before it).
             if (Number.isFinite(a.duration)) a.currentTime = c.at * a.duration;
