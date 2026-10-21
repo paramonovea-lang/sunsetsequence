@@ -1,6 +1,6 @@
 # 12 · Owner checklist
 
-What the owner provides or decides, and what runs where. Updated 13 Oct 2026. Details: `09` (server),
+What the owner provides or decides, and what runs where. Updated 21 Oct 2026. Details: `09` (server),
 `10` (status), `11` (questions).
 
 ## What runs where
@@ -22,10 +22,19 @@ Before April 2027: Ubuntu upgrade or free Ubuntu Pro (Q18).
 ## Visit statistics (Google Analytics 4, 21 Oct 2026)
 
 Reports: https://analytics.google.com (property with stream ID `G-VD0BHX2GQH`). Counts only visitors who
-click Allow in the banner (`/privacy/`). One setting the owner keeps: Admin → Data streams → the web
-stream → Enhanced measurement ⚙ → Page views → Show advanced settings → **"Page changes based on
-browser history events" off**. The site sends its own page view on every navigation; with that option
-on, each one counts twice. Plays show up as the event `track_play` (parameters `track_id`, `track_title`).
+click Allow in the banner (`/privacy/`). Plays show up as the event `track_play` (parameters `track_id`,
+`track_title`). Don't paste Google's "install manually" snippet into the site: it is already built in,
+with consent (docs/06 "Visit statistics").
+
+One setting to keep **off**, or every page change counts twice (the site sends its own page view on each
+navigation, without a reload, so the music keeps playing):
+
+1. https://analytics.google.com → **Admin** (gear, bottom left).
+2. Property column → **Data collection and modification → Data streams** → the web stream for sunsetsequence.com.
+3. **Enhanced measurement** → the gear icon on its right.
+4. **Page views** → **Show advanced settings**.
+5. Untick **"Page changes based on browser history events"** (leave "Page views" itself on) → **Save**.
+6. Check: click Allow on the site, open two pages → **Reports → Realtime** shows 2 views, not 4.
 
 ## Owner decisions still open
 

@@ -13,6 +13,7 @@ Music site + free live-coding course. Read `README.md`, then the doc you need fr
 - **Placeholders stay visible.** Missing facts render as `[LIKE THIS]` until the owner supplies them (none are left on the live pages; the release template `content/examples/sq-001.example.md` still uses them). Never invent track titles, stats, quotes or credits.
 - **Releases and the course are separate.** The owner's releases live only on the catalog/track pages (audio and code All rights reserved). Never copy a release's code or audio into a lesson, including part 11; a track page may link to lessons, not the other way round with release material. The course text is CC BY-SA 4.0; its code (code boxes, guided steps, its own example tracks) is CC0 1.0. The policy for visitors is on `/licences` (`src/pages/licences.astro`); keep it, `LICENSING.md` and `SITE.licenses` in step.
 - **Do not use "Night Bus"** (the course's example track) anywhere in the site's marketing pages. Inside the migrated course it stays only until the owner decides (open question Q7).
+- **Visit statistics only with consent.** Google Analytics 4 loads only after the visitor clicks Allow, and only on the live domain (`components/Analytics.astro`, docs/06 "Visit statistics"). Never add Google's standard gtag snippet or any other tracker that runs before consent; keep `/privacy` in step with what is recorded.
 - **Accessibility:** WCAG 2.1 AA, real `<button>`/`<a>`, visible focus, 44px touch targets, `prefers-reduced-motion` respected, every page usable at 360px wide.
 - **Infrastructure:** the site lives on **sunsetsequence.com**. Only touch the site's own VPS and the `@` / `www` DNS records of sunsetsequence.com. Any other server, domain or DNS record is out of scope: never change it, even if you can reach it.
 
@@ -24,7 +25,7 @@ npm run dev        # http://localhost:4321
 npm run build      # static output in dist/
 npm run check      # astro check + type check
 npm run test       # unit tests (cover, og, highlighter, peaks, Caddyfile headers, push-check, soundfont-data)
-npx playwright test  # browser tests in the installed Chrome (smoke, player, course, guided, sound, a11y; course and sound need internet)
+npx playwright test  # browser tests in the installed Chrome (smoke, player, course, guided, sound, a11y, stats; course and sound need internet)
 npm run serve      # serve dist/ + media/ like Caddy does, http://127.0.0.1:4330
 npm run dev-audio  # dev WAV loops + peaks for tracks marked placeholder: true (none now; Playwright still calls it)
 npm run peaks      # peaks for real MP3s in media/audio (needs audiowaveform)

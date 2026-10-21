@@ -51,14 +51,28 @@ As built (phases 0–5, Oct 2026). Where this differs from the original plan, th
 │  ├─ islands/    DockedPlayer, Waveform, GuidedSteps (.tsx + .css)
 │  ├─ scripts/    codeblocks, course-widgets (port of course.js; keyboards play Strudel's piano samples), course-progress,
 │  │              command-filter, scrollable
-│  ├─ components/ Header, Footer, Cover, Catalog, SequenceGrid, StepCards, PlayButton, CodeBlock, Avatar, Byline, Email, …
-│  ├─ layouts/Base.astro          # head (icons, OG, fonts), header, footer, persisted player
-│  ├─ pages/      index, about, licences, 404, rss.xml, tracks/, course/[slug], course/[slug]/[guide],
+│  ├─ components/ Header, Footer, Cover, Catalog, SequenceGrid, StepCards, PlayButton, CodeBlock, Avatar, Byline, Email, Analytics, StatsBanner, …
+│  ├─ layouts/Base.astro          # head (icons, OG, fonts, analytics), statistics banner, header, footer, persisted player
+│  ├─ pages/      index, about, licences, privacy, 404, rss.xml, tracks/, course/[slug], course/[slug]/[guide],
 │  │              covers/[file].png, og/[file].png
 │  └─ styles/     global, codeblock, lesson-content (generated), lesson-theme
-├─ tests/e2e/     smoke, player, course, guided, sound, a11y
+├─ tests/e2e/     smoke, player, course, guided, sound, a11y, stats
 └─ media/                        # gitignored: audio, peaks, stems (synced to the VPS)
 ```
+
+## Visit statistics (Google Analytics 4, Q9)
+
+- `components/Analytics.astro` (inline script in `<head>`): loads gtag only after the visitor allows it
+  (`localStorage` `sq.stats.v1` = `granted`) and only on `SITE.domain`, so dev and tests never contact Google.
+  `send_page_view: false`; a `page_view` goes out on every `astro:page-load` (first load + each
+  ClientRouter navigation). The player sends `track_play` (`window.gtag?.(…)`).
+- `html[data-stats]` (`ask` / `granted` / `denied`) is set before paint and again on `astro:after-swap`;
+  `components/StatsBanner.astro` shows only for `ask`. Any `[data-stats-choice]` button records a choice;
+  `denied` sets Google's `ga-disable-<ID>` switch and deletes the `_ga` cookies.
+- Playwright starts every test with `denied` stored (`playwright.config.ts`); `tests/e2e/stats.spec.ts`
+  tests the banner from a clean state.
+- Don't paste Google's standard snippet into the page: it ignores consent and, with ClientRouter,
+  counts page changes wrongly.
 
 ## The persistent player (most important behaviour)
 

@@ -11,7 +11,7 @@ Horizontal logo: mark A (36px, `design/logo/logo-mark.svg`) + "SUNSET SEQUENCE" 
 Sticky bottom bar, ink background, 2px accent top rule. Contents: 46px cover thumbnail · title + `SQ-00x · playing/paused` (mono 12px) · previous / play-pause (48px circle, ground fill) / next · progress (elapsed, 4px bar with accent fill, total; clickable/draggable seek, keyboard ←/→ ±5s) · "Sheet" link · "Code ↗" link. Hidden until the first play. Must survive page navigation (see `06-architecture.md`). Media Session API: title, artist, artwork (cover PNG), next/prev handlers.
 
 ### Footer
-Horizon stripes band → ink footer: `sunsetsequence.com` · links: GitHub (the author's profile) and Source (mono 13px). Owner, 12 Oct 2026: no Bandcamp or SoundCloud. Second line (12px): the licence summary from `SITE.licenses` + "Licences →" (`/licences/`), and "Live coding by Strudel and TidalCycles".
+Horizon stripes band → ink footer: `sunsetsequence.com` · links: GitHub (the author's profile) and Source (mono 13px). Owner, 12 Oct 2026: no Bandcamp or SoundCloud. Second line (12px): the licence summary from `SITE.licenses` + "Licences →" (`/licences/`) + "Privacy →" (`/privacy/`), and "Live coding by Strudel and TidalCycles".
 
 ## Home `/`
 
@@ -77,7 +77,7 @@ Small sunset with the sun below the horizon, "This specimen isn't in the catalog
 
 ## Component inventory (as built)
 
-Static (`src/components/`): `Header`, `Footer`, `HorizonStripes`, `Cover`, `Catalog` (Covers/Tracklist switch + filters), `SequenceGrid` (rows × 16, optional live step), `StepCards` (sunrise icons), `PlayButton` (handled by the player), `CodeBlock`, `ExtLink`, `Avatar`, `Byline` (course "Written by"), `Email` ("Write to me →") (placeholder-aware links).
+Static (`src/components/`): `Header`, `Footer`, `HorizonStripes`, `Cover`, `Catalog` (Covers/Tracklist switch + filters), `SequenceGrid` (rows × 16, optional live step), `StepCards` (sunrise icons), `PlayButton` (handled by the player), `CodeBlock`, `ExtLink`, `Avatar`, `Byline` (course "Written by"), `Email` ("Write to me →") (placeholder-aware links), `Analytics` (GA4 after consent, in `<head>`), `StatsBanner` ("Allow statistics?").
 Islands (`src/islands/`): `DockedPlayer` (persisted), `Waveform`, `GuidedSteps` (with the CodeMirror editor, lazy).
 Scripts (`src/scripts/`): code blocks, course widgets, progress, command filter, scrollable regions.
 No newsletter (Q8, owner 12 Oct 2026: removed; releases are followed through RSS at `/rss.xml`).
