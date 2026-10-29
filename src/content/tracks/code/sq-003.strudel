@@ -4,12 +4,6 @@ const melody_1 = "<Em G D Am>"
 const melody_2 = "<Em D C D>"
 const melody_3 = "<G Am B Em>"
 
-const melody_transpose  ="<C G F E>"
-
-const melody_4 = "<Am C G Dm>"
-const melody_5 = "<Am G F G>"
-const melody_6 = "<C Dm E Am>"
-
 const bass_1   = stack(note("<[E1 G1] [D1 A1]>").s("piano").release(0.2).gain(.35),
                        note("<[E2 G2] [D2 A2]>").s("piano").release(0.2).gain(.35))
 
