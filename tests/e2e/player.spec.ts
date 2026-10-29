@@ -13,7 +13,7 @@ test('music keeps playing from home → track page → lesson, on the same audio
   await page.evaluate(() => ((window as any).__audio = document.querySelector('audio')));
 
   await page.getByRole('link', { name: 'Specimen sheet →' }).click();
-  await expect(page).toHaveURL(/\/tracks\/quarrel\/$/);
+  await expect(page).toHaveURL(/\/tracks\/crazy-breeze\/$/);
   await page.getByRole('link', { name: /Step 05 · Song structure/ }).click();
   await expect(page).toHaveURL(/\/course\/05-song-structure\/$/);
 
@@ -21,7 +21,7 @@ test('music keeps playing from home → track page → lesson, on the same audio
   expect(await audioPlaying(page)).toBe(true);
   const t1 = await audioTime(page);
   await expect.poll(() => audioTime(page)).toBeGreaterThan(t1);
-  await expect(player(page)).toContainText('SQ-002 · playing');
+  await expect(player(page)).toContainText('SQ-003 · playing');
 });
 
 test('track page play button and waveform mirror the docked player', async ({ page }) => {

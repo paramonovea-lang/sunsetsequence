@@ -86,4 +86,4 @@ part 11's "How it was made" sequences are extracted from the lesson HTML at buil
 
 ## Examples
 
-See `content/examples/sq-001.example.md` and `sq-001.example.strudel` (a release), and the tracks in `src/content/tracks/`: the releases `sq-001.md` Hope and `sq-002.md` Quarrel, and `sq-003.md` Crazy Breeze (`status: upcoming`, `coverPalette: lagoon`). `content/examples/02-rhythm-and-drums.example.mdx` is the original MDX plan, kept for its drum-kit text.
+See `content/examples/sq-001.example.md` and `sq-001.example.strudel` (a release), and the tracks in `src/content/tracks/`: the releases `sq-001.md` Hope and `sq-002.md` Quarrel, and `sq-003.md` Crazy Breeze (released 29 Oct, `coverPalette: lagoon`; no upcoming track at the moment). `content/examples/02-rhythm-and-drums.example.mdx` is the original MDX plan, kept for its drum-kit text.
